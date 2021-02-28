@@ -55,16 +55,27 @@ services:
         protocol: udp
 
   database:
-    image: postgres:13-alpine
+    image: mysql:8.0
     environment:
-      - POSTGRES_DB=api
-      - POSTGRES_PASSWORD=!ChangeMe!
-      - POSTGRES_USER=api-platform
+      - MYSQL_ROOT_PASSWORD=***REMOVED***
+      - MYSQL_DATABASE=api
+      - MYSQL_PASSWORD=***REMOVED***
+      - MYSQL_USER=api-platform
     volumes:
-      - db_data:/var/lib/postgresql/data:rw
+      - db_data:/var/lib/mysql:rw
+      # - ./api/docker/db/mysql:/var/lib/mysql:rw
       # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./api/docker/db/data:/var/lib/postgresql/data:rw
-
+  phpmyadmin:
+    depends_on:
+      - database
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: database
+      MYSQL_ROOT_PASSWORD: ***REMOVED***
 volumes:
   php_socket:
   db_data:
