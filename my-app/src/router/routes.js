@@ -10,7 +10,7 @@ const routes = [
     ]
   },
   // {
-  //   path: '/admin2',
+  //   path: '/admin',
   //   component: () => import('layouts/MainLayout.vue'),
   //   children: [
   //     ...greetingRoutes
