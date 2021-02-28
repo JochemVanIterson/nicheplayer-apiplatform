@@ -23,7 +23,7 @@ const show = {
 export default [
   {
     name: list.label,
-    path: '/greetings/',
+    path: 'greetings/',
     component: GreetingList,
     meta: {
       breadcrumb: [list]
@@ -31,7 +31,7 @@ export default [
   },
   {
     name: create.label,
-    path: '/greetings/create',
+    path: 'greetings/create',
     component: GreetingCreate,
     meta: {
       breadcrumb: [{ ...list, to: { name: list.label } }, create]
@@ -39,7 +39,7 @@ export default [
   },
   {
     name: update.label,
-    path: '/greetings/edit/:id',
+    path: 'greetings/edit/:id',
     component: GreetingUpdate,
     meta: {
       breadcrumb: [{ ...list, to: { name: list.label } }, update]
@@ -47,7 +47,7 @@ export default [
   },
   {
     name: show.label,
-    path: '/greetings/show/:id',
+    path: 'greetings/show/:id',
     component: GreetingShow,
     meta: {
       breadcrumb: [{ ...list, to: { name: list.label } }, show]
