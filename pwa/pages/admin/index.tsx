@@ -5,6 +5,7 @@ import {
   ResourceGuesser,
   ListGuesser,
   FieldGuesser,
+  CreateGuesser,
   hydraDataProvider as baseHydraDataProvider,
   fetchHydra as baseFetchHydra, useIntrospection
 } from "@api-platform/admin";
@@ -13,6 +14,9 @@ import {
   ReferenceField,
   ReferenceInput,
   TextField,
+  FileField,
+  FileInput,
+  TextInput
 } from "react-admin";
 import parseHydraDocumentation from "@api-platform/api-doc-parser/lib/hydra/parseHydraDocumentation";
 import authProvider from "./authProvider";
@@ -64,6 +68,14 @@ const apiDocumentationParser = async (entrypoint) => {
 };
 const dataProvider = baseHydraDataProvider(API_ENTRYPOINT, fetchHydra, apiDocumentationParser);
 
+const MediaObjectsCreate = props => (
+  <CreateGuesser {...props}>
+    <FileInput source="file">
+      <FileField source="src" title="title" />
+    </FileInput>
+  </CreateGuesser>
+);
+
 const UsersList = (props) => (
   <ListGuesser {...props}>
     <FieldGuesser source="username" />
@@ -98,7 +110,7 @@ const Admin = () => (
       />
       <ResourceGuesser name="greetings" />
       <ResourceGuesser name="sources" icon={AccountBalanceIcon} />
-      <ResourceGuesser name="media" icon={PhotoIcon}/>
+      <ResourceGuesser name="media" icon={PhotoIcon} create={MediaObjectsCreate}/>
       <ResourceGuesser name="albums" icon={AlbumIcon} />
       <ResourceGuesser name="songs" icon={MusicNoteIcon} />
     </HydraAdmin>
