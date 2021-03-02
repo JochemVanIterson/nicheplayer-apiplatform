@@ -15,11 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={"security"="is_granted('ROLE_USER')"},
  *     collectionOperations={
  *         "get",
- *         "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *         "post"={"security"="is_granted('ROLE_USER')"}
  *     },
  *     itemOperations={
  *         "get",
- *         "put"={"security"="is_granted('ROLE_ADMIN') or object.id == user"},
+ *         "put"={"security"="is_granted('ROLE_USER')"},
  *     }
  * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
