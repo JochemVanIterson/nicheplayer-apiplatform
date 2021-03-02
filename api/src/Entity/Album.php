@@ -5,9 +5,20 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AlbumRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     attributes={},
+ *     collectionOperations={
+ *         "get",
+ *         "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put"={"security"="is_granted('ROLE_ADMIN')"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=AlbumRepository::class)
  */
 class Album
@@ -22,11 +33,13 @@ class Album
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Assert\NotBlank]
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Assert\NotBlank]
     private $artist;
 
     /**

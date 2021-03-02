@@ -5,9 +5,20 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PlayHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_ADMIN')"},
+ *     collectionOperations={
+ *         "get",
+ *         "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put"={"security"="is_granted('ROLE_ADMIN')"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=PlayHistoryRepository::class)
  */
 class PlayHistory
@@ -34,11 +45,13 @@ class PlayHistory
     /**
      * @ORM\Column(type="datetime")
      */
+    #[Assert\NotNull]
     private $timestamp;
 
     /**
      * @ORM\Column(type="integer")
      */
+    #[Assert\NotNull]
     private $duration;
 
     public function getId(): ?int

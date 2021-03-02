@@ -7,9 +7,20 @@ use App\Repository\SongRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_USER')"},
+ *     collectionOperations={
+ *         "get",
+ *         "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put"={"security"="is_granted('ROLE_ADMIN')"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=SongRepository::class)
  */
 class Song
@@ -24,6 +35,7 @@ class Song
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Assert\NotBlank]
     private $name;
 
     /**
@@ -35,6 +47,7 @@ class Song
      * @ORM\ManyToOne(targetEntity=Media::class)
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Assert\NotNull]
     private $file;
 
     /**
