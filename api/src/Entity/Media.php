@@ -5,9 +5,20 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\MediaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_USER')"},
+ *     collectionOperations={
+ *         "get",
+ *         "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put"={"security"="is_granted('ROLE_ADMIN')"},
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=MediaRepository::class)
  */
 class Media
@@ -22,6 +33,7 @@ class Media
     /**
      * @ORM\Column(type="text")
      */
+    #[Assert\NotBlank]
     private $path;
 
     /**
@@ -33,6 +45,7 @@ class Media
      * @ORM\ManyToOne(targetEntity=Source::class)
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Assert\NotNull]
     private $source;
 
     public function getId(): ?int
