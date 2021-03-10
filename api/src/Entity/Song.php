@@ -60,6 +60,12 @@ class Song
      */
     private $playHistory;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Album::class, inversedBy="songs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $album;
+
     public function __construct()
     {
         $this->playHistory = new ArrayCollection();
@@ -144,6 +150,18 @@ class Song
                 $playHistory->setSong(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAlbum(): ?Album
+    {
+        return $this->album;
+    }
+
+    public function setAlbum(?Album $album): self
+    {
+        $this->album = $album;
 
         return $this;
     }
