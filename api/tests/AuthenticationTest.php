@@ -1,13 +1,17 @@
 <?php
+// tests/AuthenticationTest.php
 
-namespace App\Tests\Api;
+namespace App\Tests;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
-use App\Entity\Greeting;
+use App\Entity\User;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
-class GreetingsTest extends ApiTestCase
+class AuthenticationTest extends ApiTestCase
 {
-    public function testCreateGreeting()
+    use ReloadDatabaseTrait;
+
+    public function testLogin(): void
     {
         $client = self::createClient();
 
@@ -34,18 +38,12 @@ class GreetingsTest extends ApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertArrayHasKey('token', $json);
 
-        $response = $client->request('POST', '/greetings', [
-            'auth_bearer' => $json['token'],
-            'json' => [
-                'name' => 'Kévin',
-            ]
-        ]);
+        // test not authorized
+        $client->request('GET', '/greetings');
+        $this->assertResponseStatusCodeSame(401);
 
-        $this->assertResponseStatusCodeSame(201);
-        $this->assertJsonContains([
-            '@context' => '/contexts/Greeting',
-            '@type' => 'Greeting',
-            'name' => 'Kévin',
-        ]);
+        // test authorized
+        $client->request('GET', '/greetings', ['auth_bearer' => $json['token']]);
+        $this->assertResponseIsSuccessful();
     }
 }
