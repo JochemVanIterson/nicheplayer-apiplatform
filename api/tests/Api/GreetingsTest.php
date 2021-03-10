@@ -3,16 +3,21 @@
 namespace App\Tests\Api;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use App\Entity\User;
 use App\Entity\Greeting;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
 class GreetingsTest extends ApiTestCase
 {
+    use ReloadDatabaseTrait;
+
     public function testCreateGreeting()
     {
         $client = self::createClient();
 
         $user = new User();
         $user->setEmail('test@example.com');
+        $user->setUsername('test');
         $user->setPassword(
             self::$container->get('security.password_encoder')->encodePassword($user, '$3CR3T')
         );
@@ -25,7 +30,7 @@ class GreetingsTest extends ApiTestCase
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'test@example.com',
+                'username' => 'test',
                 'password' => '$3CR3T',
             ],
         ]);
