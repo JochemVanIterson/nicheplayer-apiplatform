@@ -17,6 +17,7 @@ class AuthenticationTest extends ApiTestCase
 
         $user = new User();
         $user->setEmail('test@example.com');
+        $user->setUsername('test');
         $user->setPassword(
             self::$container->get('security.password_encoder')->encodePassword($user, '$3CR3T')
         );
@@ -29,7 +30,7 @@ class AuthenticationTest extends ApiTestCase
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'test@example.com',
+                'username' => 'test',
                 'password' => '$3CR3T',
             ],
         ]);
