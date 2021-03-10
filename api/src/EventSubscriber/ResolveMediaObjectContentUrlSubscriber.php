@@ -6,7 +6,6 @@ namespace App\EventSubscriber;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use ApiPlatform\Core\Util\RequestAttributesExtractor;
 use App\Entity\Media;
-use App\Entity\Source;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -48,22 +47,12 @@ final class ResolveMediaObjectContentUrlSubscriber implements EventSubscriberInt
             $mediaObjects = [$mediaObjects];
         }
 
-        /**
-         * TODO:
-         * set source on create
-         */
-        
-        // $localSource = $this->getDoctrine()
-        //     ->getRepository(Source::class)
-        //     ->find(1);
-
         foreach ($mediaObjects as $mediaObject) {
             if (!$mediaObject instanceof Media) {
                 continue;
             }
 
             $mediaObject->contentUrl = $this->storage->resolveUri($mediaObject, 'file');
-            // $mediaObject->setSource($localSource);
         }
     }
 }
