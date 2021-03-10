@@ -9,38 +9,54 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @ApiResource(
  *     attributes={"security"="is_granted('ROLE_USER')"},
  *     collectionOperations={
- *         "get",
- *         "post"={"security"="is_granted('ROLE_USER')"}
+ *         "get"={
+ *             "normalization_context"= {"groups" = {"get"}}
+ *         },
+ *         "post"={
+ *             "security"="is_granted('ROLE_USER')",
+ *             "route_name"="api_users_post"
+ *         }
  *     },
  *     itemOperations={
- *         "get",
- *         "put"={"security"="is_granted('ROLE_USER')"},
+ *         "get"={
+ *             "normalization_context"= {"groups" = {"get"}}
+ *         },
+ *         "put"={
+ *             "security"="is_granted('ROLE_USER')",
+ *             "route_name"="api_users_put"
+ *         },
  *     }
  * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User implements UserInterface
 {
+    private $passwordEncoder;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"get"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"get"})
      */
     #[Assert\NotBlank]
     private $username;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"get"})
      */
     private $roles = [];
 
@@ -53,23 +69,26 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Groups({"get"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get"})
      */
     private $lastname;
 
     /**
      * @ORM\ManyToOne(targetEntity=Media::class)
+     * @Groups({"get"})
      */
-    #[Assert\NotNull]
     private $profilepic;
 
     /**

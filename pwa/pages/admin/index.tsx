@@ -5,7 +5,9 @@ import {
   ResourceGuesser,
   ListGuesser,
   FieldGuesser,
+  InputGuesser,
   CreateGuesser,
+  EditGuesser,
   hydraDataProvider as baseHydraDataProvider,
   fetchHydra as baseFetchHydra, useIntrospection
 } from "@api-platform/admin";
@@ -14,9 +16,12 @@ import {
   ReferenceField,
   ReferenceInput,
   TextField,
+  ImageField,
   FileField,
   FileInput,
-  TextInput
+  TextInput,
+  SelectArrayInput,
+  PasswordInput
 } from "react-admin";
 import parseHydraDocumentation from "@api-platform/api-doc-parser/lib/hydra/parseHydraDocumentation";
 import authProvider from "./authProvider";
@@ -76,6 +81,19 @@ const MediaObjectsCreate = props => (
   </CreateGuesser>
 );
 
+const UsersCreate = (props) => (
+  <CreateGuesser {...props}>
+    <InputGuesser source="username" />
+    <InputGuesser source="email" />
+    <InputGuesser source="firstname" />
+    <InputGuesser source="lastname" />
+    <PasswordInput source="password" />
+    <SelectArrayInput source="roles" choices={[
+      { id: 'ROLE_ADMIN', name: 'Admin' },
+      { id: 'ROLE_USER', name: 'User' },
+    ]} />
+  </CreateGuesser>
+)
 const UsersList = (props) => (
   <ListGuesser {...props}>
     <FieldGuesser source="username" />
@@ -83,10 +101,23 @@ const UsersList = (props) => (
     <FieldGuesser source="firstname" />
     <FieldGuesser source="lastname" />
     {/* Use react-admin components directly when you want complex fields. */}
-    <ReferenceField label="Profile picture" source="profilepic" reference="media">
-      <TextField source="path" />
-    </ReferenceField>
+    {/* <ReferenceField label="Profile picture" source="profilepic_id" reference="media">
+      <TextField source="file_path" />
+    </ReferenceField> */}
   </ListGuesser>
+);
+const UsersEdit = (props) => (
+  <EditGuesser {...props}>
+    <InputGuesser source="username" />
+    <InputGuesser source="email" />
+    <InputGuesser source="firstname" />
+    <InputGuesser source="lastname" />
+    <PasswordInput initialValue="Unchanged" source="password" />
+    <SelectArrayInput source="roles" choices={[
+      { id: 'ROLE_ADMIN', name: 'Admin' },
+      { id: 'ROLE_USER', name: 'User' },
+    ]} />
+  </EditGuesser>
 );
 
 const Admin = () => (
@@ -106,6 +137,8 @@ const Admin = () => (
       <ResourceGuesser
         name="users"
         list={UsersList}
+        edit={UsersEdit}
+        create={UsersCreate}
         icon={UserIcon}
       />
       <ResourceGuesser name="greetings" />
