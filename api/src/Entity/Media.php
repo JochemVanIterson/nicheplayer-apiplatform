@@ -57,17 +57,20 @@ class Media
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"media_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     * @Groups({"media_read"})
      */
     private $meta = [];
 
     /**
      * @ORM\ManyToOne(targetEntity=Source::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"media_read"})
      */
     #[Assert\NotNull]
     private $source;
@@ -122,5 +125,10 @@ class Media
         $this->source = $source;
 
         return $this;
+    }
+
+    public function generateURL(): ?string
+    {
+        return null;
     }
 }

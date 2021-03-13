@@ -12,6 +12,8 @@ import {
   fetchHydra as baseFetchHydra, useIntrospection
 } from "@api-platform/admin";
 import {
+  defaultTheme,
+  AppBar,
   AutocompleteInput,
   ReferenceField,
   ReferenceInput,
@@ -23,7 +25,11 @@ import {
   SelectArrayInput,
   PasswordInput
 } from "react-admin";
+import merge from 'lodash/merge'
 import parseHydraDocumentation from "@api-platform/api-doc-parser/lib/hydra/parseHydraDocumentation";
+
+import MyLayout from "./layout/MyLayout"
+
 import authProvider from "./authProvider";
 import Login from "./layout/Login";
 import Dashboard from './Dashboard';
@@ -73,6 +79,12 @@ const apiDocumentationParser = async (entrypoint) => {
 };
 const dataProvider = baseHydraDataProvider(API_ENTRYPOINT, fetchHydra, apiDocumentationParser);
 
+// -------------------------------------------------------------- Theme ---------------------------------------------------------------//
+const myTheme = merge({}, defaultTheme, {
+
+})
+
+// ----------------------------------------------------------- Custom views -----------------------------------------------------------//
 const MediaObjectsCreate = props => (
   <CreateGuesser {...props}>
     <FileInput source="file">
@@ -127,6 +139,8 @@ const Admin = () => (
     </Head>
 
     <HydraAdmin
+      theme={myTheme}
+      layout={MyLayout}
       dataProvider={ dataProvider }
       authProvider={ authProvider }
       entrypoint={ API_ENTRYPOINT }
