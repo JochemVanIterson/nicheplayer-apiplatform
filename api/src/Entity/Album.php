@@ -50,7 +50,7 @@ class Album
     private $releaseDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Media::class)
+     * @ORM\ManyToOne(targetEntity=MediaObject::class)
      */
     private $albumArt;
 
@@ -105,12 +105,12 @@ class Album
         return $this;
     }
 
-    public function getAlbumArt(): ?Media
+    public function getAlbumArt(): ?MediaObject
     {
         return $this->albumArt;
     }
 
-    public function setAlbumArt(?Media $albumArt): self
+    public function setAlbumArt(?MediaObject $albumArt): self
     {
         $this->albumArt = $albumArt;
 

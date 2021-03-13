@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Media;
+use App\Entity\MediaObject;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Media|null find($id, $lockMode = null, $lockVersion = null)
- * @method Media|null findOneBy(array $criteria, array $orderBy = null)
- * @method Media[]    findAll()
- * @method Media[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method MediaObject|null find($id, $lockMode = null, $lockVersion = null)
+ * @method MediaObject|null findOneBy(array $criteria, array $orderBy = null)
+ * @method MediaObject[]    findAll()
+ * @method MediaObject[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MediaRepository extends ServiceEntityRepository
+class MediaObjectRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Media::class);
+        parent::__construct($registry, MediaObject::class);
     }
 
     // /**
-    //  * @return Media[] Returns an array of Media objects
+    //  * @return MediaObject[] Returns an array of MediaObject objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class MediaRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Media
+    public function findOneBySomeField($value): ?MediaObject
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.exampleField = :val')

@@ -40,7 +40,7 @@ class AuthenticationSuccessListener
             'fullname' => $user->getFullname(),
             'email' => $user->getEmail(),
             'profilepicID' =>$user->getProfilepic()->getId(),
-            'profilepic' =>$user->getProfilepic()
+            'profilepic' =>$user->getProfilepic()->generateURL()
         );
 
         $event->setData($data);

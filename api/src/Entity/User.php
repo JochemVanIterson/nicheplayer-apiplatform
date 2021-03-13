@@ -86,7 +86,7 @@ class User implements UserInterface
     private $lastname;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Media::class)
+     * @ORM\ManyToOne(targetEntity=MediaObject::class)
      * @Groups({"get"})
      */
     private $profilepic;
@@ -218,12 +218,12 @@ class User implements UserInterface
         return $this->getFirstname()." ".$this->getLastname();
     }
 
-    public function getProfilepic(): ?Media
+    public function getProfilepic(): ?MediaObject
     {
         return $this->profilepic;
     }
 
-    public function setProfilepic(?Media $profilepic): self
+    public function setProfilepic(?MediaObject $profilepic): self
     {
         $this->profilepic = $profilepic;
 
