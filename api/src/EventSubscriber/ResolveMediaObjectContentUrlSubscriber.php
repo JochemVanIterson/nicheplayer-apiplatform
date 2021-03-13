@@ -5,7 +5,7 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use ApiPlatform\Core\Util\RequestAttributesExtractor;
-use App\Entity\Media;
+use App\Entity\MediaObject;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -37,7 +37,7 @@ final class ResolveMediaObjectContentUrlSubscriber implements EventSubscriberInt
             return;
         }
 
-        if (!($attributes = RequestAttributesExtractor::extractAttributes($request)) || !\is_a($attributes['resource_class'], Media::class, true)) {
+        if (!($attributes = RequestAttributesExtractor::extractAttributes($request)) || !\is_a($attributes['resource_class'], MediaObject::class, true)) {
             return;
         }
 
@@ -48,7 +48,7 @@ final class ResolveMediaObjectContentUrlSubscriber implements EventSubscriberInt
         }
 
         foreach ($mediaObjects as $mediaObject) {
-            if (!$mediaObject instanceof Media) {
+            if (!$mediaObject instanceof MediaObject) {
                 continue;
             }
 

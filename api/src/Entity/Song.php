@@ -44,7 +44,7 @@ class Song
     private $songArtist;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Media::class)
+     * @ORM\ManyToOne(targetEntity=MediaObject::class)
      * @ORM\JoinColumn(nullable=false)
      */
     #[Assert\NotNull]
@@ -100,12 +100,12 @@ class Song
         return $this;
     }
 
-    public function getFile(): ?Media
+    public function getFile(): ?MediaObject
     {
         return $this->file;
     }
 
-    public function setFile(?Media $file): self
+    public function setFile(?MediaObject $file): self
     {
         $this->file = $file;
 

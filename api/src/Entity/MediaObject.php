@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\MediaRepository;
+use App\Repository\MediaObjectRepository;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateMediaObjectAction;
@@ -15,14 +15,14 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ApiResource(
  *     normalizationContext={
- *         "groups"={"media_read"}
+ *         "groups"={"media_object_read"}
  *     },
  *     collectionOperations={
  *         "post"={
  *             "controller"=CreateMediaObjectAction::class,
  *             "deserialize"=false,
  *             "security"="is_granted('ROLE_USER')",
- *             "validation_groups"={"Default", "media_create"},
+ *             "validation_groups"={"Default", "media_object_create"},
  *             "openapi_context"={
  *                 "requestBody"={
  *                     "content"={
@@ -48,29 +48,29 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *         "delete"={"security"="is_granted('ROLE_ADMIN')"},
  *     }
  * )
- * @ORM\Entity(repositoryClass=MediaRepository::class)
+ * @ORM\Entity(repositoryClass=MediaObjectRepository::class)
  * @Vich\Uploadable
  */
-class Media
+class MediaObject
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"media_read"})
+     * @Groups({"media_object_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="json", nullable=true)
-     * @Groups({"media_read"})
+     * @Groups({"media_object_read"})
      */
     private $meta = [];
 
     /**
      * @ORM\ManyToOne(targetEntity=Source::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"media_read"})
+     * @Groups({"media_object_read"})
      */
     #[Assert\NotNull]
     private $source;
@@ -79,14 +79,14 @@ class Media
      * @var string|null
      *
      * @ApiProperty(iri="http://schema.org/contentUrl")
-     * @Groups({"media_read"})
+     * @Groups({"media_object_read"})
      */
     public $contentUrl;
 
     /**
      * @var File|null
      *
-     * @Assert\NotNull(groups={"media_create"})
+     * @Assert\NotNull(groups={"media_object_create"})
      * @Vich\UploadableField(mapping="media", fileNameProperty="filePath")
      */
     public $file;
@@ -129,6 +129,11 @@ class Media
 
     public function generateURL(): ?string
     {
-        return null;
+        $json = $serializer->serialize(
+            $this,
+            'json',
+            ['groups' => 'media_object_read']
+        );
+        return $json;
     }
 }

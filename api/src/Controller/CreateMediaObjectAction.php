@@ -3,7 +3,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Media;
+use App\Entity\MediaObject;
 use App\Entity\Source;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class CreateMediaObjectAction extends AbstractController
 {
-    public function __invoke(Request $request): Media
+    public function __invoke(Request $request): MediaObject
     {
         $uploadedFile = $request->files->get('file');
         if (!$uploadedFile) {
@@ -24,7 +24,7 @@ final class CreateMediaObjectAction extends AbstractController
             throw new BadRequestHttpException('localSource is empty');
         }
 
-        $media = new Media();
+        $media = new MediaObject();
         $media->file = $uploadedFile;
         $media->setSource($localSource);
 
