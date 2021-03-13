@@ -1,18 +1,21 @@
 import * as React from 'react';
 
+import { List, Datagrid, EditButton } from "react-admin";
 import {
-    FieldGuesser,
-    ListGuesser
+    FieldGuesser
   } from "@api-platform/admin";
 
 import FullNameField from './FullNameField'
 
 const UsersList = (props) => (
-    <ListGuesser {...props} rowClick="show">
-      <FullNameField label="Full Name"/>
-      <FieldGuesser source="username" />
-      <FieldGuesser source="email" />
-    </ListGuesser>
+    <List {...props}>
+      <Datagrid optimized rowClick="show">
+        <FullNameField label="Full Name"/>
+        <FieldGuesser source="username" />
+        <FieldGuesser source="email" />
+        <EditButton/>
+      </Datagrid>
+    </List>
   );
 
   export default UsersList;
