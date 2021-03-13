@@ -335,6 +335,9 @@
             "config/packages/dev/debug.yaml"
         ]
     },
+    "symfony/debug-pack": {
+        "version": "v1.0.9"
+    },
     "symfony/dependency-injection": {
         "version": "v5.2.3"
     },
@@ -504,6 +507,9 @@
     },
     "symfony/process": {
         "version": "v5.2.3"
+    },
+    "symfony/profiler-pack": {
+        "version": "v1.0.5"
     },
     "symfony/property-access": {
         "version": "v5.2.3"
