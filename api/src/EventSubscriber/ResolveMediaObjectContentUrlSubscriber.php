@@ -6,6 +6,7 @@ namespace App\EventSubscriber;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use ApiPlatform\Core\Util\RequestAttributesExtractor;
 use App\Entity\MediaObject;
+use App\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -36,23 +37,32 @@ final class ResolveMediaObjectContentUrlSubscriber implements EventSubscriberInt
         if ($controllerResult instanceof Response || !$request->attributes->getBoolean('_api_respond', true)) {
             return;
         }
-
-        if (!($attributes = RequestAttributesExtractor::extractAttributes($request)) || !\is_a($attributes['resource_class'], MediaObject::class, true)) {
+        $attributes = RequestAttributesExtractor::extractAttributes($request);
+        if (
+            !($attributes) ||
+            !(
+                \is_a($attributes['resource_class'], MediaObject::class, true) ||
+                \is_a($attributes['resource_class'], User::class, true)
+            )
+        ) {
             return;
         }
 
-        $mediaObjects = $controllerResult;
+        $objects = $controllerResult;
 
-        if (!is_iterable($mediaObjects)) {
-            $mediaObjects = [$mediaObjects];
+        if (!is_iterable($objects)) {
+            $objects = [$objects];
         }
 
-        foreach ($mediaObjects as $mediaObject) {
-            if (!$mediaObject instanceof MediaObject) {
-                continue;
+        foreach ($objects as $object) {
+            if ($object instanceof MediaObject) {
+                $object->contentUrl = $this->storage->resolveUri($object, 'file');
             }
-
-            $mediaObject->contentUrl = $this->storage->resolveUri($mediaObject, 'file');
+            else if ($object instanceof User && $object->getProfilepic() instanceof MediaObject) {
+                $newProfilePic = $object->getProfilepic();
+                $newProfilePic->contentUrl = $this->storage->resolveUri($object->getProfilepic(), 'file');
+                $object->setProfilepic($newProfilePic);
+            }
         }
     }
 }

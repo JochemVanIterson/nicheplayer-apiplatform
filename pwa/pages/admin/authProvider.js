@@ -59,7 +59,7 @@ export default {
     const userdata = {
       id: localStorageData.username,
       fullName: localStorageData.fullname,
-      // avatar:
+      avatar: localStorageData.profilepicURL
     }
     return Promise.resolve(userdata)}
 };

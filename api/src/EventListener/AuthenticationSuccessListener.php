@@ -5,6 +5,7 @@ namespace App\EventListener;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use App\Entity\User;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 class AuthenticationSuccessListener
 {
@@ -16,9 +17,10 @@ class AuthenticationSuccessListener
 	/**
 	 * @param RequestStack $requestStack
 	 */
-	public function __construct(RequestStack $requestStack)
+	public function __construct(RequestStack $requestStack, StorageInterface $storage)
 	{
 		$this->requestStack = $requestStack;
+        $this->storage = $storage;
 	}
 
 	/**
@@ -39,8 +41,8 @@ class AuthenticationSuccessListener
             'lastname' => $user->getLastname(),
             'fullname' => $user->getFullname(),
             'email' => $user->getEmail(),
-            'profilepicID' =>$user->getProfilepic()->getId(),
-            'profilepic' =>$user->getProfilepic()->generateURL()
+            'profilepic' => $user->getProfilepic(),
+            'profilepicURL' => $this->storage->resolveUri($user->getProfilepic(), 'file')
         );
 
         $event->setData($data);

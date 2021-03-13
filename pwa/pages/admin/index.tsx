@@ -157,7 +157,7 @@ const Admin = () => (
       />
       <ResourceGuesser name="greetings" />
       <ResourceGuesser name="sources" icon={AccountBalanceIcon} />
-      <ResourceGuesser name="media" icon={PhotoIcon} create={MediaObjectsCreate}/>
+      <ResourceGuesser name="media_objects" icon={PhotoIcon} create={MediaObjectsCreate}/>
       <ResourceGuesser name="albums" icon={AlbumIcon} />
       <ResourceGuesser name="songs" icon={MusicNoteIcon} />
     </HydraAdmin>
