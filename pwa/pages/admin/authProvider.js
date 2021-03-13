@@ -18,8 +18,10 @@ export default {
         }
         return response.json();
       })
-      .then(({ token }) => {
+      .then(({ token, data }) => {
         localStorage.setItem("token", token);
+        localStorage.setItem("userdata", JSON.stringify(data));
+        console.log("userdata", data)
       });
   },
   logout: () => {
@@ -51,4 +53,13 @@ export default {
     return Promise.resolve();
   },
   getPermissions: () => Promise.resolve(),
+  getIdentity: () => {
+    const localStorageData = JSON.parse(localStorage.getItem("userdata"))
+    console.log("localStorageData", localStorageData)
+    const userdata = {
+      id: localStorageData.username,
+      fullName: localStorageData.fullname,
+      // avatar:
+    }
+    return Promise.resolve(userdata)}
 };

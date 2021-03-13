@@ -28,6 +28,9 @@ final class CreateMediaObjectAction extends AbstractController
         $media->file = $uploadedFile;
         $media->setSource($localSource);
 
+        // TODO:
+        // Do some metadata generation
+
         return $media;
     }
 }
