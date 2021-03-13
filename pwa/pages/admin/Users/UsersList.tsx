@@ -12,10 +12,6 @@ const UsersList = (props) => (
       <FullNameField label="Full Name"/>
       <FieldGuesser source="username" />
       <FieldGuesser source="email" />
-      {/* Use react-admin components directly when you want complex fields. */}
-      {/* <ReferenceField label="Profile picture" source="profilepic_id" reference="media">
-        <TextField source="file_path" />
-      </ReferenceField> */}
     </ListGuesser>
   );
 
