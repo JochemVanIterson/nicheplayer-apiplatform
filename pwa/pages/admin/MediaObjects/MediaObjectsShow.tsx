@@ -1,9 +1,6 @@
 import * as React from 'react';
 
 import { Show, SimpleShowLayout, FileField, TextField, ReferenceField, ChipField } from "react-admin";
-import {
-  FieldGuesser
-} from "@api-platform/admin";
 
 const MediaObjectsShow = (props) => (
   <Show {...props}>
