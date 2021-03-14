@@ -34,7 +34,6 @@ const Admin = () => (
     >
 
       <ResourceGuesser name="users" {...Users} />
-      <ResourceGuesser name="greetings" />
       <ResourceGuesser name="sources" {...Sources} />
       <ResourceGuesser name="media_objects" {...MediaObjects} />
       <ResourceGuesser name="albums" {...Albums} />

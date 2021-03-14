@@ -5,12 +5,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import createPalette from "@material-ui/core/styles/createPalette";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
-const pallete = createPalette(merge({},defaultTheme.palette, {
+const palette = createPalette(merge({},defaultTheme.palette, {
     // primary: {},
     // secondary: {}
 }))
 
 const rawTheme = {
+    palette: palette,
     shape: {
         borderRadius: 10
     },
@@ -21,7 +22,7 @@ const rawTheme = {
                 borderLeft: `3px solid white`
             },
             active: {
-                borderLeft: `3px solid ${pallete.secondary.main}`
+                borderLeft: `3px solid ${palette.secondary.main}`
             }
         },
         // Remove elevation shadow on cards with first elevation index
@@ -36,6 +37,6 @@ const rawTheme = {
         }
     }
 }
-const myTheme = createMuiTheme(merge({}, defaultTheme, rawTheme))
+const MyTheme = createMuiTheme(merge({}, defaultTheme, rawTheme))
 
-export default myTheme;
+export default MyTheme;
