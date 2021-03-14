@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { List, Datagrid, EditButton, FileField, ReferenceField, ChipField } from "react-admin";
+import { List, Datagrid, FileField, ReferenceField, ChipField } from "react-admin";
 import {
   FieldGuesser
 } from "@api-platform/admin";
