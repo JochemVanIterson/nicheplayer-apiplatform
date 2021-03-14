@@ -17,7 +17,7 @@ const AvatarField: FC<Props> = ({record, size = '25', className}) => {
             payload: { id: record }
         });
 
-        if (loading) return <Loading />;
+        if (loading) return <></>;
         if (error) return <Error />;
         if (data) imageUrl = data.contentUrl
 }
