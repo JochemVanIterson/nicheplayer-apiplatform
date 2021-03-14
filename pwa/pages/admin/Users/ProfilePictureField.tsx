@@ -1,20 +1,22 @@
 import * as React from 'react';
-import {FC} from 'react';
-import Avatar from '@material-ui/core/Avatar'
-import { FieldProps, useQuery, Loading, Error } from 'react-admin'
+import {FC, memo} from 'react';
 
-interface Props extends FieldProps {
-    className?: string;
-    size?: string;
+import { FieldProps, useQuery, Error } from 'react-admin'
+import Avatar from '@material-ui/core/Avatar'
+
+interface Props extends FieldProps{
+    size?: string
 }
 
-const AvatarField: FC<Props> = ({record, size = '25', className}) => {
+const ProfilePictureField: FC<Props> = (props) => {
+    const source = props.record[props.source];
+    const size = props.size
     let imageUrl = undefined;
-    if (record) {
+    if (source) {
         const { data, loading, error } = useQuery({ 
             type: 'getOne',
             resource: 'media_object',
-            payload: { id: record }
+            payload: { id: source }
         });
 
         if (loading) return <></>;
@@ -22,13 +24,18 @@ const AvatarField: FC<Props> = ({record, size = '25', className}) => {
         if (data) imageUrl = data.contentUrl
     }
 
-    return (
+    return props.record ? (
         <Avatar
             src={`${imageUrl}?size=${size}x${size}`}
             style={{width: parseInt(size, 10), height: parseInt(size, 10) }}
-            className={className}
         />
-    )
+    ) : null;
+};
+
+ProfilePictureField.defaultProps = {
+    source: 'id',
+    addLabel: true,
+    label: "Full name"
 }
 
-export default AvatarField;
+export default memo<Props>(ProfilePictureField)

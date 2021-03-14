@@ -3,7 +3,6 @@ import {FC, memo} from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 
 import { FieldProps } from 'react-admin';
-import apiGetter from '../apiGetter'
 import AvatarField from './AvatarField'
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +24,6 @@ interface Props extends FieldProps{
 
 const FullNameField: FC<Props> = (props) => {
     const classes = useStyles();
-    console.log(props.record.profilepic)
     return props.record ? (
         <div className={classes.root}>
             <AvatarField
