@@ -1,26 +1,17 @@
 import * as React from 'react';
 
+import { CreateGuesser } from "@api-platform/admin";
 import {
-    InputGuesser,
-    CreateGuesser
-  } from "@api-platform/admin";
-  import {
-    SelectArrayInput,
-    PasswordInput
-  } from "react-admin";
+  FileInput,
+  FileField
+} from "react-admin";
 
-const UsersCreate = (props) => (
-    <CreateGuesser {...props}>
-        <InputGuesser source="username" />
-        <InputGuesser source="email" />
-        <InputGuesser source="firstname" />
-        <InputGuesser source="lastname" />
-        <PasswordInput source="password" />
-        <SelectArrayInput source="roles" choices={[
-            { id: 'ROLE_ADMIN', name: 'Admin' },
-            { id: 'ROLE_USER', name: 'User' },
-        ]} />
-    </CreateGuesser>
+const MediaObjectsCreate = (props) => (
+  <CreateGuesser {...props}>
+      <FileInput source="file">
+        <FileField source="src" title="title"/>
+      </FileInput>
+  </CreateGuesser>
 )
 
-export default UsersCreate;
+export default MediaObjectsCreate;
