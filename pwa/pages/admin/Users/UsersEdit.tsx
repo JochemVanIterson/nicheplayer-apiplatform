@@ -6,7 +6,9 @@ import {
   } from "@api-platform/admin";
   import {
     SelectArrayInput,
-    PasswordInput
+    PasswordInput,
+    ReferenceInput,
+    SelectInput
   } from "react-admin";
 
 const UsersEdit = (props) => (
@@ -20,6 +22,12 @@ const UsersEdit = (props) => (
         { id: 'ROLE_ADMIN', name: 'Admin' },
         { id: 'ROLE_USER', name: 'User' },
       ]} />
+      <ReferenceInput
+            source="profilepic"
+            reference="media_objects"
+            perPage={100}>
+            <SelectInput optionText="contentUrl" />
+        </ReferenceInput>
     </EditGuesser>
   );
 
