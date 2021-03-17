@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\MediaObjectRepository;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\CreateMediaObjectAction;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -48,6 +50,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *         "delete"={"security"="is_granted('ROLE_ADMIN')"},
  *     }
  * )
+ * @ApiFilter(SearchFilter::class, properties = {"type" = "exact"})
+ * 
  * @ORM\Entity(repositoryClass=MediaObjectRepository::class)
  * @Vich\Uploadable
  */
