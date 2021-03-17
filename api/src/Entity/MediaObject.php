@@ -98,6 +98,30 @@ class MediaObject
      */
     public $filePath;
 
+    /**
+     * @ORM\Column(type="string", length=128)
+     * @Groups({"media_object_read"})
+     */
+    private $mime;
+
+    /**
+     * @ORM\Column(type="string", length=32)
+     * @Groups({"media_object_read"})
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"media_object_read"})
+     */
+    private $size;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"media_object_read"})
+     */
+    private $fileName;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,5 +159,53 @@ class MediaObject
             ['groups' => 'media_object_read']
         );
         return $json;
+    }
+
+    public function getMime(): ?string
+    {
+        return $this->mime;
+    }
+
+    public function setMime(string $mime): self
+    {
+        $this->mime = $mime;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(int $size): self
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->fileName;
+    }
+
+    public function setFileName(?string $fileName): self
+    {
+        $this->fileName = $fileName;
+
+        return $this;
     }
 }
