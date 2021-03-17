@@ -31,10 +31,16 @@ final class CreateMediaObjectAction extends AbstractController
         $media->file = $uploadedFile;
         $media->setSource($localSource);
         
+        $media->setMime($uploadedFile->getMimeType());
+        $media->setSize(filesize($uploadedFile->getPathname()));
+        $media->setFileName($uploadedFile->getClientOriginalName());
+
         $mediaParser = null;
         if(ImageParser::isType($uploadedFile)){
+            $media->setType("image");
             $mediaParser = new ImageParser($uploadedFile);
         } else if(AudioParser::isType($uploadedFile)){
+            $media->setType("audio");
             $mediaParser = new AudioParser($uploadedFile);
         }
 

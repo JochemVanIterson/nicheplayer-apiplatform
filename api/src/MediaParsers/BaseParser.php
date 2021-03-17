@@ -20,8 +20,6 @@ class BaseParser
     public function generateMetadata(): ?array
     {
         $meta = array();
-        $meta['mime'] = $this->file->getMimeType();
-        $meta['size'] = filesize($this->file->getPathname());
         return $meta;
     }
 }

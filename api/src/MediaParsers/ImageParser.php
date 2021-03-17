@@ -19,7 +19,6 @@ class ImageParser extends BaseParser
     public function generateMetadata(): ?array
     {
         $meta = parent::generateMetadata();
-        $meta['type'] = "image";
         list($width, $height, $type, $attr) = getimagesize($this->file->getPathname());
         $meta['dimensions'] = ["width"=>$width, "height"=>$height];
         return $meta;
