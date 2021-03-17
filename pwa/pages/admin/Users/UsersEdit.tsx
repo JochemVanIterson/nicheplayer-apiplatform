@@ -25,8 +25,10 @@ const UsersEdit = (props) => (
       <ReferenceInput
             source="profilepic"
             reference="media_objects"
-            perPage={100}>
-            <SelectInput optionText="contentUrl" />
+            perPage={100}
+            filter={{ type: "image" }}
+          >
+            <SelectInput optionText="fileName" />
         </ReferenceInput>
     </EditGuesser>
   );
