@@ -6,8 +6,9 @@ Lijst met dingen die ik moet doen
 
 ### Short term
 
-- [ ] Extracten type, size en mime data uit meta field naar eigen columns MediaObject
-- [ ] Correcte representatie linked fields
+- [x] Extracten type, size en mime data uit meta field naar eigen columns MediaObject
+- [x] Correcte representatie linked fields
+- [ ] Ordenen songs binnen album
 
 ### Long term
 
