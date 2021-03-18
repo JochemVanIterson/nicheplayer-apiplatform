@@ -14,5 +14,6 @@ Lijst met dingen die ik moet doen
 
 - Workflow uploaden van nieuwe media
 - Maken dat Docker niet meer nodig is voor productie. Hiervoor moet alles van de api op een eigen route komen (/api). Begin hiervan zit in [api_platform.yaml](/api/config/packages/api_platform.yaml)
+- Media Chooser
 
 ## Frontend
