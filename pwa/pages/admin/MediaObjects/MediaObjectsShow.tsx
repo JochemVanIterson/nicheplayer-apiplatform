@@ -4,6 +4,7 @@ import { Show, SimpleShowLayout, FileField, FunctionField, ReferenceField, ChipF
 
 import filesize from 'filesize';
 import MetaField from './MetaField';
+import FilePreviewField from './FilePreviewField';
 
 const MediaObjectsShow = (props) => (
   <Show {...props}>
@@ -11,6 +12,7 @@ const MediaObjectsShow = (props) => (
       <FileField source="contentUrl" title="fileName" label="File"/>
       <TextField source="type" />
       <FunctionField label="Size" render={record => `${filesize(record.size)}`}/>
+      <FilePreviewField/>
       <MetaField source="meta" size="medium" label="Metadata"/>
       <ReferenceField source="source" reference="sources">
         <ChipField source="name" />
