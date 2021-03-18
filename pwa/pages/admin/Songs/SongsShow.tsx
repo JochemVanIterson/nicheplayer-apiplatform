@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Show, SimpleShowLayout, ReferenceField, FunctionField, FileField, TextField } from "react-admin";
-
+import AudioPlayerField from '../AudioPlayerField';
 const SongsShow = (props) => (
 <Show {...props}>
     <SimpleShowLayout >
@@ -12,6 +12,7 @@ const SongsShow = (props) => (
         <ReferenceField source="file" reference="media_objects" link="show">
             <FileField source="contentUrl" title="fileName" />
         </ReferenceField>
+        <AudioPlayerField source="file"/>
         <TextField source="duration" />
     </SimpleShowLayout>
 </Show>

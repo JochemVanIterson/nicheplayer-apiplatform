@@ -13,6 +13,11 @@ import {
 const MediaObjectsEdit = (props) => (
     <EditGuesser {...props}>
         <FileField source="contentUrl" title="contentUrl" />
+        <SelectInput source="type" choices={[
+          { id: 'unknown', name: 'Unknown' },
+          { id: 'image', name: 'Image' },
+          { id: 'audio', name: 'Audio' },
+        ]} />
         <InputGuesser source="meta" />
         <ReferenceInput
             source="source"

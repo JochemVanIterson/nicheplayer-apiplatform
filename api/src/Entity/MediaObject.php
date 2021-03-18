@@ -48,6 +48,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *     itemOperations={
  *         "get",
  *         "delete"={"security"="is_granted('ROLE_ADMIN')"},
+ *         "put"={"security"="is_granted('ROLE_ADMIN')"},
  *     }
  * )
  * @ApiFilter(SearchFilter::class, properties = {"type" = "exact"})
