@@ -25,6 +25,7 @@ const UsersCreate = (props) => (
         <ReferenceInput
             source="profilepic"
             reference="media_objects"
+            sort={{ field: "fileName", order: 'ASC' }}
             filter={{ type: "image" }}
         >
             <SelectInput optionText="fileName" />

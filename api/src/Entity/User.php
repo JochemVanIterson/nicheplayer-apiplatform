@@ -34,7 +34,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  *             "security"="is_granted('ROLE_USER')",
  *             "route_name"="api_users_put"
  *         },
- *     }
+ *     },
+ *     attributes={"pagination_client_items_per_page"=true}
  * )
  * @ApiFilter(OrderFilter::class, properties = {"id", "firstname", "lastname", "username", "email"}, arguments = {"orderParameterName" = "order"})
  * @ORM\Entity(repositoryClass=UserRepository::class)

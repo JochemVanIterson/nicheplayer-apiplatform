@@ -21,7 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get",
  *         "put"={"security"="is_granted('ROLE_ADMIN')"}
- *     }
+ *     },
+ *     attributes={"pagination_client_items_per_page"=true}
  * )
  * @ORM\Entity(repositoryClass=SongRepository::class)
  * @ApiFilter(OrderFilter::class, properties = {"id", "name", "trackNumber"}, arguments = {"orderParameterName" = "order"})

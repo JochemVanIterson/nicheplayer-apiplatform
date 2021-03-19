@@ -50,7 +50,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *         "get",
  *         "delete"={"security"="is_granted('ROLE_ADMIN')"},
  *         "put"={"security"="is_granted('ROLE_ADMIN')"},
- *     }
+ *     },
+ *     attributes={"pagination_client_items_per_page"=true}
  * )
  * @ApiFilter(SearchFilter::class, properties = {"type" = "exact"})
  * @ApiFilter(OrderFilter::class, properties = {"id", "fileName", "type", "size"}, arguments = {"orderParameterName" = "order"})

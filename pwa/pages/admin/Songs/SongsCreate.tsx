@@ -24,6 +24,7 @@ const SongsCreate = (props) => {
             <ReferenceInput
                 source="file"
                 reference="media_objects"
+                sort={{field: "fileName", order: 'ASC'}}
                 filter={{ type: "audio" }}
             >
                 <SelectInput optionText="fileName" />
