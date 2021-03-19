@@ -20,6 +20,7 @@ const AlbumsCreate = (props) => {
             <ReferenceInput
                 source="albumArt"
                 reference="media_objects"
+                sort={{ field: "fileName", order: 'ASC' }}
                 filter={{ type: "image" }}
             >
                 <SelectInput optionText="fileName" />
