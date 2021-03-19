@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Controller\CreateMediaObjectAction;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -52,6 +53,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *     }
  * )
  * @ApiFilter(SearchFilter::class, properties = {"type" = "exact"})
+ * @ApiFilter(OrderFilter::class, properties = {"id", "fileName", "type", "size"}, arguments = {"orderParameterName" = "order"})
  * 
  * @ORM\Entity(repositoryClass=MediaObjectRepository::class)
  * @Vich\Uploadable

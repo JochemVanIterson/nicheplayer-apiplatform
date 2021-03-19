@@ -25,7 +25,6 @@ const UsersCreate = (props) => (
         <ReferenceInput
             source="profilepic"
             reference="media_objects"
-            perPage={100}
             filter={{ type: "image" }}
         >
             <SelectInput optionText="fileName" />

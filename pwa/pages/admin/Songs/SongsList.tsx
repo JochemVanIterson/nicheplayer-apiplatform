@@ -5,6 +5,7 @@ import { List, Datagrid, EditButton, ReferenceField, FunctionField, FileField, N
 const SongsList = (props) => (
 <List {...props} sort={{ field: 'name', order: 'ASC' }}>
     <Datagrid optimized rowClick="show" >
+        <FunctionField label="ID" sortBy="id" render={record => `${record.id.replace("/songs/", "")}`} />
         <TextField source="name" sortBy="name"/>
         <ReferenceField source="album" reference="albums" link="show" sortBy="artist">
             <FunctionField render={record => `${record.artist} - ${record.name}`}/>

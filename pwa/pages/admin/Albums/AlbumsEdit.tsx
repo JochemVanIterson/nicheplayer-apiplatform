@@ -20,7 +20,6 @@ const AlbumsEdit = (props) => {
             <ReferenceInput
                 source="albumArt"
                 reference="media_objects"
-                perPage={100}
                 filter={{ type: "image" }}
             >
                 <SelectInput optionText="fileName" />

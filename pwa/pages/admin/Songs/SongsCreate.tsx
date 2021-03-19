@@ -24,7 +24,6 @@ const SongsCreate = (props) => {
             <ReferenceInput
                 source="file"
                 reference="media_objects"
-                perPage={100}
                 filter={{ type: "audio" }}
             >
                 <SelectInput optionText="fileName" />
