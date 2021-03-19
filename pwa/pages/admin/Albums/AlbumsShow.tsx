@@ -32,11 +32,12 @@ const AlbumsShow = (props) => {
                 <TextField source="name" />
                 <TextField source="artist" />
                 <DateField source="releaseDate" />
-                <ReferenceArrayField label="Songs" reference="songs" source="songs">
+                <ReferenceArrayField label="Songs" reference="songs" source="songs" sort={{ field: 'trackNumber', order: 'ASC' }}>
                     <Card>
-                        <Datagrid rowClick="show">
-                            <TextField source="name" />
-                            <NumberField source="duration" />
+                        <Datagrid rowClick="show" >
+                            <NumberField source="trackNumber" sortable={false}/>
+                            <TextField source="name" sortable={false}/>
+                            <NumberField source="duration" sortable={false}/>
                         </Datagrid>
                     </Card>
                 </ReferenceArrayField>

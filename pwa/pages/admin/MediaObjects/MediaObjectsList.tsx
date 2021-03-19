@@ -10,7 +10,7 @@ const MediaObjectsList = (props) => (
     <Datagrid optimized rowClick="show" >
       <FileField source="contentUrl" title="fileName" />
       <TextField source="type" />
-      <FunctionField label="Size" render={record => `${filesize(record.size)}`}/>
+      <FunctionField label="Size" sortBy="size" render={record => `${filesize(record.size)}`}/>
       <MetaField source="meta" size="small"/>
       <ReferenceField source="source" reference="sources">
         <ChipField source="name" />
