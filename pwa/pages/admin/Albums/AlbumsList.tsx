@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { List, Datagrid, EditButton, ReferenceField, TextField, ImageField } from "react-admin";
+import { List, Datagrid, EditButton, ReferenceField, TextField, ImageField, FunctionField } from "react-admin";
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -17,6 +17,7 @@ const AlbumsList = (props) =>{
     return (
         <List {...props}>
             <Datagrid optimized rowClick="show" >
+                <FunctionField label="ID" sortBy="id" render={record => `${record.id.replace("/albums/", "")}`} />
                 <ReferenceField source="albumArt" reference="media_objects" link={false} sortable={false}>
                     <ImageField source="contentUrl" classes={imageFieldClasses} />
                 </ReferenceField>

@@ -50,7 +50,7 @@ const UsersList = (props) => (
         //   rowCell: classes.rowCell
         // }}
       >
-        <FullNameField label="Full Name"/>
+        <FullNameField label="Full Name" sortBy="firstname"/>
         <FieldGuesser source="username" />
         <FieldGuesser source="email" />
         <EditButton/>

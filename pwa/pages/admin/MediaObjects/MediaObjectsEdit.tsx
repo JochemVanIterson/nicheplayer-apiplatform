@@ -21,8 +21,7 @@ const MediaObjectsEdit = (props) => (
         <InputGuesser source="meta" />
         <ReferenceInput
             source="source"
-            reference="sources"
-            perPage={100}>
+            reference="sources">
             <SelectInput optionText="name" />
         </ReferenceInput>
     </EditGuesser>

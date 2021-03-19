@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -34,6 +36,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  *         },
  *     }
  * )
+ * @ApiFilter(OrderFilter::class, properties = {"id", "firstname", "lastname", "username", "email"}, arguments = {"orderParameterName" = "order"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User implements UserInterface
