@@ -66,6 +66,11 @@ class Song
      */
     private $album;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $trackNumber;
+
     public function __construct()
     {
         $this->playHistory = new ArrayCollection();
@@ -162,6 +167,18 @@ class Song
     public function setAlbum(?Album $album): self
     {
         $this->album = $album;
+
+        return $this;
+    }
+
+    public function getTrackNumber(): ?int
+    {
+        return $this->trackNumber;
+    }
+
+    public function setTrackNumber(?int $trackNumber): self
+    {
+        $this->trackNumber = $trackNumber;
 
         return $this;
     }

@@ -17,7 +17,7 @@ const AlbumsList = (props) =>{
     return (
         <List {...props}>
             <Datagrid optimized rowClick="show" >
-                <ReferenceField source="albumArt" reference="media_objects" link={false}>
+                <ReferenceField source="albumArt" reference="media_objects" link={false} sortable={false}>
                     <ImageField source="contentUrl" classes={imageFieldClasses} />
                 </ReferenceField>
                 <TextField source="name" />

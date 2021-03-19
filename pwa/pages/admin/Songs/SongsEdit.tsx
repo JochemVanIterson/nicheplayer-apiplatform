@@ -20,6 +20,7 @@ const SongsEdit = (props) => {
             <ReferenceInput source="album" reference="albums">
                 <SelectInput optionText={albumNameRenderer} />
             </ReferenceInput>
+            <NumberInput source="trackNumber" />
             <ReferenceInput
                 source="file"
                 reference="media_objects"
