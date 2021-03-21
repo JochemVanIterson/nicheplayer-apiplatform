@@ -1,5 +1,6 @@
 import greetingRoutes from './greeting'
 import albumRoutes from '../router/album';
+import songRoutes from '../router/song';
 
 const routes = [
   {
@@ -15,7 +16,8 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       ...greetingRoutes,
-      ...albumRoutes
+      ...albumRoutes,
+      ...songRoutes
     ]
   },
 
