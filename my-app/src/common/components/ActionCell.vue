@@ -5,18 +5,18 @@
       flat
       round
       dense
-      color="secondary"
+      color="primary"
       @click="handleShow"
       icon="format_align_justify"
     />
-    <q-btn v-if="handleEdit" flat round dense color="secondary" @click="handleEdit" icon="edit" />
+    <q-btn v-if="handleEdit" flat round dense color="primary" @click="handleEdit" icon="edit" />
     <q-btn
       v-if="handleDelete"
       icon="delete"
       flat
       round
       dense
-      color="secondary"
+      color="primary"
       @click="confirmDelete = true"
     />
     <ConfirmDelete

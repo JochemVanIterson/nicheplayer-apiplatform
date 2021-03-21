@@ -54,30 +54,25 @@ export default {
           field: 'name',
           label: this.$t('Name'),
           sortable: true,
-},
+        },
         {
           name: 'artist',
           field: 'artist',
           label: this.$t('Artist'),
           sortable: true,
-},
+        },
         {
           name: 'releaseDate',
           field: 'releaseDate',
           label: this.$t('ReleaseDate'),
           format: val => this.formatDateTime(val, 'long'),
           sortable: true,
-},
+        },
         {
           name: 'albumArt',
           field: 'albumArt',
           label: this.$t('AlbumArt'),
-},
-        {
-          name: 'songs',
-          field: 'songs',
-          label: this.$t('Songs'),
-},
+        }
       ],
     };
   },

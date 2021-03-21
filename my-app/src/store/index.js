@@ -1,12 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import createPersistedState from 'vuex-persistedstate'
+
 // import example from './module-example'
 import greeting from './modules/greeting/'
-import album from '../store/modules/album/';
-import song from '../store/modules/song/';
-import mediaobject from '../store/modules/mediaobject/';
-import playhistory from '../store/modules/playhistory/';
+import album from './modules/album/'
+import song from './modules/song/'
+import mediaobject from './modules/mediaobject/'
+import playhistory from './modules/playhistory/'
+import system from './modules/system'
 
 Vue.use(Vuex)
 
@@ -20,14 +23,21 @@ Vue.use(Vuex)
  */
 
 export default function (/* { ssrContext } */) {
+  const dataState = createPersistedState({
+    paths: ['system']
+  })
+
   const Store = new Vuex.Store({
     modules: {
       greeting,
       album,
       song,
       mediaobject,
-      playhistory
+      playhistory,
+      system
     },
+
+    plugins: [dataState],
 
     // enable strict mode (adds overhead!)
     // for dev mode only

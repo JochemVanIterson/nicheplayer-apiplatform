@@ -1,12 +1,13 @@
 import fetch from '../../../utils/fetch'
 
 export const getItemsCommon = (
-  { commit },
+  { commit, state, rootState },
   { page, ep, params },
   { types, hydraPrefix }
 ) => {
   commit(types.TOGGLE_LOADING)
-  return fetch({ id: page, ep }, { params })
+  const jwtToken = rootState.system.jwtToken
+  return fetch({ id: page, ep }, { params }, jwtToken)
     .then((response) => response.json())
     .then((data) => {
       commit(types.TOGGLE_LOADING)
@@ -21,12 +22,13 @@ export const getItemsCommon = (
 }
 
 export const getSelectItemsCommon = (
-  { commit },
+  { commit, rootState },
   { page, ep, params },
   { types, hydraPrefix }
 ) => {
   commit(types.TOGGLE_LOADING)
-  return fetch({ id: page, ep }, { params })
+  const jwtToken = rootState.system.jwtToken
+  return fetch({ id: page, ep }, { params }, jwtToken)
     .then((response) => response.json())
     .then((data) => {
       commit(types.TOGGLE_LOADING)

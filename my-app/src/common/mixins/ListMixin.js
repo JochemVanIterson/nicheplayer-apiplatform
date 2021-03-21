@@ -12,7 +12,7 @@ export default {
         sortBy: null,
         descending: false,
         page: 1, // page to be displayed
-        rowsPerPage: 3, // maximum displayed rows
+        rowsPerPage: 10, // maximum displayed rows
         rowsNumber: 10 // max number of rows
       },
       nextPage: null,
