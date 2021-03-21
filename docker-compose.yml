@@ -72,7 +72,7 @@ services:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - '8080:80'
+      - '8081:80'
     environment:
       PMA_HOST: database
       MYSQL_ROOT_PASSWORD: Sagara544
