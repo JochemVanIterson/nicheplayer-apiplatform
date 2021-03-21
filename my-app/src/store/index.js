@@ -6,6 +6,7 @@ import greeting from './modules/greeting/'
 import album from '../store/modules/album/';
 import song from '../store/modules/song/';
 import mediaobject from '../store/modules/mediaobject/';
+import playhistory from '../store/modules/playhistory/';
 
 Vue.use(Vuex)
 
@@ -24,7 +25,8 @@ export default function (/* { ssrContext } */) {
       greeting,
       album,
       song,
-      mediaobject
+      mediaobject,
+      playhistory
     },
 
     // enable strict mode (adds overhead!)
