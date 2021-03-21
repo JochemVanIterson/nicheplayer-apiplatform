@@ -1,4 +1,5 @@
 import greetingRoutes from './greeting'
+import albumRoutes from '../router/album';
 
 const routes = [
   {
@@ -9,13 +10,14 @@ const routes = [
       ...greetingRoutes
     ]
   },
-  // {
-  //   path: '/admin',
-  //   component: () => import('layouts/MainLayout.vue'),
-  //   children: [
-  //     ...greetingRoutes
-  //   ]
-  // },
+  {
+    path: '/admin',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      ...greetingRoutes,
+      ...albumRoutes
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it

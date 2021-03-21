@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 // import example from './module-example'
 import greeting from './modules/greeting/'
+import album from '../store/modules/album/';
 
 Vue.use(Vuex)
 
@@ -18,7 +19,8 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      greeting
+      greeting,
+      album
     },
 
     // enable strict mode (adds overhead!)
