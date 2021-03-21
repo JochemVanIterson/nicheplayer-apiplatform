@@ -1,6 +1,7 @@
 import greetingRoutes from './greeting'
 import albumRoutes from '../router/album';
 import songRoutes from '../router/song';
+import mediaobjectRoutes from '../router/mediaobject';
 
 const routes = [
   {
@@ -17,7 +18,8 @@ const routes = [
     children: [
       ...greetingRoutes,
       ...albumRoutes,
-      ...songRoutes
+      ...songRoutes,
+      ...mediaobjectRoutes
     ]
   },
 

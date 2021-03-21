@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import greeting from './modules/greeting/'
 import album from '../store/modules/album/';
 import song from '../store/modules/song/';
+import mediaobject from '../store/modules/mediaobject/';
 
 Vue.use(Vuex)
 
@@ -22,7 +23,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       greeting,
       album,
-      song
+      song,
+      mediaobject
     },
 
     // enable strict mode (adds overhead!)
