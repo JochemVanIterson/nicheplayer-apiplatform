@@ -2,6 +2,7 @@ import greetingRoutes from './greeting'
 import albumRoutes from '../router/album';
 import songRoutes from '../router/song';
 import mediaobjectRoutes from '../router/mediaobject';
+import playhistoryRoutes from '../router/playhistory';
 
 const routes = [
   {
@@ -19,7 +20,8 @@ const routes = [
       ...greetingRoutes,
       ...albumRoutes,
       ...songRoutes,
-      ...mediaobjectRoutes
+      ...mediaobjectRoutes,
+      ...playhistoryRoutes
     ]
   },
 
