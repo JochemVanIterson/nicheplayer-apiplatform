@@ -40,7 +40,7 @@
         @filter="fileFilterFn"
         :options="fileSelectItems"
         option-value="@id"
-        option-label="name"
+        option-label="fileName"
         class="col-12 col-md"
         emit-value
         map-options
