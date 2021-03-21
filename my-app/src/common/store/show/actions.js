@@ -1,9 +1,9 @@
 import fetch from '../../../utils/fetch'
 
-export const retrieveCommon = ({ commit }, id, { types }) => {
+export const retrieveCommon = ({ commit, rootState }, id, { types }) => {
   commit(types.TOGGLE_LOADING)
-
-  return fetch(id)
+  const jwtToken = rootState.system.jwtToken
+  return fetch(id, undefined, jwtToken)
     .then((response) => response.json())
     .then((data) => {
       commit(types.TOGGLE_LOADING)

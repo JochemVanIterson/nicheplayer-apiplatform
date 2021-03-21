@@ -14,8 +14,12 @@ const routes = [
     ]
   },
   {
+    path: '/login',
+    component: () => import('pages/LoginPage.vue'),
+  },
+  {
     path: '/admin',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/AdminLayout.vue'),
     children: [
       ...greetingRoutes,
       ...albumRoutes,

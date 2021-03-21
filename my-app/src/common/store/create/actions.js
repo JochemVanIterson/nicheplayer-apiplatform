@@ -1,13 +1,14 @@
 import SubmissionError from '../../../error/SubmissionError'
 import fetch from '../../../utils/fetch'
 
-export const createCommon = ({ commit }, { page, ep, values }, { types }) => {
+export const createCommon = ({ commit, rootState }, { page, ep, values }, { types }) => {
   commit(types.SET_ERROR, '')
   commit(types.TOGGLE_LOADING)
-
+  const jwtToken = rootState.system.jwtToken
   return fetch(
     { id: page, ep },
-    { method: 'POST', body: JSON.stringify(values) }
+    { method: 'POST', body: JSON.stringify(values) },
+    jwtToken
   )
     .then((response) => {
       commit(types.TOGGLE_LOADING)

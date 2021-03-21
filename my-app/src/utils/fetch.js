@@ -6,9 +6,14 @@ const MIME_TYPE = 'application/ld+json'
 const makeParamArray = (key, arr) =>
   arr.map((val) => `${key}[]=${val}`).join('&')
 
-export default function ({ id, ep }, options = {}) {
+export default function ({ id, ep }, options = {}, jwtToken) {
+  console.log('FETCH', jwtToken)
   if (typeof options.headers === 'undefined') {
     Object.assign(options, { headers: new Headers() })
+  }
+
+  if (options.headers.get('Authorization') === null && jwtToken) {
+    options.headers.set('Authorization', `Bearer ${jwtToken}`)
   }
 
   if (options.headers.get('Accept') === null) {
