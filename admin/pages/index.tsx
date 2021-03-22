@@ -40,7 +40,7 @@ const Welcome = () => (
                                 <b>Next.js</b>
                             </a>{" "}
                             application. Learn how to create your first API and
-                            generate a PWA:
+                            generate a ADMIN:
                         </p>
                         <a
                             target="_blank"

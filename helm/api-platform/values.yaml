@@ -20,9 +20,9 @@ php:
     - "172.16.0.0/12"
     - "192.168.0.0/16"
 
-pwa:
+admin:
   image:
-    repository: "chart-example.local/api-platform/pwa"
+    repository: "chart-example.local/api-platform/admin"
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""

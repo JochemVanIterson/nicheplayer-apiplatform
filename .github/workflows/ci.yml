@@ -36,4 +36,4 @@ jobs:
             - name: PHPUnit
               run: docker-compose exec -T php bin/phpunit
             - name: Jest
-              run: docker-compose exec -T pwa yarn test --passWithNoTests
+              run: docker-compose exec -T admin yarn test --passWithNoTests
