@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { ENTRYPOINT } from "../../config/1314272676_entrypoint";
+import { MEDIAPOINT } from "../../config/1314272676_entrypoint";
 
 export default {
   name: 'Explore',
@@ -40,7 +40,7 @@ export default {
 
   },
   methods: {
-    parsedURL(value) { return `${ENTRYPOINT}/${value}` },
+    parsedURL(value) { return `${MEDIAPOINT}/${value}` },
     albumClicked(data) {
       console.log("albumClicked", data)
       this.$router.push(`/explore/album/${data.id}`)

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { ENTRYPOINT } from "../config/1314272676_entrypoint";
+import { MEDIAPOINT } from "../config/1314272676_entrypoint";
 
 export default {
   name: 'PlaylistItem',
@@ -34,7 +34,7 @@ export default {
       else return {}
     },
     albumArt() { return this.albumArtObject.contentUrl },
-    parsedAlbumArt() { return `${ENTRYPOINT}/${this.albumArt}` },
+    parsedAlbumArt() { return `${MEDIAPOINT}/${this.albumArt}` },
     artist() { return this.albumObject.artist },
     album() { return this.albumObject.name },
     title() { return this.songdata.name },

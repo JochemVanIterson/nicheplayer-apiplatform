@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { ENTRYPOINT } from "../config/1314272676_entrypoint";
+import { MEDIAPOINT } from "../config/1314272676_entrypoint";
 import AudioFooter from 'components/AudioFooter'
 
 export default {
@@ -97,7 +97,7 @@ export default {
       this.$store.dispatch("system/logoutAction")
     },
     goToAdminPanel() {
-      window.location = `${ENTRYPOINT}/admin`
+      window.location = `${MEDIAPOINT}/admin`
     }
   }
 }

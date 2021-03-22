@@ -1,4 +1,4 @@
-import { ENTRYPOINT } from "../../../config/1314272676_entrypoint";
+import { MEDIAPOINT } from "../../../config/1314272676_entrypoint";
 
 
 export function isLoggedIn (state) {
@@ -12,5 +12,5 @@ export function userFullName(state) {
 
 export function userProfilePic(state) {
     if (!state.userData) return ""
-    return `${ENTRYPOINT}${state.userData.profilepicURL}`
+    return `${MEDIAPOINT}${state.userData.profilepicURL}`
 }

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { ENTRYPOINT } from "../config/1314272676_entrypoint";
+import { MEDIAPOINT } from "../config/1314272676_entrypoint";
 import PlaylistItem from "./PlaylistItem";
 
 export default {
@@ -44,7 +44,7 @@ export default {
     currentSongData() { return this.$store.getters["audioplayer/getCurrentSong"] },
     playbackProgress() { return this.$store.getters["audioplayer/getPlaybackProgress"] },
     albumArt() { return this.$store.getters["audioplayer/getMetaAlbumArt"] },
-    parsedAlbumArt() { return `${ENTRYPOINT}/${this.albumArt}` },
+    parsedAlbumArt() { return `${MEDIAPOINT}/${this.albumArt}` },
     artist() { return this.$store.getters["audioplayer/getMetaArtist"] },
     album() { return this.$store.getters["audioplayer/getMetaAlbum"] },
     title() { return this.$store.getters["audioplayer/getMetaTitle"] },
