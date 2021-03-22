@@ -41,16 +41,21 @@
     //-   content-class="bg-grey-1")
     //-   q-list
     //-     q-item-label(header class="text-grey-8") Essential Links
-
+    q-footer
+      AudioFooter
     q-page-container
       router-view
 </template>
 
 <script>
 import { ENTRYPOINT } from "../config/1314272676_entrypoint";
+import AudioFooter from 'components/AudioFooter'
 
 export default {
   name: 'MainLayout',
+  components: {
+    AudioFooter
+  },
   data () {
     return {
       leftDrawerOpen: false,

@@ -10,6 +10,7 @@ import song from './modules/song/'
 import mediaobject from './modules/mediaobject/'
 import playhistory from './modules/playhistory/'
 import system from './modules/system'
+import audioplayer from './modules/audioplayer'
 
 Vue.use(Vuex)
 
@@ -29,12 +30,16 @@ export default function (/* { ssrContext } */) {
 
   const Store = new Vuex.Store({
     modules: {
+      // API stores
       greeting,
       album,
       song,
       mediaobject,
       playhistory,
-      system
+
+      // Local system stores
+      system,
+      audioplayer
     },
 
     plugins: [dataState],
