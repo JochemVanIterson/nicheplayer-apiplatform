@@ -63,7 +63,7 @@ export function collectSongInfo({ state, dispatch }) {
 }
 
 export function getSongFromAPI({ state, commit, dispatch, rootState }, songID) {
-    if (typeof songID == 'string') songID = songID.replace("/songs/", "")
+    if (typeof songID == 'string') songID = songID.replace("/api/songs/", "")
     if (state.cache.songs[songID]) return
 
     commit("updateSongCache", { id: songID, value: { songID } })
@@ -78,7 +78,7 @@ export function getSongFromAPI({ state, commit, dispatch, rootState }, songID) {
 }
 
 export function getAlbumFromAPI({ state, commit, dispatch, rootState }, albumID) {
-    if (typeof albumID == 'string') albumID = albumID.replace("/albums/", "")
+    if (typeof albumID == 'string') albumID = albumID.replace("/api/albums/", "")
     if (state.cache.albums[albumID]) return
 
     commit("updateAlbumCache", { id: albumID, value: { albumID } })
@@ -92,7 +92,7 @@ export function getAlbumFromAPI({ state, commit, dispatch, rootState }, albumID)
 }
 
 export function getMediaObjectFromAPI({ state, commit, dispatch, rootState }, mediaObjectID) {
-    if (typeof mediaObjectID == 'string') mediaObjectID = mediaObjectID.replace("/media_objects/", "")
+    if (typeof mediaObjectID == 'string') mediaObjectID = mediaObjectID.replace("/api/media_objects/", "")
     if (state.cache.mediaobjects[mediaObjectID]) return
 
     commit("updateMediaObjectCache", { id: mediaObjectID, value: { mediaObjectID } })

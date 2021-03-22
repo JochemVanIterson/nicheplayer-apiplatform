@@ -25,6 +25,40 @@ log
     || {path}.startsWith("/_next")
     || {path}.startsWith("/sitemap")`
 
+@frontend expression `(
+        {header.Accept}.matches("\\btext/html\\b")
+        && !{path}.matches("(?i)(?:^/admin|^/docs|^/graphql|^/bundles/|^/_profiler|^/_wdt|\\.(?:json|html$|csv$|ya?ml$|xml$))")
+    )
+    || {path} == "/favicon.ico"
+    || {path} == "/vendor.js"
+    || {path} == "/app.js"
+    || {path} == "/manifest.json"
+    || {path} == "/robots.txt"
+    || {path} == "/0.js"
+    || {path} == "/1.js"
+    || {path} == "/2.js"
+    || {path} == "/3.js"
+    || {path} == "/4.js"
+    || {path} == "/5.js"
+    || {path} == "/6.js"
+    || {path} == "/7.js"
+    || {path} == "/8.js"
+    || {path} == "/9.js"
+    || {path} == "/10.js"
+    || {path} == "/11.js"
+    || {path} == "/12.js"
+    || {path} == "/13.js"
+    || {path} == "/14.js"
+    || {path} == "/15.js"
+    || {path} == "/16.js"
+    || {path} == "/17.js"
+    || {path} == "/18.js"
+    || {path} == "/19.js"
+    || {path}.startsWith("/sockjs-node")
+    || {path}.startsWith("/fonts")
+    || {path}.startsWith("/img")
+    || {path}.startsWith("/icons")`
+
 route {
     root * /srv/api/public
     mercure {
@@ -49,6 +83,9 @@ route {
 
     # Comment the following line if you don't want Next.js to catch requests for HTML documents.
     # In this case, they will be handled by the PHP app.
+
+    reverse_proxy @frontend http://{$FRONTEND_UPSTREAM}
+    
     reverse_proxy @admin http://{$ADMIN_UPSTREAM}
 
     php_fastcgi unix//var/run/php/php-fpm.sock

@@ -27,8 +27,8 @@ services:
     build:
       context: ./frontend
       target: api_platform_frontend_prod
-    ports:
-      - '8080:8080'
+    # ports:
+    #   - '8080:8080'
 
   caddy:
     build:
@@ -37,8 +37,10 @@ services:
     depends_on:
       - php
       - admin
+      - frontend
     environment:
       ADMIN_UPSTREAM: admin:3000
+      FRONTEND_UPSTREAM: frontend:8080
       SERVER_NAME: ${SERVER_NAME:-localhost, caddy:80}
       MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_PUBLISHER_JWT_KEY:-!ChangeMe!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_SUBSCRIBER_JWT_KEY:-!ChangeMe!}
