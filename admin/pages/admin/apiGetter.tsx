@@ -10,7 +10,7 @@ import parseHydraDocumentation from "@api-platform/api-doc-parser/lib/hydra/pars
 
 import authProvider from "./authProvider";
 
-const API_ENTRYPOINT = process.env.REACT_APP_API_ENTRYPOINT || "https://localhost";
+const API_ENTRYPOINT = process.env.REACT_APP_API_ENTRYPOINT || "https://localhost/api";
 const getHeaders = () => localStorage.getItem("token") ? {
   Authorization: `Bearer ${localStorage.getItem("token")}`,
 } : {};
