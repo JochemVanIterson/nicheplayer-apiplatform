@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\SongRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={"pagination_client_items_per_page"=true}
  * )
  * @ORM\Entity(repositoryClass=SongRepository::class)
+ * @ApiFilter(SearchFilter::class, properties = {"id" = "exact"})
  * @ApiFilter(OrderFilter::class, properties = {"id", "name", "trackNumber"}, arguments = {"orderParameterName" = "order"})
  */
 class Song

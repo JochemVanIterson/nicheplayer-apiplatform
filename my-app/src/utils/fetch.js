@@ -7,7 +7,6 @@ const makeParamArray = (key, arr) =>
   arr.map((val) => `${key}[]=${val}`).join('&')
 
 export default function ({ id, ep }, options = {}, jwtToken) {
-  console.log('FETCH', jwtToken)
   if (typeof options.headers === 'undefined') {
     Object.assign(options, { headers: new Headers() })
   }

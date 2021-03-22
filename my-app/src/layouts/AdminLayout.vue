@@ -30,8 +30,8 @@
       q-img(class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px")
         div(class="absolute-bottom bg-transparent")
           q-avatar(size="56px" class="q-mb-sm")
-            img(src="https://cdn.quasar.dev/img/boy-avatar.png")
-          div(class="text-weight-bold") Razvan Stoenescu
+            img(:src="userProfilePic")
+          div(class="text-weight-bold") {{userFullName}}
           div @rstoenescu
 
 
@@ -47,6 +47,10 @@ export default {
     return {
       leftDrawer: true
     }
+  },
+  computed: {
+    userFullName() { return this.$store.getters["system/userFullName"] },
+    userProfilePic() { return this.$store.getters["system/userProfilePic"] }
   }
 }
 </script>
