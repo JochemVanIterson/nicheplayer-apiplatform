@@ -16,10 +16,10 @@ services:
       retries: 3
       start_period: 30s
 
-  pwa:
+  admin:
     build:
-      context: ./pwa
-      target: api_platform_pwa_prod
+      context: ./admin
+      target: api_platform_admin_prod
     environment:
       API_PLATFORM_CLIENT_GENERATOR_ENTRYPOINT: http://caddy
 
@@ -29,9 +29,9 @@ services:
       target: api_platform_caddy
     depends_on:
       - php
-      - pwa
+      - admin
     environment:
-      PWA_UPSTREAM: pwa:3000
+      ADMIN_UPSTREAM: admin:3000
       SERVER_NAME: ${SERVER_NAME:-localhost, caddy:80}
       MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_PUBLISHER_JWT_KEY:-!ChangeMe!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_SUBSCRIBER_JWT_KEY:-!ChangeMe!}

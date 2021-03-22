@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "api-platform.fullname" . }}-pwa
+  name: {{ include "api-platform.fullname" . }}-admin
   labels:
-    {{- include "api-platform.labelsPWA" . | nindent 4 }}
+    {{- include "api-platform.labelsADMIN" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "api-platform.selectorLabelsPWA" . | nindent 6 }}
+      {{- include "api-platform.selectorLabelsADMIN" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "api-platform.selectorLabelsPWA" . | nindent 8 }}
+        {{- include "api-platform.selectorLabelsADMIN" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -28,11 +28,11 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}-pwa
+        - name: {{ .Chart.Name }}-admin
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.pwa.image.repository }}:{{ .Values.pwa.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.pwa.image.pullPolicy }}
+          image: "{{ .Values.admin.image.repository }}:{{ .Values.admin.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.admin.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 3000

@@ -11,12 +11,12 @@ services:
     environment:
       APP_ENV: dev
 
-  pwa:
+  admin:
     build:
-      context: ./pwa
-      target: api_platform_pwa_dev
+      context: ./admin
+      target: api_platform_admin_dev
     volumes:
-      - ./pwa:/usr/src/pwa:rw,cached 
+      - ./admin:/usr/src/admin:rw,cached 
 
   caddy:
     volumes:

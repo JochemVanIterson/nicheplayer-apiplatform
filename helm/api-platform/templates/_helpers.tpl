@@ -43,11 +43,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Common labels PWA
+Common labels ADMIN
 */}}
-{{- define "api-platform.labelsPWA" -}}
+{{- define "api-platform.labelsADMIN" -}}
 helm.sh/chart: {{ include "api-platform.chart" . }}
-{{ include "api-platform.selectorLabelsPWA" . }}
+{{ include "api-platform.selectorLabelsADMIN" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -64,10 +64,10 @@ app.kubernetes.io/part-of: {{ include "api-platform.name" . }}
 {{- end }}
 
 {{/*
-Selector labels PWA
+Selector labels ADMIN
 */}}
-{{- define "api-platform.selectorLabelsPWA" -}}
-app.kubernetes.io/name: {{ include "api-platform.name" . }}-pwa
+{{- define "api-platform.selectorLabelsADMIN" -}}
+app.kubernetes.io/name: {{ include "api-platform.name" . }}-admin
 app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/part-of: {{ include "api-platform.name" . }}
 {{- end }}
