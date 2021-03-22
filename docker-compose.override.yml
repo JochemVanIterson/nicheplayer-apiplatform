@@ -24,6 +24,8 @@ services:
       target: api_platform_frontend_dev
     volumes:
       - ./frontend:/usr/src/frontend:rw,cached
+    ports:
+      - '8080:8080'
 
   caddy:
     volumes:

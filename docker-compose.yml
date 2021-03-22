@@ -27,8 +27,6 @@ services:
     build:
       context: ./frontend
       target: api_platform_frontend_prod
-    # ports:
-    #   - '8080:8080'
 
   caddy:
     build:
