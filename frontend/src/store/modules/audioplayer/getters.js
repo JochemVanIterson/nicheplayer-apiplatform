@@ -27,8 +27,8 @@ export function getSongObject(state, getters) {
     return (id) => {
         let songObject = _.clone(state.cache.songs[id])
         if (!songObject) return {}
-        if (songObject.album) songObject.album = getters["getAlbumObject"](songObject.album.replace("/albums/", ""))
-        if (songObject.file) songObject.file = getters["getMediaObject"](songObject.file.replace("/media_objects/", ""))
+        if (songObject.album) songObject.album = getters["getAlbumObject"](songObject.album.replace("/api/albums/", ""))
+        if (songObject.file) songObject.file = getters["getMediaObject"](songObject.file.replace("/api/media_objects/", ""))
 
         return songObject
     }
@@ -38,7 +38,7 @@ export function getAlbumObject(state, getters) {
     return (id) => {
         let albumObject = _.clone(state.cache.albums[id])
         if (!albumObject) return {}
-        if (albumObject.albumArt) albumObject.albumArt = getters["getMediaObject"](albumObject.albumArt.replace("/media_objects/", ""))
+        if (albumObject.albumArt) albumObject.albumArt = getters["getMediaObject"](albumObject.albumArt.replace("/api/media_objects/", ""))
         return albumObject
     }
 }
