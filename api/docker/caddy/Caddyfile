@@ -1,6 +1,8 @@
 {
     # Debug
     {$DEBUG}
+
+    auto_https disable_redirects
     # HTTP/3 support
     servers {
         protocol {

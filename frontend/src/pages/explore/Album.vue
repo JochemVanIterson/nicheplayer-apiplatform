@@ -3,17 +3,19 @@
     .q-gutter-y-lg
       q-card#albumMetaCard
         q-card-section(:horizontal="true")
-          q-img.col-5( :src="albumArt" basic :ratio="1")
+          img.col-auto( :src="albumArt" basic :ratio="1" style="max-height:400px; height:100%; max-width: 45%")
           q-card-section.column.justify-center
             .text-h2.text-weight-normal {{ albumData.name }}
             .text-h4.text-weight-thin {{ albumData.artist }}
       q-card#albumTracks
         q-table(
           title="Tracks"
-          :data="songs"
+          :data="songsSorted"
           :columns="songsColumns"
           row-key="id"
           @row-click="rowClicked"
+          wrap-cells
+          :visible-columns="visibleColumns"
           :pagination="initialPagination" hide-pagination)
           template(v-slot:top-right)
             q-btn(
@@ -31,8 +33,6 @@ export default {
   data() {
     return {
       initialPagination: {
-        sortBy: 'trackNumber',
-        descending: false,
         page: 0,
         rowsPerPage: -1
       },
@@ -41,11 +41,16 @@ export default {
   computed: {
     songsColumns() {
       return [
-        { name: 'trackNumber', align: 'right', label: 'Track', field: 'trackNumber', sortable: true, style: "width: 40px" },
+        { name: 'trackNumber', align: 'right', label: 'Track', field: 'trackNumber', sortable: false, style: "width: 0px" },
         { name: 'name', align: 'left', label: 'Title', field: 'name', sortable: false },
         { name: 'songArtist', align: 'left', label: 'Artist', field: 'songArtist', sortable: false, format: val => `${val || this.albumData.artist}` },
         { name: 'duration', align: 'left', label: 'Duration', field: 'duration', sortable: false, format: val => `${val}` }
       ]
+    },
+    visibleColumns() {
+      let columns = ['trackNumber', 'name', 'songArtist']
+      if (this.$q.screen.gt.xs) columns.push('duration')
+      return columns
     },
 
     albumID() { return this.$route.params.id },
@@ -59,6 +64,9 @@ export default {
       if (this.albumData && this.albumData.songs) return this.albumData.songs;
       else return []
     },
+    songsSorted() {
+      return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber)
+    }
   },
   methods: {
     rowClicked(evt, row, index) {
@@ -66,7 +74,7 @@ export default {
     },
     playAlbum(trackNumber = 0) {
       this.$store.dispatch("audioplayer/clearPlaylist").then(() => {
-        const songList = this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber);
+        const songList = this.songsSorted;
         const actionList = songList.map(song => this.$store.dispatch("audioplayer/appendPlaylist", song.id))
         return Promise.all(actionList).then((values) => {
           this.$store.commit('audioplayer/setPlayingIndex', trackNumber)
