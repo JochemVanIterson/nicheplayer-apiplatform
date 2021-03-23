@@ -6,9 +6,10 @@ import createPersistedState from 'vuex-persistedstate'
 import system from './modules/system'
 import audioplayer from './modules/audioplayer'
 
-import albums from './modules/cache/albums'
-import mediaObjects from './modules/cache/mediaObjects'
-import songs from './modules/cache/songs'
+// import albums from './modules/cache/albums'
+// import mediaObjects from './modules/cache/mediaObjects'
+// import songs from './modules/cache/songs'
+import cache from './modules/cache'
 
 Vue.use(Vuex)
 
@@ -29,9 +30,10 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       // Cache
-      albums,
-      mediaObjects,
-      songs,
+      // albums,
+      // mediaObjects,
+      // songs,
+      cache,
       
       // Local system stores
       system,

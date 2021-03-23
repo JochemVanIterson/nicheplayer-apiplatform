@@ -72,7 +72,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
+    this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
   }
 }
 </script>

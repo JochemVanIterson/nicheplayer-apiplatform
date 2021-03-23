@@ -14,8 +14,8 @@ export function getFromAPI({ state, commit, rootState, dispatch }, { id, follow 
     .then((response) => response.json())
     .then((data) => {
       if (follow) {
-        dispatch("albums/getFromAPI", { id: data.album, follow: true }, { root: true })
-        dispatch("mediaObjects/getFromAPI", { id: data.file, follow: true }, { root: true })
+        dispatch("cache/albums/getFromAPI", { id: data.album, follow: true }, { root: true })
+        dispatch("cache/mediaObjects/getFromAPI", { id: data.file, follow: true }, { root: true })
       }
       commit("updateValue", { id: id, value: data })
     })
