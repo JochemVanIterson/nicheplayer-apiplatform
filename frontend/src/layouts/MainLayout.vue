@@ -19,9 +19,6 @@
             q-item(clickable v-close-popup tabindex="0" @click="goToAdminPanel")
               q-item-section
                 q-item-label Admin panel
-            q-item(clickable v-close-popup tabindex="0" to="/admin")
-              q-item-section
-                q-item-label Configuration
             q-separator(spaced)
             q-item(clickable v-close-popup tabindex="0" @click="logoutButton")
               q-item-section
