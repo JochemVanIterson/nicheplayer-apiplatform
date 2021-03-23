@@ -1,6 +1,6 @@
 <template lang="pug">
   .flex(v-if="playlist.length > 0")
-    q-linear-progress( :value="playbackProgress" color="secondary")
+    q-linear-progress( :value="progress" color="secondary")
     q-toolbar
       .col-auto.row
         q-avatar(color="grey" rounded :icon="hasAlbumArt?undefined:'music_note'")
@@ -35,6 +35,7 @@ export default {
   },
   data () {
     return {
+      progress: 0
     }
   },
   computed: {
@@ -42,7 +43,6 @@ export default {
     playlist() { return this.$store.getters["audioplayer/getPlaylist"] },
     playlistData() { return this.$store.getters["audioplayer/getPlaylistData"] },
     currentSongData() { return this.$store.getters["audioplayer/getCurrentSong"] },
-    playbackProgress() { return this.$store.getters["audioplayer/getPlaybackProgress"] },
     albumArt() { return this.$store.getters["audioplayer/getMetaAlbumArt"] },
     parsedAlbumArt() { return `${MEDIAPOINT}/${this.albumArt}` },
     artist() { return this.$store.getters["audioplayer/getMetaArtist"] },
@@ -73,6 +73,9 @@ export default {
   },
   mounted() {
     this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
+    setInterval(() => {
+      this.progress = this.$howlerPlayer.progress / 100
+    }, 100)
   }
 }
 </script>

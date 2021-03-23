@@ -1,12 +1,16 @@
 import { MEDIAPOINT } from '../../../config/1314272676_entrypoint'
+import Vue from 'vue'
 
 export function setIsPlaying({ state, commit, dispatch, getters }, value) {
     console.log("audioplayer:actions setIsPlaying", value)
+    if (value) Vue.prototype.$howlerPlayer.play(state.playingIndex)
+    else Vue.prototype.$howlerPlayer.pause()
     commit('setIsPlaying', value)
 }
 
 export function setPlayingIndex({ state, commit, dispatch, getters }, newValue) {
     commit('setPlayingIndex', newValue)
+    Vue.prototype.$howlerPlayer.skipTo(newValue, false)
 }
 
 export function goNext({ state, commit, dispatch, getters }) {
@@ -50,6 +54,7 @@ export function toggleIsPlaying({ state, commit, dispatch, getters }) {
 
 export function clearPlaylist({ commit, dispatch }) {
     commit("clearPlaylist")
+    Vue.prototype.$howlerPlayer.clearPlaylist()
 }
 
 /**
@@ -62,7 +67,8 @@ export function appendPlaylist({ state, commit, dispatch, rootGetters }, songID)
         const howlerObject = {
             file: MEDIAPOINT + rootGetters['cache/songs/getObjectJoined'](songID).file.contentUrl
         }
-        console.log("howlerObject", howlerObject)
+        Vue.prototype.$howlerPlayer.appendPlaylist(howlerObject)
+        console.log("howlerObject", howlerObject, Vue.prototype.$howlerPlayer)
     })
     commit('appendPlaylist', songID)
 }
