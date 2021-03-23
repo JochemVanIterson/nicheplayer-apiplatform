@@ -6,7 +6,7 @@ const MIME_TYPE = 'application/ld+json'
 const makeParamArray = (key, arr) =>
   arr.map((val) => `${key}[]=${val}`).join('&')
 
-export default function ({ id, ep }, options = {}, jwtToken) {
+export default function ({ id, ep, jwtToken }, options = {}) {
   if (typeof options.headers === 'undefined') {
     Object.assign(options, { headers: new Headers() })
   }

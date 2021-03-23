@@ -15,13 +15,3 @@ export function setIsPlaying (state, value) {
 export function setPlayingIndex(state, value) {
     Vue.set(state, 'playingIndex', value)
 }
-
-export function updateSongCache(state, { id, value }) {
-    Vue.set(state.cache.songs, id, value)
-}
-export function updateAlbumCache(state, { id, value }) {
-    Vue.set(state.cache.albums, id, value)
-}
-export function updateMediaObjectCache(state, { id, value }) {
-    Vue.set(state.cache.mediaobjects, id, value)
-}
