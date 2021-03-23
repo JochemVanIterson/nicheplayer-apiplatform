@@ -2,7 +2,7 @@ import jwtDecode from "jwt-decode";
 
 export default {
   login: ({ username, password }) => {
-    const url = `${process.env.REACT_APP_API_ENTRYPOINT || "https://localhost/api" }/authentication_token`;
+    const url = `${process.env.REACT_APP_API_ENTRYPOINT || "http://mbp.audioware.nl/api" }/authentication_token`;
     console.log("url", url)
     const request = new Request( url,
       {
