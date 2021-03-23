@@ -3,7 +3,7 @@ export default function () {
     /**
      * List of song ids in original order
      */
-    playlist: [1, 3, 5, 6, 7],
+    playlist: [],
 
     /**
      * Index of playlist which file is playing. '-1' for unset

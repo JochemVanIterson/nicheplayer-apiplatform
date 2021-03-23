@@ -1,3 +1,13 @@
+import { MEDIAPOINT } from '../../../config/1314272676_entrypoint'
+
+export function setIsPlaying({ state, commit, dispatch, getters }, value) {
+    console.log("audioplayer:actions setIsPlaying", value)
+    commit('setIsPlaying', value)
+}
+
+export function setPlayingIndex({ state, commit, dispatch, getters }, newValue) {
+    commit('setPlayingIndex', newValue)
+}
 
 export function goNext({ state, commit, dispatch, getters }) {
     let newValue = state.playingIndex + 1
@@ -8,9 +18,9 @@ export function goNext({ state, commit, dispatch, getters }) {
         newValue = 0
     }
 
-    commit('setPlayingIndex', newValue)
+    dispatch('setPlayingIndex', newValue)
     dispatch('cache/songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
-    commit('setIsPlaying', shouldPlay)
+    dispatch('setIsPlaying', shouldPlay)
 }
 
 export function goBack({ state, commit, dispatch, getters }) {
@@ -20,22 +30,26 @@ export function goBack({ state, commit, dispatch, getters }) {
         newValue = state.playlist.length - 1
     }
 
-    commit('setPlayingIndex', newValue)
+    dispatch('setPlayingIndex', newValue)
     dispatch('cache/songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
-    commit('setIsPlaying', true)
+    dispatch('setIsPlaying', true)
 }
 
 export function goToSong({ state, commit, dispatch, getters }, index) {
-    commit('setPlayingIndex', index)
+    dispatch('setPlayingIndex', index)
     dispatch('cache/songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
-    commit('setIsPlaying', true)
+    dispatch('setIsPlaying', true)
 }
 
 export function toggleIsPlaying({ state, commit, dispatch, getters }) {
     const newValue = !state.isPlaying
     if (newValue) dispatch('cache/songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
-    commit('setIsPlaying', newValue)
+    dispatch('setIsPlaying', newValue)
     return newValue;
+}
+
+export function clearPlaylist({ commit, dispatch }) {
+    commit("clearPlaylist")
 }
 
 /**
@@ -43,8 +57,13 @@ export function toggleIsPlaying({ state, commit, dispatch, getters }) {
  * @param {*} context Vuex context
  * @param {integer} songID Song id to be added to the playlist
  */
-export function appendPlaylist({ state, commit, dispatch }, songID) {
-    dispatch('cache/songs/getFromAPI', { id: songID }, { root: true })
+export function appendPlaylist({ state, commit, dispatch, rootGetters }, songID) {
+    dispatch('cache/songs/getFromAPI', { id: songID }, { root: true }).then((data) => {
+        const howlerObject = {
+            file: MEDIAPOINT + rootGetters['cache/songs/getObjectJoined'](songID).file.contentUrl
+        }
+        console.log("howlerObject", howlerObject)
+    })
     commit('appendPlaylist', songID)
 }
 

@@ -11,11 +11,18 @@ export function getObject(state) {
 }
 
 export function getObjectJoined(state, getters, rootState, rootGetters) {
-  return (id) => {
+  return (id, joinFields = ['albumArt']) => {
     let albumObject = _.clone(getters['getObject'](id))
-    if (albumObject.albumArt) {
+    if (joinFields.includes('albumArt') && albumObject.albumArt) {
       const albumArtID = albumObject.albumArt.replace("/api/media_objects/", "")
       albumObject.albumArt = rootGetters["cache/mediaObjects/getObjectJoined"](albumArtID)
+    }
+    if (joinFields.includes('songs') && albumObject.songs) {
+      albumObject.songs = albumObject.songs.map(songID => {
+        const songIndex = songID.replace("/api/songs/", "")
+        const songData = rootGetters["cache/songs/getObjectJoined"](songIndex, ['file'])
+        return songData
+      })
     }
     return albumObject
   }
