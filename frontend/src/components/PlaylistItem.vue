@@ -18,7 +18,7 @@ import { MEDIAPOINT } from "../config/1314272676_entrypoint";
 export default {
   name: 'PlaylistItem',
   props: {
-    songdata: Object,
+    songdata: [Object, String],
     index: Number
   },
   data () {

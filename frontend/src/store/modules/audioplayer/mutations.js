@@ -2,10 +2,12 @@ import Vue from 'vue'
 
 export function clearPlaylist (state) {
     Vue.set(state, 'playlist', [])
+    Vue.set(state, 'playingIndex', 0)
+    Vue.set(state, 'isPlaying', false)
 }
 
 export function appendPlaylist (state, songID) {
-    state.playlist.append(songID);
+    state.playlist.push(songID);
 }
 
 export function setIsPlaying (state, value) {

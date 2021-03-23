@@ -3,7 +3,7 @@
 import fetch from '../../../../utils/fetch'
 import { ENTRYPOINT } from '../../../../config/1314272676_entrypoint'
 
-export function getFromAPI({ state, commit, rootState, dispatch }, { id, follow = true, force }) {
+export function getFromAPI({ state, commit, rootState, dispatch }, { id, joinFields = ['albumArt'], force }) {
   if (!id) return
   if (typeof id == 'string') id = id.replace("/api/albums/", "")
   if (!force && (typeof state.data[id] !== "undefined")) return
@@ -15,8 +15,14 @@ export function getFromAPI({ state, commit, rootState, dispatch }, { id, follow 
   return fetch({ id: `albums/${id}`, ep: ENTRYPOINT, jwtToken })
     .then((response) => response.json())
     .then((data) => {
-      if (follow) {
+      if (joinFields.includes('albumArt')) {
         dispatch("cache/mediaObjects/getFromAPI", { id: data.albumArt, follow: true }, { root: true })
+      }
+      if (joinFields.includes('songs')) {
+        data.songs.forEach(song => {
+          console.log("getFromAPI Albums", song)
+          dispatch("cache/songs/getFromAPI", { id: song }, { root: true })
+        });
       }
       commit("updateValue", { id: id, value: data })
     })
