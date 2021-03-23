@@ -8,7 +8,7 @@ import MetaField from './MetaField';
 const MediaObjectsList = (props) => (
   <List {...props}>
     <Datagrid optimized rowClick="show" >
-      <FunctionField label="ID" sortBy="id" render={record => `${record.id.replace("/media_objects/", "")}`} />
+      <FunctionField label="ID" sortBy="id" render={record => `${record.id.replace("/api/media_objects/", "")}`} />
       <FileField source="contentUrl" title="fileName" sortBy="fileName" label="File name"/>
       <TextField source="type" />
       <FunctionField label="Size" sortBy="size" render={record => `${filesize(record.size)}`}/>
