@@ -15,7 +15,7 @@ export function getObjectJoined(state, getters, rootState, rootGetters) {
     let albumObject = _.clone(getters['getObject'](id))
     if (albumObject.albumArt) {
       const albumArtID = albumObject.albumArt.replace("/api/media_objects/", "")
-      albumObject.albumArt = rootGetters["mediaObjects/getObjectJoined"](albumArtID)
+      albumObject.albumArt = rootGetters["cache/mediaObjects/getObjectJoined"](albumArtID)
     }
     return albumObject
   }

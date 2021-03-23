@@ -4,7 +4,7 @@ export function getPlaylist(state) {
     return state.playlist;
 }
 export function getPlaylistData(state, getters, rootState, rootGetters) {
-    return state.playlist.map(songID => rootGetters['songs/getObjectJoined'](songID));
+    return state.playlist.map(songID => rootGetters['cache/songs/getObjectJoined'](songID));
 }
 
 export function getIsPlaying(state) {
@@ -25,7 +25,7 @@ export function getSongID(state) {
 
 export function getCurrentSong(state, getters, rootState, rootGetters) {
     const songID = getters['getSongID']()
-    return rootGetters['songs/getObjectJoined'](songID)
+    return rootGetters['cache/songs/getObjectJoined'](songID)
 }
 
 export function getMetaArtist (state, getters) {

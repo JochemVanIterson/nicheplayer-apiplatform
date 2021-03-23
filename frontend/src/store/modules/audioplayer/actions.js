@@ -9,7 +9,7 @@ export function goNext({ state, commit, dispatch, getters }) {
     }
 
     commit('setPlayingIndex', newValue)
-    dispatch('songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
+    dispatch('cache/songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
     commit('setIsPlaying', shouldPlay)
 }
 
@@ -21,19 +21,19 @@ export function goBack({ state, commit, dispatch, getters }) {
     }
 
     commit('setPlayingIndex', newValue)
-    dispatch('songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
+    dispatch('cache/songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
     commit('setIsPlaying', true)
 }
 
 export function goToSong({ state, commit, dispatch, getters }, index) {
     commit('setPlayingIndex', index)
-    dispatch('songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
+    dispatch('cache/songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
     commit('setIsPlaying', true)
 }
 
 export function toggleIsPlaying({ state, commit, dispatch, getters }) {
     const newValue = !state.isPlaying
-    if (newValue) dispatch('songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
+    if (newValue) dispatch('cache/songs/getFromAPI', { id: getters["getSongID"]() }, { root: true })
     commit('setIsPlaying', newValue)
     return newValue;
 }
@@ -44,7 +44,7 @@ export function toggleIsPlaying({ state, commit, dispatch, getters }) {
  * @param {integer} songID Song id to be added to the playlist
  */
 export function appendPlaylist({ state, commit, dispatch }, songID) {
-    dispatch('songs/getFromAPI', { id: songID }, { root: true })
+    dispatch('cache/songs/getFromAPI', { id: songID }, { root: true })
     commit('appendPlaylist', songID)
 }
 
@@ -55,6 +55,6 @@ export function appendPlaylist({ state, commit, dispatch }, songID) {
  */
 export function collectSongInfo({ state, dispatch }) {
     state.playlist.forEach(songID => {
-        dispatch('songs/getFromAPI', { id: songID }, { root: true })
+        dispatch('cache/songs/getFromAPI', { id: songID }, { root: true })
     });
 }
