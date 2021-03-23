@@ -1,15 +1,6 @@
 export default function () {
   return {
     /**
-     * Cache of retrieved data
-     */
-    cache: {
-      songs: [],
-      albums: [],
-      mediaobjects: []
-    },
-
-    /**
      * List of song ids in original order
      */
     playlist: [1, 3, 5, 6, 7],

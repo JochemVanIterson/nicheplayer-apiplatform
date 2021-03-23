@@ -49,7 +49,12 @@ export default {
     album() { return this.$store.getters["audioplayer/getMetaAlbum"] },
     title() { return this.$store.getters["audioplayer/getMetaTitle"] },
     trackNumber() { return this.$store.getters["audioplayer/getMetaTrackNumber"] },
-    hasAlbumArt() { return this.albumArt || this.albumArt !== "" },
+    hasAlbumArt() {
+      let returnable = false
+      if (typeof this.albumArt === "undefined") returnable = false
+      else returnable = this.albumArt !== ""
+      return returnable
+      },
     hasTrackNumber() { return this.trackNumber > 0 }
   },
   methods: {
@@ -67,7 +72,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('audioplayer/getSongFromAPI', this.$store.getters["audioplayer/getSongID"]())
+    this.$store.dispatch('songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
   }
 }
 </script>

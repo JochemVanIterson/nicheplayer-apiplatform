@@ -39,13 +39,17 @@ export default {
     album() { return this.albumObject.name },
     title() { return this.songdata.name },
     trackNumber() { return this.songdata.trackNumber },
-    hasAlbumArt() { return this.albumArt || this.albumArt !== "" },
+    hasAlbumArt() { 
+      let returnable = false
+      if (typeof this.albumArt === "undefined") returnable = false
+      else returnable = this.albumArt !== ""
+      return returnable
+    },
     hasTrackNumber() { return this.trackNumber > 0 },
     isPlayingSong() { return this.$store.getters["audioplayer/getPlayingIndex"] === this.index }
   },
   methods: {
     clicked() {
-      console.log(this.index)
       this.$store.dispatch("audioplayer/goToSong", this.index);
     }
   }
