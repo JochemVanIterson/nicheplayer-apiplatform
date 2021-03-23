@@ -3,12 +3,6 @@ import Vuex from 'vuex'
 
 import createPersistedState from 'vuex-persistedstate'
 
-// import example from './module-example'
-import greeting from './modules/greeting/'
-import album from './modules/album/'
-import song from './modules/song/'
-import mediaobject from './modules/mediaobject/'
-import playhistory from './modules/playhistory/'
 import system from './modules/system'
 import audioplayer from './modules/audioplayer'
 
@@ -30,13 +24,6 @@ export default function (/* { ssrContext } */) {
 
   const Store = new Vuex.Store({
     modules: {
-      // API stores
-      greeting,
-      album,
-      song,
-      mediaobject,
-      playhistory,
-
       // Local system stores
       system,
       audioplayer
