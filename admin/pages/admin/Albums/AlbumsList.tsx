@@ -17,7 +17,7 @@ const AlbumsList = (props) =>{
     return (
         <List {...props}>
             <Datagrid optimized rowClick="show" >
-                <FunctionField label="ID" sortBy="id" render={record => `${record.id.replace("/albums/", "")}`} />
+                <FunctionField label="ID" sortBy="id" render={record => `${record.id.replace("/api/albums/", "")}`} />
                 <ReferenceField source="albumArt" reference="media_objects" link={false} sortable={false}>
                     <ImageField source="contentUrl" classes={imageFieldClasses} />
                 </ReferenceField>

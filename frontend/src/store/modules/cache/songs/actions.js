@@ -8,7 +8,9 @@ export function getFromAPI({ state, commit, rootState, dispatch }, { id, follow 
   if (typeof id == 'string') id = id.replace("/api/songs/", "")
   if (!force && (typeof state.data[id] !== "undefined")) return
 
-  commit("updateValue", { id: id, value: { id } })
+  if (state.data[id] == "collecting") return
+  else commit("updateValue", { id: id, value: "collecting" })
+  
   const jwtToken = rootState.system.jwtToken
   return fetch({ id: `songs/${id}`, ep: ENTRYPOINT, jwtToken })
     .then((response) => response.json())
