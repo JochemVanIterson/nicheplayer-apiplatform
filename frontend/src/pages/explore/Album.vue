@@ -23,7 +23,7 @@
               th(class="text-left") Artist
               th(class="text-left" v-if="$q.screen.gt.xs") Duration
           tbody
-            tr(v-for="(song, i) in songsSorted" @click="rowClicked(i)" :class="{'q-tr--no-hover':i>1, 'disabled':i>1}")
+            tr(v-for="(song, i) in songsSorted" @click="rowClicked(i)" :class="{'q-tr--no-hover':!song.explorable, 'disabled':!song.explorable}")
               td(class="text-right") {{song.trackNumber}}
               td(class="text-left") {{song.name}}
               td(class="text-left") {{song.songArtistt || albumData.artist}}
@@ -37,10 +37,6 @@ export default {
   name: 'ExploreAlbum',
   data() {
     return {
-      initialPagination: {
-        page: 0,
-        rowsPerPage: -1
-      },
     }
   },
   computed: {
@@ -57,15 +53,19 @@ export default {
     },
     songsSorted() {
       return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber)
+    },
+    songsExplorable() {
+      return this.songsSorted.filter((song) => song.explorable);
     }
   },
   methods: {
     rowClicked(index) {
-      if (index <= 1) this.playAlbum(index)
+      let explorableIndex = this.songsExplorable.indexOf(this.songsSorted[index])
+      if (this.songsSorted[index].explorable) this.playAlbum(explorableIndex)
     },
     playAlbum(trackNumber = 0) {
       this.$store.dispatch("audioplayer/clearPlaylist").then(() => {
-        const songList = this.songsSorted;
+        const songList = this.songsExplorable;
         const actionList = songList.map(song => this.$store.dispatch("audioplayer/appendPlaylist", song.id))
         return Promise.all(actionList).then((values) => {
           this.$store.commit('audioplayer/setPlayingIndex', trackNumber)

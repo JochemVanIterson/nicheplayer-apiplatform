@@ -77,6 +77,11 @@ class Song
      */
     private $trackNumber;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $explorable;
+
     public function __construct()
     {
         $this->playHistory = new ArrayCollection();
@@ -185,6 +190,18 @@ class Song
     public function setTrackNumber(?int $trackNumber): self
     {
         $this->trackNumber = $trackNumber;
+
+        return $this;
+    }
+
+    public function getExplorable(): ?bool
+    {
+        return $this->explorable;
+    }
+
+    public function setExplorable(bool $explorable): self
+    {
+        $this->explorable = $explorable;
 
         return $this;
     }
