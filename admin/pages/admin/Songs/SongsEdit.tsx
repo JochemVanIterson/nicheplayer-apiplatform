@@ -8,6 +8,7 @@ import {
     NumberInput,
     ReferenceInput,
     SelectInput,
+    BooleanInput,
     required
 } from "react-admin";
 
@@ -29,6 +30,7 @@ const SongsEdit = (props) => {
             >
                 <SelectInput optionText="fileName" />
             </ReferenceInput>
+            <BooleanInput source="explorable"/>
             <NumberInput source="duration" />
         </EditGuesser>
     )

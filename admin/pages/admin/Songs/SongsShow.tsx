@@ -1,6 +1,15 @@
 import * as React from 'react';
 
-import { Show, SimpleShowLayout, ReferenceField, FunctionField, FileField, TextField, NumberField } from "react-admin";
+import {
+    Show,
+    SimpleShowLayout,
+    ReferenceField,
+    FunctionField,
+    FileField,
+    TextField,
+    NumberField,
+    BooleanField
+} from "react-admin";
 import AudioPlayerField from '../AudioPlayerField';
 const SongsShow = (props) => (
 <Show {...props}>
@@ -14,6 +23,7 @@ const SongsShow = (props) => (
             <FileField source="contentUrl" title="fileName" />
         </ReferenceField>
         <AudioPlayerField source="file"/>
+        <BooleanField source="explorable" />
         <TextField source="duration" />
     </SimpleShowLayout>
 </Show>

@@ -1,6 +1,16 @@
 import * as React from 'react';
 
-import { List, Datagrid, EditButton, ReferenceField, FunctionField, FileField, NumberField, TextField } from "react-admin";
+import {
+    List,
+    Datagrid,
+    EditButton,
+    ReferenceField,
+    FunctionField,
+    FileField,
+    NumberField,
+    TextField,
+    BooleanField
+} from "react-admin";
 
 const SongsList = (props) => (
 <List {...props} sort={{ field: 'name', order: 'ASC' }}>
@@ -14,6 +24,7 @@ const SongsList = (props) => (
         <ReferenceField source="file" reference="media_objects" link="show" sortBy="fileName">
             <FileField source="contentUrl" title="fileName" />
         </ReferenceField>
+        <BooleanField source="explorable" />
         <EditButton/>
     </Datagrid>
 </List>
