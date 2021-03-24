@@ -2,7 +2,6 @@ import { MEDIAPOINT } from '../../../config/1314272676_entrypoint'
 import Vue from 'vue'
 
 export function setIsPlaying({ state, commit, dispatch, getters }, value) {
-    console.log("audioplayer:actions setIsPlaying", value)
     if (value) Vue.prototype.$howlerPlayer.play(state.playingIndex)
     else Vue.prototype.$howlerPlayer.pause()
     commit('setIsPlaying', value)
@@ -68,7 +67,6 @@ export function appendPlaylist({ state, commit, dispatch, rootGetters }, songID)
             file: MEDIAPOINT + rootGetters['cache/songs/getObjectJoined'](songID).file.contentUrl
         }
         Vue.prototype.$howlerPlayer.appendPlaylist(howlerObject)
-        console.log("howlerObject", howlerObject, Vue.prototype.$howlerPlayer)
     })
     commit('appendPlaylist', songID)
 }
