@@ -30,7 +30,7 @@
       bordered
       content-class="bg-grey-1")
       q-list
-        q-item(clickable to="/" exact)
+        q-item(clickable to="/" exact :active="pathMatch('explore')")
           q-item-section(avatar)
             q-icon(name="explore")
           q-item-section
@@ -38,12 +38,12 @@
 
         q-separator
         q-item-label(header class="text-grey-8") My Music
-        q-item(clickable to="/my/album" exact)
+        q-item(clickable to="/my/album" exact :active="pathMatch('my/music')")
           q-item-section(avatar)
             q-icon(name="album")
           q-item-section
             q-item-label Albums
-        q-item(clickable to="/my/songs" exact)
+        q-item(clickable to="/my/songs" exact :active="pathMatch('my/songs')")
           q-item-section(avatar)
             q-icon(name="music_note")
           q-item-section
@@ -51,7 +51,7 @@
 
         q-separator
         q-item-label(header class="text-grey-8") Playlists
-        q-item(clickable to="/my/playlist/favorite" exact)
+        q-item(clickable to="/my/playlist/favorite" exact :active="pathMatch('my/playlist/favorite')")
           q-item-section(avatar)
             q-icon(name="favorite")
           q-item-section
@@ -95,7 +95,15 @@ export default {
     },
     goToAdminPanel() {
       window.location = `${MEDIAPOINT}/admin`
+    },
+    pathMatch(id) {
+      if (id === 'explore') {
+        return this.$route.fullPath === '/' || this.$route.fullPath.startsWith('/explore')
+      } else return false
     }
+  },
+  mounted() {
+    console.log(this.$route)
   }
 }
 </script>
