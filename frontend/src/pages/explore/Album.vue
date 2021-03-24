@@ -8,21 +8,26 @@
             .text-h2.text-weight-normal {{ albumData.name }}
             .text-h4.text-weight-thin {{ albumData.artist }}
       q-card#albumTracks
-        q-table(
-          title="Tracks"
-          :data="songsSorted"
-          :columns="songsColumns"
-          row-key="id"
-          @row-click="rowClicked"
-          wrap-cells
-          :visible-columns="visibleColumns"
-          :pagination="initialPagination" hide-pagination)
-          template(v-slot:top-right)
-            q-btn(
+        .row.justify-between.q-px-md.q-pt-md
+          .text-h5 Tracks
+          q-btn(
               color="primary"
               label="Play album"
               no-caps
               @click="playAlbum()")
+        q-markup-table
+          thead
+            tr
+              th(class="text-right" style="width: 0px") Track
+              th(class="text-left") Title
+              th(class="text-left") Artist
+              th(class="text-left" v-if="$q.screen.gt.xs") Duration
+          tbody
+            tr(v-for="(song, i) in songsSorted" @click="rowClicked(i)" :class="{'q-tr--no-hover':i>1, 'disabled':i>1}")
+              td(class="text-right") {{song.trackNumber}}
+              td(class="text-left") {{song.name}}
+              td(class="text-left") {{song.songArtistt || albumData.artist}}
+              td(class="text-left" v-if="$q.screen.gt.xs") {{`${song.duration}`}}
 </template>
 
 <script>
@@ -39,20 +44,6 @@ export default {
     }
   },
   computed: {
-    songsColumns() {
-      return [
-        { name: 'trackNumber', align: 'right', label: 'Track', field: 'trackNumber', sortable: false, style: "width: 0px" },
-        { name: 'name', align: 'left', label: 'Title', field: 'name', sortable: false },
-        { name: 'songArtist', align: 'left', label: 'Artist', field: 'songArtist', sortable: false, format: val => `${val || this.albumData.artist}` },
-        { name: 'duration', align: 'left', label: 'Duration', field: 'duration', sortable: false, format: val => `${val}` }
-      ]
-    },
-    visibleColumns() {
-      let columns = ['trackNumber', 'name', 'songArtist']
-      if (this.$q.screen.gt.xs) columns.push('duration')
-      return columns
-    },
-
     albumID() { return this.$route.params.id },
     albumData() { return this.$store.getters['cache/albums/getObjectJoined'](this.albumID, ['albumArt', 'songs']) },
 
@@ -69,8 +60,8 @@ export default {
     }
   },
   methods: {
-    rowClicked(evt, row, index) {
-      this.playAlbum(index)
+    rowClicked(index) {
+      if (index <= 1) this.playAlbum(index)
     },
     playAlbum(trackNumber = 0) {
       this.$store.dispatch("audioplayer/clearPlaylist").then(() => {
