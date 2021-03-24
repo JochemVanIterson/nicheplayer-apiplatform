@@ -20,7 +20,6 @@ export function getFromAPI({ state, commit, rootState, dispatch }, { id, joinFie
       }
       if (joinFields.includes('songs')) {
         data.songs.forEach(song => {
-          console.log("getFromAPI Albums", song)
           dispatch("cache/songs/getFromAPI", { id: song }, { root: true })
         });
       }

@@ -193,6 +193,4 @@ export default async ({ app, router, Vue, store }) => {
   };
 
   Vue.prototype.$howlerPlayer = new Player();
-  console.log("Vue.prototype.$howlerPlayer", Vue.prototype.$howlerPlayer)
-  // something to do
 }

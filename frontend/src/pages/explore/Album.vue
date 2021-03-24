@@ -70,7 +70,6 @@ export default {
         return Promise.all(actionList).then((values) => {
           this.$store.commit('audioplayer/setPlayingIndex', trackNumber)
           this.$store.dispatch('audioplayer/setIsPlaying', true)
-          console.log(values);
         });
       })
     }

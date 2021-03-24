@@ -29,7 +29,6 @@ export default {
       else return ""
     },
     albumClicked(data) {
-      console.log("albumClicked", data)
       this.$router.push(`/explore/album/${data.id}`)
     }
   },
