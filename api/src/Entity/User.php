@@ -16,7 +16,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
+ *     attributes={
+ *         "security"="is_granted('ROLE_USER')",
+ *         "pagination_client_items_per_page"=true
+ *     },
  *     collectionOperations={
  *         "get"={
  *             "normalization_context"= {"groups" = {"get"}}
@@ -33,9 +36,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  *         "put"={
  *             "security"="is_granted('ROLE_USER')",
  *             "route_name"="api_users_put"
- *         },
- *     },
- *     attributes={"pagination_client_items_per_page"=true}
+ *         }
+ *     }
  * )
  * @ApiFilter(OrderFilter::class, properties = {"id", "firstname", "lastname", "username", "email"}, arguments = {"orderParameterName" = "order"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -100,9 +102,15 @@ class User implements UserInterface
      */
     private $playHistory;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="user")
+     */
+    private $payments;
+
     public function __construct()
     {
         $this->playHistory = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -258,6 +266,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($playHistory->getUser() === $this) {
                 $playHistory->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Payment[]
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): self
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getUser() === $this) {
+                $payment->setUser(null);
             }
         }
 

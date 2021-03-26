@@ -16,13 +16,14 @@ const SongsEdit = (props) => {
     const albumNameRenderer = choice => `${choice.artist} - ${choice.name}`;
     return (
         <EditGuesser {...props}>
-            <TextInput source="name" validate={[required()]} />
-            <TextInput source="songArtist" />
-            <ReferenceInput source="album" reference="albums">
+            <TextInput fullWidth source="name" validate={[required()]} />
+            <TextInput fullWidth source="songArtist" />
+            <ReferenceInput fullWidth source="album" reference="albums">
                 <SelectInput optionText={albumNameRenderer} />
             </ReferenceInput>
-            <NumberInput source="trackNumber" />
+            <NumberInput fullWidth source="trackNumber" />
             <ReferenceInput
+                fullWidth
                 source="file"
                 reference="media_objects"
                 sort={{ field: "fileName", order: 'ASC' }}
@@ -30,8 +31,8 @@ const SongsEdit = (props) => {
             >
                 <SelectInput optionText="fileName" />
             </ReferenceInput>
-            <BooleanInput source="explorable"/>
-            <NumberInput source="duration" />
+            <BooleanInput fullWidth source="explorable"/>
+            <NumberInput fullWidth source="duration" />
         </EditGuesser>
     )
 }

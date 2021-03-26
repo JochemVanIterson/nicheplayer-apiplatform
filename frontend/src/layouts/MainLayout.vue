@@ -73,7 +73,7 @@ export default {
   },
   data () {
     return {
-      leftDrawerOpen: true,
+      leftDrawerOpen: false,
     }
   },
   computed: {

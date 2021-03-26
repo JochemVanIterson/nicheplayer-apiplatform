@@ -11,20 +11,21 @@ import {
   } from "react-admin";
 
 const MediaObjectsEdit = (props) => (
-    <EditGuesser {...props}>
-        <FileField source="contentUrl" title="contentUrl" />
-        <SelectInput source="type" choices={[
-          { id: 'unknown', name: 'Unknown' },
-          { id: 'image', name: 'Image' },
-          { id: 'audio', name: 'Audio' },
-        ]} />
-        <InputGuesser source="meta" />
-        <ReferenceInput
-            source="source"
-            reference="sources">
-            <SelectInput optionText="name" />
-        </ReferenceInput>
-    </EditGuesser>
+  <EditGuesser {...props}>
+    <FileField fullWidth source="contentUrl" title="contentUrl" />
+    <SelectInput fullWidth source="type" choices={[
+      { id: 'unknown', name: 'Unknown' },
+      { id: 'image', name: 'Image' },
+      { id: 'audio', name: 'Audio' },
+    ]} />
+    <InputGuesser fullWidth source="meta" />
+    <ReferenceInput
+      fullWidth
+      source="source"
+      reference="sources">
+      <SelectInput optionText="name" />
+    </ReferenceInput>
+  </EditGuesser>
 )
 
 export default MediaObjectsEdit;

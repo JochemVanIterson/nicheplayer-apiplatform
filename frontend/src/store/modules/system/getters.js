@@ -14,3 +14,7 @@ export function userProfilePic(state) {
     if (!state.userData) return ""
     return `${MEDIAPOINT}${state.userData.profilepicURL}`
 }
+
+export function userData(state) {
+    return state.userData
+}

@@ -17,6 +17,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ApiResource(
+ *     attributes={
+ *         "security"="is_granted('ROLE_USER')",
+ *         "pagination_client_items_per_page"=true
+ *     },
  *     normalizationContext={
  *         "groups"={"media_object_read"}
  *     },
@@ -51,7 +55,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *         "delete"={"security"="is_granted('ROLE_ADMIN')"},
  *         "put"={"security"="is_granted('ROLE_ADMIN')"},
  *     },
- *     attributes={"pagination_client_items_per_page"=true}
  * )
  * @ApiFilter(SearchFilter::class, properties = {"type" = "exact"})
  * @ApiFilter(OrderFilter::class, properties = {"id", "fileName", "type", "size"}, arguments = {"orderParameterName" = "order"})

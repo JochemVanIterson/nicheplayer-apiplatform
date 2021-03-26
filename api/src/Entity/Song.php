@@ -14,7 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
+ *     attributes={
+ *         "security"="is_granted('ROLE_USER')",
+ *         "pagination_client_items_per_page"=true
+ *     },
  *     collectionOperations={
  *         "get",
  *         "post"={"security"="is_granted('ROLE_ADMIN')"}
@@ -23,11 +26,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get",
  *         "put"={"security"="is_granted('ROLE_ADMIN')"}
  *     },
- *     attributes={"pagination_client_items_per_page"=true}
  * )
  * @ORM\Entity(repositoryClass=SongRepository::class)
- * @ApiFilter(SearchFilter::class, properties = {"id" = "exact"})
- * @ApiFilter(OrderFilter::class, properties = {"id", "name", "trackNumber"}, arguments = {"orderParameterName" = "order"})
+ * @ApiFilter(SearchFilter::class, properties = {"id" = "exact", "album" = "exact"})
+ * @ApiFilter(OrderFilter::class, properties = {"id", "name", "trackNumber", "album"}, arguments = {"orderParameterName" = "order"})
  */
 class Song
 {

@@ -14,6 +14,7 @@ import MediaObjects from '../MediaObjects';
 import Songs from '../Songs';
 import Sources from '../Sources';
 import Users from '../Users';
+import Payments from '../Payments';
 
 import SubMenu from './SubMenu';
 import { AppState } from '../types';
@@ -96,6 +97,14 @@ const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
                     dense={dense}
                 />
             </SubMenu>
+            <MenuItemLink
+                to={`/payments`}
+                primaryText="Payments"
+                leftIcon={<Payments.icon />}
+                onClick={onMenuClick}
+                sidebarIsOpen={open}
+                dense={dense}
+            />
             {isXSmall && (
                 <MenuItemLink
                     to="/configuration"
