@@ -13,7 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     attributes={},
+ *     attributes={
+ *         "security"="is_granted('ROLE_USER')",
+ *         "pagination_client_items_per_page"=true
+ *     },
  *     collectionOperations={
  *         "get",
  *         "post"={"security"="is_granted('ROLE_ADMIN')"}
@@ -22,7 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get",
  *         "put"={"security"="is_granted('ROLE_ADMIN')"}
  *     },
- *     attributes={"pagination_client_items_per_page"=true}
  * )
  * @ORM\Entity(repositoryClass=AlbumRepository::class)
  * @ApiFilter(OrderFilter::class, properties = {"id", "name", "artist", "releaseDate"}, arguments = {"orderParameterName" = "order"})
@@ -62,6 +64,16 @@ class Album
      * @ORM\OneToMany(targetEntity=Song::class, mappedBy="album")
      */
     private $songs;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $currency;
 
     public function __construct()
     {
@@ -147,6 +159,30 @@ class Album
                 $song->setAlbum(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?string $currency): self
+    {
+        $this->currency = $currency;
 
         return $this;
     }

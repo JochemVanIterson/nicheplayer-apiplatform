@@ -9,7 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_ADMIN')"},
+ *     attributes={
+ *         "security"="is_granted('ROLE_ADMIN')",
+ *         "pagination_client_items_per_page"=true
+ *     },
  *     collectionOperations={
  *         "get",
  *         "post"={"security"="is_granted('ROLE_ADMIN')"}
@@ -18,7 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get",
  *         "put"={"security"="is_granted('ROLE_ADMIN')"}
  *     },
- *     attributes={"pagination_client_items_per_page"=true}
  * )
  * @ORM\Entity(repositoryClass=PlayHistoryRepository::class)
  */

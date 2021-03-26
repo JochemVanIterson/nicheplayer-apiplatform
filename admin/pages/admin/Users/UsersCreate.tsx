@@ -13,16 +13,17 @@ import {
 
 const UsersCreate = (props) => (
     <CreateGuesser {...props}>
-        <InputGuesser source="username" />
-        <InputGuesser source="email" />
-        <InputGuesser source="firstname" />
-        <InputGuesser source="lastname" />
-        <PasswordInput source="password" />
-        <SelectArrayInput source="roles" choices={[
+        <InputGuesser fullWidth source="username" />
+        <InputGuesser fullWidth source="email" />
+        <InputGuesser fullWidth source="firstname" />
+        <InputGuesser fullWidth source="lastname" />
+        <PasswordInput fullWidth source="password" />
+        <SelectArrayInput fullWidth source="roles" choices={[
             { id: 'ROLE_ADMIN', name: 'Admin' },
             { id: 'ROLE_USER', name: 'User' },
         ]} />
         <ReferenceInput
+            fullWidth
             source="profilepic"
             reference="media_objects"
             sort={{ field: "fileName", order: 'ASC' }}
