@@ -1,6 +1,19 @@
 import fetch from '../../../utils/fetch'
 import { ENTRYPOINT } from "../../../config/1314272676_entrypoint";
 
+export function apiRequest({ state }, { path, payload, method = 'GET', params }) {
+    const jwtToken = state.jwtToken
+    if (!jwtToken) return false
+    let body;
+    if (payload) body = JSON.stringify(payload)
+    return fetch({ id: path, ep: ENTRYPOINT, jwtToken }, { method: method, body, params })
+        .then((response) => response.json())
+        .catch((e) => {
+            console.log("apiRequest Failed", e)
+            return false
+        })
+}
+
 export function attemptLogin({ commit }, payload) {
     return fetch({ id: "authentication_token", ep: ENTRYPOINT }, { method: 'POST', body: JSON.stringify(payload) })
         .then((response) => response.json())

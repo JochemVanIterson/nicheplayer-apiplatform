@@ -1,7 +1,14 @@
 import { MEDIAPOINT } from "../../../config/1314272676_entrypoint";
 
+export function getMediaURL(state) {
+    return (url) => `${MEDIAPOINT}/${url}`
+}
 
-export function isLoggedIn (state) {
+export function hasTokens(state) {
+    return state.refreshToken && state.jwtToken
+}
+
+export function isLoggedIn(state) {
     return state.jwtToken && state.refreshToken && state.userData && state.userData.username
 }
 

@@ -1,4 +1,3 @@
-import { MEDIAPOINT } from '../../../config/1314272676_entrypoint'
 import Vue from 'vue'
 
 export function setIsPlaying({ state, commit, dispatch, getters }, value) {
@@ -64,7 +63,7 @@ export function clearPlaylist({ commit, dispatch }) {
 export function appendPlaylist({ state, commit, dispatch, rootGetters }, songID) {
     dispatch('cache/songs/getFromAPI', { id: songID }, { root: true }).then((data) => {
         const howlerObject = {
-            file: MEDIAPOINT + rootGetters['cache/songs/getObjectJoined'](songID).file.contentUrl
+            file: rootGetters['system/getMediaURL'](rootGetters['cache/songs/getObjectJoined'](songID).file.contentUrl)
         }
         Vue.prototype.$howlerPlayer.appendPlaylist(howlerObject)
     })
