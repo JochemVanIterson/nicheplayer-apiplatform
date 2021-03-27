@@ -17,6 +17,12 @@ export function userFullName(state) {
     return state.userData.fullname
 }
 
+export function userAdmin(state) {
+    if (!state.userData) return false
+    console.log("userAdmin", state.userData.roles)
+    return state.userData.roles.includes("ROLE_ADMIN")
+}
+
 export function userProfilePic(state) {
     if (!state.userData) return ""
     return `${MEDIAPOINT}${state.userData.profilepicURL}`
