@@ -52,8 +52,10 @@ export function updateRefreshToken({ state, commit }) {
         })
 }
 
-export function logoutAction({ commit }) {
+export function logoutAction({ commit, dispatch }) {
     commit("setJWTToken", "")
     commit("setRefreshToken", "")
     commit("setUserData", {})
+    dispatch("cache/clearCache", undefined, { root: true })
+    return true
 }

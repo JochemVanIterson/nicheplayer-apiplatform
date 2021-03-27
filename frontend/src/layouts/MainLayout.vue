@@ -90,7 +90,9 @@ export default {
   },
   methods: {
     logoutButton() {
-      this.$store.dispatch("system/logoutAction")
+      this.$store.dispatch("system/logoutAction").then(() => {
+        this.$router.replace('/')
+      })
     },
     goToAdminPanel() {
       window.location = this.$store.getters['system/getMediaURL']('admin')
