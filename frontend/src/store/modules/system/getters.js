@@ -2,7 +2,7 @@ import { MEDIAPOINT } from "../../../config/1314272676_entrypoint";
 
 
 export function isLoggedIn (state) {
-    return state.jwtToken && state.userData && state.userData.username
+    return state.jwtToken && state.refreshToken && state.userData && state.userData.username
 }
 
 export function userFullName(state) {

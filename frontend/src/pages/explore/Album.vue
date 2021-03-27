@@ -67,6 +67,7 @@ export default {
     }
   },
   computed: {
+    isLoggedIn() { return this.$store.getters["system/isLoggedIn"] },
     paymentStatus () {
       console.log("paymentStatus", this.paymentObject)
       return (this.paymentObject) ? this.paymentObject.paymentStatus : 'unknown'
@@ -112,6 +113,14 @@ export default {
     songsExplorable() {
       if (this.paymentObject.paymentStatus) return this.songsSorted
       else return this.songsSorted.filter((song) => song.explorable);
+    }
+  },
+  watch: {
+    isLoggedIn(value) {
+      if (value != "") {
+        this.$store.dispatch("cache/albums/getFromAPI", { id: this.albumID, joinFields: ['albumArt', 'songs'], force: true })
+        this.updatePaymentStatus()
+      }
     }
   },
   methods: {
@@ -195,8 +204,10 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("cache/albums/getFromAPI", { id: this.albumID, joinFields: ['albumArt', 'songs'], force: true })
-    this.updatePaymentStatus()
+    if (this.isLoggedIn != "") {
+      this.$store.dispatch("cache/albums/getFromAPI", { id: this.albumID, joinFields: ['albumArt', 'songs'], force: true })
+      this.updatePaymentStatus()
+    }
   }
 }
 </script>
