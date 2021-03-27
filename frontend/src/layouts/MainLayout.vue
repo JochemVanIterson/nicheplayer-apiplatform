@@ -16,10 +16,11 @@
               div.q-ml-sm(class="text-center" v-if="$q.screen.gt.xs") {{userFullName}}
 
           q-list
-            q-item(clickable v-close-popup tabindex="0" @click="goToAdminPanel")
-              q-item-section
-                q-item-label Admin panel
-            q-separator(spaced)
+            div(v-if="userAdmin")
+              q-item(clickable v-close-popup tabindex="0" @click="goToAdminPanel" )
+                q-item-section
+                  q-item-label Admin panel
+              q-separator(spaced)
             q-item(clickable v-close-popup tabindex="0" @click="logoutButton")
               q-item-section
                 q-item-label Logout
@@ -86,7 +87,8 @@ export default {
     },
     isLoggedIn() { return this.$store.getters["system/isLoggedIn"] },
     userFullName() { return this.$store.getters["system/userFullName"] },
-    userProfilePic() { return this.$store.getters["system/userProfilePic"] }
+    userProfilePic() { return this.$store.getters["system/userProfilePic"] },
+    userAdmin() { return this.$store.getters["system/userAdmin"] }
   },
   methods: {
     logoutButton() {
