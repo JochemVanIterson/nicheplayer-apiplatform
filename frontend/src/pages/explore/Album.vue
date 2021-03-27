@@ -54,9 +54,6 @@
 </template>
 
 <script>
-import { MEDIAPOINT, ENTRYPOINT } from '../../config/1314272676_entrypoint'
-import fetch from '../../utils/fetch'
-
 export default {
   name: 'ExploreAlbum',
   data() {
@@ -100,7 +97,7 @@ export default {
     albumData() { return this.$store.getters['cache/albums/getObjectJoined'](this.albumID, ['albumArt', 'songs']) },
 
     albumArt() {
-      if (this.albumData && this.albumData.albumArt && this.albumData.albumArt.contentUrl) return `${MEDIAPOINT}/${this.albumData.albumArt.contentUrl}`
+      if (this.albumData && this.albumData.albumArt && this.albumData.albumArt.contentUrl) return this.$store.getters['system/getMediaURL'](this.albumData.albumArt.contentUrl)
       else return ""
     },
     songs() {
@@ -165,10 +162,8 @@ export default {
         type: 'album',
         price: this.albumData.price
       }
-      const jwtToken = this.$store.state.system.jwtToken
 
-      return fetch({ id: "payments", ep: ENTRYPOINT, jwtToken }, { method: 'POST', body: JSON.stringify(payload) })
-        .then((response) => response.json())
+      return this.$store.dispatch("system/apiRequest", { path: `payments`, method: 'POST', payload })
         .then((data) => {
           self.updatePaymentStatus()
           console.log("sendPaymentRequest", data)
@@ -187,10 +182,8 @@ export default {
         album: parseInt(this.albumID),
         type: 'album'
       }
-      const jwtToken = this.$store.state.system.jwtToken
       console.log("updatePaymentStatus", params)
-      return fetch({ id: "payments", ep: ENTRYPOINT, jwtToken }, { params })
-          .then((response) => response.json())
+      return this.$store.dispatch("system/apiRequest", { path: `payments`, params })
           .then((data) => {
               console.log("updatePaymentStatus", data)
               const arrayLength = data['hydra:member'].length

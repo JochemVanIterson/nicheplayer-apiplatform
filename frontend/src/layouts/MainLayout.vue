@@ -63,7 +63,6 @@
 </template>
 
 <script>
-import { MEDIAPOINT } from "../config/1314272676_entrypoint";
 import AudioFooter from 'components/AudioFooter'
 
 export default {
@@ -94,7 +93,7 @@ export default {
       this.$store.dispatch("system/logoutAction")
     },
     goToAdminPanel() {
-      window.location = `${MEDIAPOINT}/admin`
+      window.location = this.$store.getters['system/getMediaURL']('admin')
     },
     pathMatch(id) {
       if (id === 'explore') {

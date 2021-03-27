@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import { MEDIAPOINT } from "../../config/1314272676_entrypoint";
-
 export default {
   name: 'Explore',
   data() {
@@ -31,7 +29,7 @@ export default {
   },
   methods: {
     parsedURL(value) {
-      if (value && value.contentUrl) return `${MEDIAPOINT}/${value.contentUrl}`
+      if (value && value.contentUrl) return this.$store.getters['system/getMediaURL'](value.contentUrl)
       else return ""
     },
     albumClicked(data) {

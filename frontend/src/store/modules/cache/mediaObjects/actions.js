@@ -1,8 +1,5 @@
 // MediaObjects
 
-import fetch from '../../../../utils/fetch'
-import { ENTRYPOINT } from '../../../../config/1314272676_entrypoint'
-
 export function getFromAPI({ state, commit, rootState, dispatch }, { id, follow = true, force }) {
   if (!id) return
   if (typeof id == 'string') id = id.replace("/api/media_objects/", "")
@@ -11,9 +8,7 @@ export function getFromAPI({ state, commit, rootState, dispatch }, { id, follow 
   if (state.data[id] == "collecting") return
   else commit("updateValue", { id: id, value: "collecting" })
   
-  const jwtToken = rootState.system.jwtToken
-  return fetch({ id: `media_objects/${id}`, ep: ENTRYPOINT, jwtToken })
-    .then((response) => response.json())
+  return dispatch("system/apiRequest", { path: `media_objects/${id}` }, { root: true })
     .then((data) => {
       if (follow) {
         // Nothing to follow

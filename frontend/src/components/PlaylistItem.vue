@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import { MEDIAPOINT } from "../config/1314272676_entrypoint";
-
 export default {
   name: 'PlaylistItem',
   props: {
@@ -34,7 +32,7 @@ export default {
       else return {}
     },
     albumArt() { return this.albumArtObject.contentUrl },
-    parsedAlbumArt() { return `${MEDIAPOINT}/${this.albumArt}` },
+    parsedAlbumArt() { return this.$store.getters['system/getMediaURL'](this.albumArt) },
     artist() { return this.albumObject.artist },
     album() { return this.albumObject.name },
     title() { return this.songdata.name },
