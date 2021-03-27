@@ -21,7 +21,13 @@ export default {
     return {}
   },
   computed: {
+    isLoggedIn() { return this.$store.getters["system/isLoggedIn"] },
     albums() { return this.$store.getters["cache/albums/getAllJoined"] }
+  },
+  watch: {
+    isLoggedIn(value) {
+      if (value != "") this.$store.dispatch("cache/albums/getAllFromAPI")
+    }
   },
   methods: {
     parsedURL(value) {
@@ -33,7 +39,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("cache/albums/getAllFromAPI")
+    if (this.isLoggedIn != "") this.$store.dispatch("cache/albums/getAllFromAPI")
   }
 }
 </script>
