@@ -85,10 +85,10 @@ const Login = (props) => {
       <Form
         onSubmit={submit}
         validate={validate}
-        initialValues={{ username: "admin", password: "admin" }}
+        initialValues={{ username: "", password: "" }}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit} noValidate>
-            <div className={classes.hint}>Hint: admin / admin</div>
+            {/* <div className={classes.hint}>Hint: admin / admin</div> */}
             <div className={classes.form}>
               <div className={classes.input}>
                 <Field

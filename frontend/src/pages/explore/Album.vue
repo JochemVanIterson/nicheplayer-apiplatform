@@ -108,7 +108,7 @@ export default {
       return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber)
     },
     songsExplorable() {
-      if (this.paymentObject.paymentStatus) return this.songsSorted
+      if (this.paymentObject.paymentStatus === 'success') return this.songsSorted
       else return this.songsSorted.filter((song) => song.explorable);
     }
   },
