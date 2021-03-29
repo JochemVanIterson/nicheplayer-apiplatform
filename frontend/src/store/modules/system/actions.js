@@ -1,5 +1,6 @@
 import fetch from '../../../utils/fetch'
 import { ENTRYPOINT } from "../../../config/1314272676_entrypoint";
+import { Cookies } from 'quasar'
 
 export function apiRequest({ state }, { path, payload, method = 'GET', params }) {
     const jwtToken = state.jwtToken
@@ -21,6 +22,8 @@ export function attemptLogin({ commit }, payload) {
             commit("setJWTToken", data.token)
             commit("setRefreshToken", data.refresh_token)
             commit("setUserData", data.data)
+
+            Cookies.set('BEARER', data.token)
 
             console.log("attemptLogin Success", data)
             return true
