@@ -16,6 +16,7 @@ export function apiRequest({ state }, { path, payload, method = 'GET', params })
 }
 
 export function attemptLogin({ commit }, payload) {
+    Cookies.set('BEARER', '')
     return fetch({ id: "authentication_token", ep: ENTRYPOINT }, { method: 'POST', body: JSON.stringify(payload) })
         .then((response) => response.json())
         .then((data) => {
@@ -39,12 +40,15 @@ export function updateRefreshToken({ state, commit }) {
     if (!refreshToken) return false
     const payload = { refresh_token: refreshToken }
     commit("setJWTToken", "")
+    Cookies.set('BEARER', '')
     return fetch({ id: "token/refresh", ep: ENTRYPOINT }, { method: 'POST', body: JSON.stringify(payload) })
         .then((response) => response.json())
         .then((data) => {
             commit("setJWTToken", data.token)
             commit("setRefreshToken", data.refresh_token)
             commit("setUserData", data.data)
+
+            Cookies.set('BEARER', data.token)
 
             console.log("updateRefreshToken Success", data)
             return true
@@ -56,6 +60,7 @@ export function updateRefreshToken({ state, commit }) {
 }
 
 export function logoutAction({ commit, dispatch }) {
+    Cookies.set('BEARER', '')
     commit("setJWTToken", "")
     commit("setRefreshToken", "")
     commit("setUserData", {})
