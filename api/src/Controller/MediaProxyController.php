@@ -29,7 +29,7 @@ class MediaProxyController extends AbstractController
         }
         else if ($access == 'owner') {
             $user = $this->getUser();
-            if($user->getId() != $mediaObject->getOwner()->getId()) return new Response(null, 401);
+            if($user->getId() != $mediaObject->getOwner()->getId()) return new Response(null, 403);
         }
         else if ($access == 'login') {
             $this->denyAccessUnlessGranted('ROLE_USER');
@@ -37,7 +37,7 @@ class MediaProxyController extends AbstractController
         else {
             return new Response('Access: '.$access);
         }
-        
+
         return $downloadHandler->downloadObject($mediaObject, $fileField = 'file');
     }
     
