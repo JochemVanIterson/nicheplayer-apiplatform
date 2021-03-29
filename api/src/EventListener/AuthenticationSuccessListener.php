@@ -4,11 +4,17 @@ namespace App\EventListener;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\User;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 class AuthenticationSuccessListener
 {
+    /**
+     * @var int
+     */
+    private $tokenLifetime;
+
 	/**
 	 * @var RequestStack
 	 */
@@ -17,10 +23,11 @@ class AuthenticationSuccessListener
 	/**
 	 * @param RequestStack $requestStack
 	 */
-	public function __construct(RequestStack $requestStack, StorageInterface $storage)
+	public function __construct(RequestStack $requestStack, StorageInterface $storage, int $tokenLifetime)
 	{
 		$this->requestStack = $requestStack;
         $this->storage = $storage;
+        $this->tokenLifetime = $tokenLifetime;
 	}
 
 	/**
@@ -48,5 +55,19 @@ class AuthenticationSuccessListener
         );
 
         $event->setData($data);
+
+        $event->getResponse()->headers->setCookie(
+            new Cookie(
+                'BEARER', // Cookie name, should be the same as in config/packages/lexik_jwt_authentication.yaml.
+                $data['token'], // cookie value
+                time() + $this->tokenLifetime, // expiration
+                '/', // path
+                null, // domain, null means that Symfony will generate it on its own.
+                true, // secure
+                true, // httpOnly
+                false, // raw
+                'lax' // same-site parameter, can be 'lax' or 'strict'.
+            )
+        );
     }
 }
