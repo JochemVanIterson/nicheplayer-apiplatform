@@ -1,5 +1,8 @@
 import jwtDecode from "jwt-decode";
 
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
+
 export default {
   login: ({ username, password }) => {
     const url = `${process.env.REACT_APP_API_ENTRYPOINT || "http://mbp.audioware.nl/api" }/authentication_token`;
@@ -19,6 +22,7 @@ export default {
         return response.json();
       })
       .then(({ token, data }) => {
+        cookies.set("BEARER", token)
         localStorage.setItem("token", token);
         localStorage.setItem("userdata", JSON.stringify(data));
         console.log("userdata", data)

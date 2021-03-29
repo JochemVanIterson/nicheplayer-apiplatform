@@ -11,6 +11,7 @@ const MediaObjectsShow = (props) => (
     <SimpleShowLayout>
       <FileField source="contentUrl" title="fileName" label="File"/>
       <TextField source="type" />
+      <TextField source="access" />
       <FunctionField label="Size" render={record => `${filesize(record.size)}`}/>
       <FilePreviewField/>
       <MetaField source="meta" size="medium" label="Metadata"/>

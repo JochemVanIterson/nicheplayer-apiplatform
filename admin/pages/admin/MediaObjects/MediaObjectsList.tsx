@@ -11,6 +11,7 @@ const MediaObjectsList = (props) => (
       <FunctionField label="ID" sortBy="id" render={record => `${record.id.replace("/api/media_objects/", "")}`} />
       <FileField source="contentUrl" title="fileName" sortBy="fileName" label="File name"/>
       <TextField source="type" />
+      <TextField source="access" />
       <FunctionField label="Size" sortBy="size" render={record => `${filesize(record.size)}`}/>
       <ReferenceField source="source" reference="sources">
         <ChipField source="name" />

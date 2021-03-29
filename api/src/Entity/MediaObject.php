@@ -135,11 +135,13 @@ class MediaObject
 
     /**
      * @ORM\Column(type="string", length=16, nullable=true)
+     * @Groups({"media_object_read"})
      */
     private $access;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
+     * @Groups({"media_object_read"})
      */
     private $owner;
 

@@ -18,6 +18,11 @@ const MediaObjectsEdit = (props) => (
       { id: 'image', name: 'Image' },
       { id: 'audio', name: 'Audio' },
     ]} />
+    <SelectInput fullWidth source="access" choices={[
+      { id: 'world', name: 'World' },
+      { id: 'login', name: 'Login' },
+      { id: 'owner', name: 'Owner' },
+    ]} />
     <InputGuesser fullWidth source="meta" />
     <ReferenceInput
       fullWidth
