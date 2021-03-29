@@ -27,6 +27,12 @@ final class CreateMediaObjectAction extends AbstractController
             throw new BadRequestHttpException('localSource is empty');
         }
 
+        $data = $request->request;
+
+        // throw new BadRequestHttpException('"file" is required');
+
+        $user = $this->getUser();
+
         $media = new MediaObject();
         $media->file = $uploadedFile;
         $media->setSource($localSource);
@@ -34,6 +40,9 @@ final class CreateMediaObjectAction extends AbstractController
         $media->setMime($uploadedFile->getMimeType());
         $media->setSize(filesize($uploadedFile->getPathname()));
         $media->setFileName($uploadedFile->getClientOriginalName());
+
+        $media->setAccess($data->get('access'));
+        $media->setOwner($user);
 
         $mediaParser = null;
         if(ImageParser::isType($uploadedFile)){

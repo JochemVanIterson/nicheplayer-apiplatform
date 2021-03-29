@@ -7,6 +7,7 @@ use App\Repository\MediaObjectRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Handler\DownloadHandler;
@@ -29,7 +30,7 @@ class MediaProxyController extends AbstractController
         }
         else if ($access == 'owner') {
             $user = $this->getUser();
-            if($user->getId() != $mediaObject->getOwner()->getId()) return new Response(null, 403);
+            if(!$user || $user->getId() != $mediaObject->getOwner()->getId()) return new Response(null, 403);
         }
         else if ($access == 'login') {
             $this->denyAccessUnlessGranted('ROLE_USER');
