@@ -22,7 +22,22 @@ class MediaProxyController extends AbstractController
      */
     public function downloadByPath(MediaObject $mediaObject, DownloadHandler $downloadHandler): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $access = $mediaObject->getAccess();
+
+        if (!$access || $access == 'world') {
+
+        }
+        else if ($access == 'owner') {
+            $user = $this->getUser();
+            if($user->getId() != $mediaObject->getOwner()->getId()) return new Response(null, 401);
+        }
+        else if ($access == 'login') {
+            $this->denyAccessUnlessGranted('ROLE_USER');
+        }
+        else {
+            return new Response('Access: '.$access);
+        }
+        
         return $downloadHandler->downloadObject($mediaObject, $fileField = 'file');
     }
     

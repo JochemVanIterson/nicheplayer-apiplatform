@@ -133,6 +133,16 @@ class MediaObject
      */
     private $fileName;
 
+    /**
+     * @ORM\Column(type="string", length=16, nullable=true)
+     */
+    private $access;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $owner;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -228,6 +238,30 @@ class MediaObject
     public function setFilePath(?string $filePath): self
     {
         $this->filePath = $filePath;
+
+        return $this;
+    }
+
+    public function getAccess(): ?string
+    {
+        return $this->access;
+    }
+
+    public function setAccess(?string $access): self
+    {
+        $this->access = $access;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }
