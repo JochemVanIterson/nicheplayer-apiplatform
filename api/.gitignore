@@ -10,6 +10,7 @@
 /public/bundles/
 /public/media
 /var/
+/media/
 /vendor/
 ###< symfony/framework-bundle ###
 
