@@ -29,9 +29,20 @@ export default {
         username: this.username,
         password: this.password
       }
+      function errorNotification(message) {
+        return { type: 'negative', message, position: 'bottom', timeout: 4000 }
+      }
+
+      if (!this.username || !this.password) {
+        this.$q.notify(errorNotification(`Empty fields`))
+        return false
+      }
+
       this.$store.dispatch("system/attemptLogin", payload).then((status) => {
-        console.log("hasLoggedIn", status)
         if (status) this.$router.go(-1)
+        else {
+          this.$q.notify(errorNotification(`Login failed, wrong credentials`))
+        }
       })
     }
   }
