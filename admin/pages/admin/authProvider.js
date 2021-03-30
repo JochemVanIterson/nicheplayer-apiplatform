@@ -22,16 +22,19 @@ export default {
         return response.json();
       })
       .then(({ token, data, refresh_token }) => {
+        if (!data.roles.includes("ROLE_ADMIN")) {
+          throw new Error("User is not an admin");
+        }
         cookies.set("BEARER", token)
         localStorage.setItem("token", token);
         localStorage.setItem("refresh_token", refresh_token);
         localStorage.setItem("userdata", JSON.stringify(data));
-        console.log("userdata", data)
+        console.log("userdata", data)        
       });
   },
   logout: () => {
     console.log("logout")
-    cookies.set("BEARER", '')
+    cookies.remove("BEARER")
     localStorage.removeItem("token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("userdata");
@@ -40,6 +43,9 @@ export default {
   },
   checkAuth: () => {
     console.log("checkAuth")
+    const userdata = JSON.parse(localStorage.getItem("userdata"));
+    if (!userdata.roles.includes("ROLE_ADMIN")) return Promise.reject()
+
     try {
       if (
         !localStorage.getItem("token") ||
@@ -47,8 +53,9 @@ export default {
           jwtDecode(localStorage.getItem("token"))?.exp
       ) {
         return Promise.reject();
+      } else {
+        return Promise.resolve();
       }
-      return Promise.resolve();
     } catch (e) {
       // override possible jwtDecode error
       return Promise.reject();
