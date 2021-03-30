@@ -5,6 +5,8 @@ import Typografy from '@material-ui/core/Typography'
 import SettingsIcon from '@material-ui/icons/Settings'
 import { makeStyles } from '@material-ui/core/styles'
 
+import MenuItem from '@material-ui/core/MenuItem';
+
 const useStyles = makeStyles({
     title: {
         flex: 1,
@@ -47,6 +49,7 @@ const MyAppBar = props => {
                 id="react-admin-title"
             />
             <span className={classes.spacer} />
+            <MenuItem component="a" href="http://mbp.audioware.nl">Go Back</MenuItem>
         </AppBar>
     )
 }

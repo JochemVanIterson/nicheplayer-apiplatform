@@ -31,10 +31,11 @@ export default {
   },
   logout: () => {
     console.log("logout")
+    cookies.set("BEARER", '')
     localStorage.removeItem("token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("userdata");
-    cookies.remove("BEARER")
+    window.location.href = 'http://mbp.audioware.nl';
     return Promise.resolve();
   },
   checkAuth: () => {
