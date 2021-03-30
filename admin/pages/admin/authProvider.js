@@ -21,9 +21,10 @@ export default {
         }
         return response.json();
       })
-      .then(({ token, data }) => {
+      .then(({ token, data, refresh_token }) => {
         cookies.set("BEARER", token)
         localStorage.setItem("token", token);
+        localStorage.setItem("refresh_token", refresh_token);
         localStorage.setItem("userdata", JSON.stringify(data));
         console.log("userdata", data)
       });
@@ -31,6 +32,9 @@ export default {
   logout: () => {
     console.log("logout")
     localStorage.removeItem("token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("userdata");
+    cookies.remove("BEARER")
     return Promise.resolve();
   },
   checkAuth: () => {
