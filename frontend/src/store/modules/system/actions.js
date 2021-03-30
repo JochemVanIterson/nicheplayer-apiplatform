@@ -1,6 +1,6 @@
 import fetch from '../../../utils/fetch'
 import { ENTRYPOINT } from "../../../config/1314272676_entrypoint";
-import { Cookies } from 'quasar'
+import { Cookies, LocalStorage } from 'quasar'
 
 export function apiRequest({ state }, { path, payload, method = 'GET', params }) {
     const jwtToken = state.jwtToken
@@ -23,6 +23,10 @@ export function attemptLogin({ commit }, payload) {
             commit("setJWTToken", data.token)
             commit("setRefreshToken", data.refresh_token)
             commit("setUserData", data.data)
+
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('refresh_token', data.refresh_token)
+            localStorage.setItem('userdata', JSON.stringify(data.data))
 
             Cookies.set('BEARER', data.token)
 
@@ -47,6 +51,9 @@ export function updateRefreshToken({ state, commit }) {
             commit("setJWTToken", data.token)
             commit("setRefreshToken", data.refresh_token)
             commit("setUserData", data.data)
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('refresh_token', data.refresh_token)
+            localStorage.setItem('userdata', JSON.stringify(data.data))
 
             Cookies.set('BEARER', data.token)
 
@@ -64,6 +71,9 @@ export function logoutAction({ commit, dispatch }) {
     commit("setJWTToken", "")
     commit("setRefreshToken", "")
     commit("setUserData", {})
+    LocalStorage.remove('token')
+    LocalStorage.remove('refresh_token')
+    LocalStorage.remove('userdata')
     dispatch("cache/clearCache", undefined, { root: true })
     return true
 }

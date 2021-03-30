@@ -116,7 +116,8 @@ module.exports = function (/* ctx */) {
       plugins: [
         'Notify',
         'Dialog',
-        'Cookies'
+        'Cookies',
+        'LocalStorage'
       ]
     },
 

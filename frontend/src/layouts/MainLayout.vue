@@ -97,7 +97,7 @@ export default {
       })
     },
     goToAdminPanel() {
-      window.location = this.$store.getters['system/getMediaURL']('admin')
+      window.location = this.$store.getters['system/getMediaURL']('/admin')
     },
     pathMatch(id) {
       if (id === 'explore') {
