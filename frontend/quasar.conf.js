@@ -96,6 +96,9 @@ module.exports = function (/* ctx */) {
           multiLine: true,
           timeout: 0,
         },
+        loadingBar:{
+          
+        }
       },
 
       // Possible values for "importStrategy":
@@ -117,7 +120,8 @@ module.exports = function (/* ctx */) {
         'Notify',
         'Dialog',
         'Cookies',
-        'LocalStorage'
+        'LocalStorage',
+        'LoadingBar'
       ]
     },
 
