@@ -131,7 +131,7 @@ export default {
     playAlbum (trackNumber = 0) {
       this.$store.dispatch("audioplayer/clearPlaylist").then(() => {
         const songList = this.songsExplorable;
-        const actionList = songList.map(song => this.$store.dispatch("audioplayer/appendPlaylist", { songID: song.id, explore: true }))
+        const actionList = songList.map(song => this.$store.dispatch("audioplayer/appendPlaylist", { songID: song.id }))
         return Promise.all(actionList).then((values) => {
           this.$store.commit('audioplayer/setPlayingIndex', trackNumber)
           this.$store.dispatch('audioplayer/setIsPlaying', true)

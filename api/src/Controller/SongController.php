@@ -6,6 +6,7 @@ use App\Entity\Song;
 use App\Entity\MediaObject;
 use App\Entity\User;
 use App\Entity\Payment;
+use App\Entity\PlayHistory;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,11 +49,31 @@ class SongController extends AbstractController
             return $response;
         }
 
-        if ($request->query->has('explore')) {
-            // TODO: Doe iets met de play history
-        }
-
         if (!$mediaObject = $song->getFile()) throw new Error('Song has no file');
-        return $downloadHandler->downloadObject($mediaObject, $fileField = 'file');
+        $response = $downloadHandler->downloadObject($mediaObject, $fileField = 'file');
+        return $response;
+    }
+
+    /**
+     * @Route(
+     *     name="song_insert_history",
+     *     path="/api/play/{id}",
+     *     methods={"POST"}
+     * )
+     */
+    public function playHistory(Request $request, Song $song): Response
+    {
+        $user = $this->getUser();
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $play = new PlayHistory();
+        $play->setUser($user);
+        $play->setSong($song);
+
+        $entityManager->persist($play);
+        $entityManager->flush();
+
+        return new Response('Saved new play with id '.$play->getId());
     }
 }
