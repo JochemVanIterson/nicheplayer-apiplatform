@@ -1,7 +1,11 @@
-import { MEDIAPOINT } from "../../../config/1314272676_entrypoint";
+import { MEDIAPOINT, ENTRYPOINT } from "../../../config/1314272676_entrypoint";
 
 export function getMediaURL(state) {
     return (url) => `${MEDIAPOINT}${url}`
+}
+
+export function getApiURL(state) {
+    return (url) => `${ENTRYPOINT}${url}`
 }
 
 export function hasTokens(state) {
