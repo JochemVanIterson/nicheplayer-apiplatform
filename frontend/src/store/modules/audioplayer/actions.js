@@ -60,10 +60,10 @@ export function clearPlaylist({ commit, dispatch }) {
  * @param {*} context Vuex context
  * @param {integer} songID Song id to be added to the playlist
  */
-export function appendPlaylist({ state, commit, dispatch, rootGetters }, songID) {
+export function appendPlaylist({ state, commit, dispatch, rootGetters }, { songID, explore }) {
     dispatch('cache/songs/getFromAPI', { id: songID }, { root: true }).then((data) => {
         const howlerObject = {
-            file: rootGetters['system/getMediaURL'](rootGetters['cache/songs/getObjectJoined'](songID).file.contentUrl)
+            file: rootGetters['system/getApiURL'](`/play/${songID}${explore ? '?explore' : ''}`)
         }
         Vue.prototype.$howlerPlayer.appendPlaylist(howlerObject)
     })
