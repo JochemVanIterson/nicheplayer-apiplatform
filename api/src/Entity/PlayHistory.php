@@ -57,6 +57,12 @@ class PlayHistory
     #[Assert\NotNull]
     private $duration;
 
+    public function __construct()
+    {
+        $this->timestamp = new \DateTime();
+        $this->duration = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
