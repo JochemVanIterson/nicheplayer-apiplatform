@@ -108,7 +108,7 @@ export default {
       return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber)
     },
     songsExplorable() {
-      if (this.paymentObject && this.paymentObject.paymentStatus === 'success') return this.songsSorted
+      if (this.paymentObject && this.paymentStatus === 'success') return this.songsSorted
       else return this.songsSorted.filter((song) => song.explorable);
     }
   },
@@ -126,12 +126,12 @@ export default {
     },
     rowClicked (index) {
       let explorableIndex = this.songsExplorable.indexOf(this.songsSorted[index])
-      if (this.songsSorted[index].explorable) this.playAlbum(explorableIndex)
+      if (this.songsSorted[index].explorable || this.paymentStatus === 'success') this.playAlbum(explorableIndex)
     },
     playAlbum (trackNumber = 0) {
       this.$store.dispatch("audioplayer/clearPlaylist").then(() => {
         const songList = this.songsExplorable;
-        const actionList = songList.map(song => this.$store.dispatch("audioplayer/appendPlaylist", song.id))
+        const actionList = songList.map(song => this.$store.dispatch("audioplayer/appendPlaylist", { songID: song.id }))
         return Promise.all(actionList).then((values) => {
           this.$store.commit('audioplayer/setPlayingIndex', trackNumber)
           this.$store.dispatch('audioplayer/setIsPlaying', true)

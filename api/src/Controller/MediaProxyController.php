@@ -16,7 +16,7 @@ class MediaProxyController extends AbstractController
 {
     /**
      * @Route(
-     *     name="media_download_id",
+     *     name="media_download_path",
      *     path="/api/media/{filePath}",
      *     methods={"GET"}
      * )
