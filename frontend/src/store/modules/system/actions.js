@@ -16,6 +16,7 @@ export function apiRequest({ state }, { path, payload, method = 'GET', params })
 }
 
 export function attemptLogin({ commit }, payload) {
+    commit("setIsLoggingIn", true)
     Cookies.set('BEARER', '')
     return fetch({ id: "authentication_token", ep: ENTRYPOINT }, { method: 'POST', body: JSON.stringify(payload) })
         .then((response) => response.json())
@@ -31,10 +32,12 @@ export function attemptLogin({ commit }, payload) {
             Cookies.set('BEARER', data.token)
 
             console.log("attemptLogin Success", data)
+            commit("setIsLoggingIn", false)
             return true
         })
         .catch((e) => {
             console.log("attemptLogin Failed", e)
+            commit("setIsLoggingIn", false)
             return false
         })
 }
@@ -43,7 +46,8 @@ export function updateRefreshToken({ state, commit }) {
     const refreshToken = state.refreshToken
     if (!refreshToken) return false
     const payload = { refresh_token: refreshToken }
-    commit("setJWTToken", "")
+    // commit("setJWTToken", "")
+    commit("setIsLoggingIn", true)
     Cookies.set('BEARER', '')
     return fetch({ id: "token/refresh", ep: ENTRYPOINT }, { method: 'POST', body: JSON.stringify(payload) })
         .then((response) => response.json())
@@ -58,10 +62,12 @@ export function updateRefreshToken({ state, commit }) {
             Cookies.set('BEARER', data.token)
 
             console.log("updateRefreshToken Success", data)
+            commit("setIsLoggingIn", false)
             return true
         })
         .catch((e) => {
             console.log("updateRefreshToken Failed", e)
+            commit("setIsLoggingIn", false)
             return false
         })
 }
@@ -76,4 +82,19 @@ export function logoutAction({ commit, dispatch }) {
     LocalStorage.remove('userdata')
     dispatch("cache/clearCache", undefined, { root: true })
     return true
+}
+
+export function waitForLogin({ state, dispatch, getters }) {
+    return new Promise((resolve, reject) => {
+        let retryCount = 0
+
+        let loader = setInterval(() => {
+            if (retryCount > 20) {
+                clearInterval(loader)
+                reject();
+            }
+            if (getters['isLoggedIn']) resolve();
+            retryCount++
+        }, 50);
+    });
 }

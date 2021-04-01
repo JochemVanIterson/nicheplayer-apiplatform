@@ -13,7 +13,8 @@ export function hasTokens(state) {
 }
 
 export function isLoggedIn(state) {
-    return state.jwtToken && state.refreshToken && state.userData && state.userData.username
+    let isLoggingIn = state.isLoggingIn;
+    return state.jwtToken && state.refreshToken && state.userData && state.userData.username && !isLoggingIn
 }
 
 export function userFullName(state) {
