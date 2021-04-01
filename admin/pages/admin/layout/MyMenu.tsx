@@ -15,6 +15,7 @@ import Songs from '../Songs';
 import Sources from '../Sources';
 import Users from '../Users';
 import Payments from '../Payments';
+import PlayHistory from '../PlayHistory';
 
 import SubMenu from './SubMenu';
 import { AppState } from '../types';
@@ -101,6 +102,14 @@ const Menu: FC<MenuProps> = ({ onMenuClick, logout, dense = false }) => {
                 to={`/payments`}
                 primaryText="Payments"
                 leftIcon={<Payments.icon />}
+                onClick={onMenuClick}
+                sidebarIsOpen={open}
+                dense={dense}
+            />
+            <MenuItemLink
+                to={`/play_histories`}
+                primaryText="Play History"
+                leftIcon={<PlayHistory.icon />}
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
                 dense={dense}

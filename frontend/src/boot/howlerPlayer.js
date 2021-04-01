@@ -67,6 +67,8 @@ export default async ({ app, router, Vue, store }) => {
 
       // Begin playing the sound.
       sound.play()
+      
+      if (sound.seek() == 0) store.dispatch('audioplayer/sendPlayHistory', data.id)
 
       // Show the pause button.
       if (sound.state() === 'loaded') {

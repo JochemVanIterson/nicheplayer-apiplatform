@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PlayHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put"={"security"="is_granted('ROLE_ADMIN')"}
  *     },
  * )
+ * @ApiFilter(OrderFilter::class, properties = {"id", "timestamp", "user", "song"}, arguments = {"orderParameterName" = "order"})
  * @ORM\Entity(repositoryClass=PlayHistoryRepository::class)
  */
 class PlayHistory
@@ -56,6 +59,12 @@ class PlayHistory
      */
     #[Assert\NotNull]
     private $duration;
+
+    public function __construct()
+    {
+        $this->timestamp = new \DateTime();
+        $this->duration = 0;
+    }
 
     public function getId(): ?int
     {

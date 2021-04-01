@@ -16,6 +16,7 @@ import Songs from "./Songs";
 import Sources from "./Sources";
 import Users from "./Users";
 import Payments from "./Payments";
+import PlayHistory from "./PlayHistory";
 
 import Login from "./Login";
 import Dashboard from './Dashboard';
@@ -40,6 +41,7 @@ const Admin = () => (
       <ResourceGuesser name="albums" {...Albums} />
       <ResourceGuesser name="songs" {...Songs} />
       <ResourceGuesser name="payments" {...Payments} />
+      <ResourceGuesser name="play_histories" {...PlayHistory} />
     </HydraAdmin>
   </>
 );

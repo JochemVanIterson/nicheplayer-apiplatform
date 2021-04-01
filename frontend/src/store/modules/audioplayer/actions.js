@@ -11,6 +11,13 @@ export function setPlayingIndex({ state, commit, dispatch, getters }, newValue) 
     Vue.prototype.$howlerPlayer.skipTo(newValue, false)
 }
 
+export function sendPlayHistory({ state, commit, dispatch, getters }, songID) {
+    dispatch('system/apiRequest', {
+        path: `play/${songID}`,
+        method: 'POST'
+    }, { root: true })
+}
+
 export function goNext({ state, commit, dispatch, getters }) {
     let newValue = state.playingIndex + 1
     let shouldPlay = true
@@ -60,10 +67,11 @@ export function clearPlaylist({ commit, dispatch }) {
  * @param {*} context Vuex context
  * @param {integer} songID Song id to be added to the playlist
  */
-export function appendPlaylist({ state, commit, dispatch, rootGetters }, songID) {
+export function appendPlaylist({ state, commit, dispatch, rootGetters }, { songID, explore }) {
     dispatch('cache/songs/getFromAPI', { id: songID }, { root: true }).then((data) => {
         const howlerObject = {
-            file: rootGetters['system/getMediaURL'](rootGetters['cache/songs/getObjectJoined'](songID).file.contentUrl)
+            id: songID,
+            file: rootGetters['system/getApiURL'](`/play/${songID}${explore ? '?explore' : ''}`)
         }
         Vue.prototype.$howlerPlayer.appendPlaylist(howlerObject)
     })
