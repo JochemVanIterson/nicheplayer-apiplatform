@@ -44,7 +44,7 @@ export default {
   checkAuth: () => {
     console.log("checkAuth")
     const userdata = JSON.parse(localStorage.getItem("userdata"));
-    if (!userdata.roles.includes("ROLE_ADMIN")) return Promise.reject()
+    if (!userdata || !userdata.roles.includes("ROLE_ADMIN")) return Promise.reject()
 
     try {
       if (
