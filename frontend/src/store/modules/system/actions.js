@@ -88,8 +88,9 @@ export function waitForLogin({ state, dispatch, getters }) {
     return new Promise((resolve, reject) => {
         let retryCount = 0
 
+        // Wait for 2 seconds before returning false
         let loader = setInterval(() => {
-            if (retryCount > 20) {
+            if (retryCount > 40) {
                 clearInterval(loader)
                 reject();
             }
