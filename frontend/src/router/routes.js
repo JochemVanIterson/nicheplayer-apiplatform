@@ -1,9 +1,13 @@
 const routes = [
   {
     path: '/',
+    component: () => import('pages/Home.vue'),
+  },
+  {
+    path: '/',
     component: () => import('layouts/MainLayout.vue'),
+    meta: { requiresLogin: true },
     children: [
-      { path: '', component: () => import('pages/explore/Explore.vue') },
       { path: 'explore/', component: () => import('pages/explore/Explore.vue') },
       { path: 'explore/album/:id', component: () => import('pages/explore/Album.vue') },
 
@@ -16,6 +20,7 @@ const routes = [
   },
   {
     path: '/login',
+    name: 'Login',
     component: () => import('pages/LoginPage.vue'),
   },
 
