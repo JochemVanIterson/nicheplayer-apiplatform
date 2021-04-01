@@ -43,12 +43,8 @@ export default function ({ store }) {
           })
         })
     } else if (to.matched.some(record => record.meta.hideForAuth)) {
-      store.dispatch("system/waitForLogin")
-        .then(() => {
-          next({ path: "/explore" })
-        }).catch(() => {
-          next()
-        })
+      if (store.getters["system/isLoggedIn"]) next({ path: "/explore" })
+      else next()
     } else next()
   })
 
