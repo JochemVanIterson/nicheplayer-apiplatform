@@ -1,5 +1,5 @@
 import PlayHistoryCreate from "./PlayHistoryCreate";
-import PlayHistoryList from   "./PlayHistoryList.js";
+import PlayHistoryList from   "./PlayHistoryList";
 import PlayHistoryEdit from   "./PlayHistoryEdit";
 import PlayHistoryShow from   "./PlayHistoryShow"
 
