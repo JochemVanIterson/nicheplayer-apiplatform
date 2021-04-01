@@ -22,6 +22,7 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: () => import('pages/LoginPage.vue'),
+    meta: { hideForAuth: true },
   },
 
   // Always leave this as last one,
