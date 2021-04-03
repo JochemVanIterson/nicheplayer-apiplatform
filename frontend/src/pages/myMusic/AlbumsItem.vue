@@ -52,16 +52,11 @@ export default {
     albumData() { return this.$store.getters['cache/albums/getObjectJoined'](this.albumID, ['albumArt', 'songs']) },
 
     albumArt() {
-      if (this.albumData && this.albumData.albumArt && this.albumData.albumArt.contentUrl) return this.$store.getters['system/getMediaURL'](this.albumData.albumArt.contentUrl)
-      else return ""
+      return (this.albumData && this.albumData.albumArt && this.albumData.albumArt.contentUrl)
+        ? this.$store.getters['system/getMediaURL'](this.albumData.albumArt.contentUrl) : ""
     },
-    songs() {
-      if (this.albumData && this.albumData.songs) return this.albumData.songs;
-      else return []
-    },
-    songsSorted() {
-      return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber)
-    },
+    songs() { return (this.albumData && this.albumData.songs) ? this.albumData.songs : [] },
+    songsSorted() { return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber) },
     currentPlayingPage() { return this.$store.getters["audioplayer/getPlaylistPage"] },
     currentPlayingId() { return this.currentPlayingPage == this.$route.path && this.$store.getters["audioplayer/getSongID"]() }
   },

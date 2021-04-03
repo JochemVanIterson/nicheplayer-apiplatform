@@ -9,7 +9,14 @@
         q-item-section
           q-item-label {{album.name}}
           q-item-label(caption lines="2") {{album.artist}}
-        q-item-section(v-if="album.payment" side top) {{readableStatus(album)}}
+        q-item-section(side top)
+          .q-gutter-xs
+            span(v-if="!album.payment || album.payment.paymentStatus != 'success'") {{readableStatus(album)}}
+            q-btn(v-else size="12px" flat dense round icon="more_vert" @click.stop="")
+              q-menu()
+                q-list(style="min-width: 100px")
+                  q-item(clickable v-close-popup)
+                    q-item-section Play album (placeholder)
 
 </template>
 
@@ -39,8 +46,7 @@ export default {
   },
   methods: {
     parsedURL(value) {
-      if (value && value.contentUrl) return this.$store.getters['system/getMediaURL'](value.contentUrl)
-      else return ""
+      return (value && value.contentUrl) ? this.$store.getters['system/getMediaURL'](value.contentUrl) : ""
     },
     readableStatus(album) {
       if (!album.payment) return ""
@@ -57,12 +63,9 @@ export default {
       } 
     },
     albumAllowed(album) { return album.payment && album.payment.paymentStatus == 'success' },
-    albumClicked(album) {
-      if (this.albumAllowed(album)) this.$router.push(`/my/album/${album.id}`)
-    }
+    albumClicked(album) { if (this.albumAllowed(album)) this.$router.push(`/my/album/${album.id}`) }
   },
   mounted() {
-    // if (this.isLoggedIn != "") this.$store.dispatch("cache/albums/getAllFromAPI")
     if (this.isLoggedIn != "") this.$store.dispatch("cache/payments/getAllFromAPI")
   }
 }
