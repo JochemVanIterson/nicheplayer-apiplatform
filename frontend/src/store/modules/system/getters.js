@@ -24,13 +24,22 @@ export function userFullName(state) {
 
 export function userAdmin(state) {
     if (!state.userData) return false
-    console.log("userAdmin", state.userData.roles)
     return state.userData.roles.includes("ROLE_ADMIN")
+}
+
+export function userHasProfilePic(state) {
+    if (!state.userData) return ""
+    return state.userData.profilepicURL != ""
 }
 
 export function userProfilePic(state) {
     if (!state.userData) return ""
     return `${MEDIAPOINT}${state.userData.profilepicURL}`
+}
+
+export function userInitials(state) {
+    if (!state.userData) return ""
+    return `${state.userData.firstname.charAt(0).toUpperCase()}${state.userData.lastname.charAt(0).toUpperCase()}`
 }
 
 export function userData(state) {
