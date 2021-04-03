@@ -48,7 +48,9 @@
           tbody
             tr(v-for="(song, i) in songsSorted" @click="rowClicked(i)" :class="{'q-tr--no-hover':!songPlayable(song), 'disabled':!songPlayable(song)}")
               td(class="text-right") {{song.trackNumber}}
-              td(class="text-left") {{song.name}}
+              td(class="text-left")
+                q-icon.q-pr-sm(name="volume_up" color="primary" size="sm" v-if="currentPlayingId == song.id")
+                span {{song.name}}
               td(class="text-left") {{song.songArtistt || albumData.artist}}
               td(class="text-left" v-if="$q.screen.gt.xs") {{`${song.duration}`}}
 </template>
@@ -58,20 +60,13 @@ export default {
   name: 'ExploreAlbum',
   data() {
     return {
-      paymentObject: {
-        status: 'unknown'
-      }
     }
   },
   computed: {
     isLoggedIn() { return this.$store.getters["system/isLoggedIn"] },
-    paymentStatus () {
-      console.log("paymentStatus", this.paymentObject)
-      return (this.paymentObject) ? this.paymentObject.paymentStatus : 'unknown'
-    },
-    isPurchasing () {
-      return this.paymentStatus !== '' && this.paymentStatus !== 'unknown'
-    },
+    paymentObject() { return this.$store.getters["cache/payments/getObjectByAlbum"](this.albumID) },
+    paymentStatus () { return (this.paymentObject) ? this.paymentObject.paymentStatus : 'unknown' },
+    isPurchasing () { return this.paymentStatus !== '' && this.paymentStatus !== 'unknown' },
     paymentStatusPrintable () {
       if (!this.paymentStatus) return ''
       const options = {
@@ -97,20 +92,14 @@ export default {
     albumData() { return this.$store.getters['cache/albums/getObjectJoined'](this.albumID, ['albumArt', 'songs']) },
 
     albumArt() {
-      if (this.albumData && this.albumData.albumArt && this.albumData.albumArt.contentUrl) return this.$store.getters['system/getMediaURL'](this.albumData.albumArt.contentUrl)
-      else return ""
+      return (this.albumData && this.albumData.albumArt && this.albumData.albumArt.contentUrl)
+        ? this.$store.getters['system/getMediaURL'](this.albumData.albumArt.contentUrl) : ""
     },
-    songs() {
-      if (this.albumData && this.albumData.songs) return this.albumData.songs;
-      else return []
-    },
-    songsSorted() {
-      return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber)
-    },
-    songsExplorable() {
-      if (this.paymentObject && this.paymentStatus === 'success') return this.songsSorted
-      else return this.songsSorted.filter((song) => song.explorable);
-    }
+    songs() { return (this.albumData && this.albumData.songs) ? this.albumData.songs : [] },
+    songsSorted() { return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber) },
+    songsExplorable() { return (this.paymentObject && this.paymentStatus === 'success') ? this.songsSorted : this.songsSorted.filter((song) => song.explorable) },
+    currentPlayingPage() { return this.$store.getters["audioplayer/getPlaylistPage"] },
+    currentPlayingId() { return this.currentPlayingPage == this.$route.path && this.$store.getters["audioplayer/getSongID"]() }
   },
   watch: {
     isLoggedIn(value) {
@@ -121,9 +110,7 @@ export default {
     }
   },
   methods: {
-    songPlayable (song) {
-      return song.explorable || (this.paymentObject && this.paymentObject.paymentStatus) == 'success'
-    },
+    songPlayable (song) { return song.explorable || (this.paymentObject && this.paymentObject.paymentStatus) == 'success' },
     rowClicked (index) {
       let explorableIndex = this.songsExplorable.indexOf(this.songsSorted[index])
       if (this.songsSorted[index].explorable || this.paymentStatus === 'success') this.playAlbum(explorableIndex)
@@ -134,6 +121,7 @@ export default {
         const actionList = songList.map(song => this.$store.dispatch("audioplayer/appendPlaylist", { songID: song.id }))
         return Promise.all(actionList).then((values) => {
           this.$store.commit('audioplayer/setPlayingIndex', trackNumber)
+          this.$store.commit('audioplayer/setPlaylistPage', this.$route.path)
           this.$store.dispatch('audioplayer/setIsPlaying', true)
         });
       })
@@ -175,25 +163,7 @@ export default {
         })
     },
     updatePaymentStatus () {
-      let self = this
-      const userData = this.$store.getters['system/userData']
-      const params = {
-        user: userData.id,
-        album: parseInt(this.albumID),
-        type: 'album'
-      }
-      console.log("updatePaymentStatus", params)
-      return this.$store.dispatch("system/apiRequest", { path: `payments`, params })
-          .then((data) => {
-              console.log("updatePaymentStatus", data)
-              const arrayLength = data['hydra:member'].length
-              self.paymentObject = data['hydra:member'][arrayLength - 1]
-              return true
-          })
-          .catch((e) => {
-              console.log("updatePaymentStatus Failed", e)
-              return false
-          })
+      return this.$store.dispatch("cache/payments/getFromAPIByAlbum", { album: parseInt(this.albumID) })
     }
   },
   mounted() {

@@ -31,6 +31,11 @@
       bordered
       content-class="bg-grey-1")
       q-list
+        q-item(clickable to="/" exact)
+          q-item-section(avatar)
+            q-icon(name="home")
+          q-item-section
+            q-item-label Home
         q-item(clickable to="/explore" exact :active="pathMatch('explore')")
           q-item-section(avatar)
             q-icon(name="explore")
@@ -39,7 +44,7 @@
 
         q-separator
         q-item-label(header class="text-grey-8") My Music
-        q-item(clickable to="/my/album" exact :active="pathMatch('my/music')")
+        q-item(clickable to="/my/album" exact :active="pathMatch('my/album')")
           q-item-section(avatar)
             q-icon(name="album")
           q-item-section
@@ -102,6 +107,10 @@ export default {
     pathMatch(id) {
       if (id === 'explore') {
         return this.$route.fullPath.startsWith('/explore')
+      } else if (id === 'my/album') {
+        return this.$route.fullPath.startsWith('/my/album')
+      } else if (id === 'my/songs') {
+        return this.$route.fullPath.startsWith('/my/songs')
       } else return false
     }
   },

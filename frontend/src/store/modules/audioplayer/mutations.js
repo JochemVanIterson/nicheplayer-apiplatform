@@ -17,3 +17,7 @@ export function setIsPlaying (state, value) {
 export function setPlayingIndex(state, value) {
     Vue.set(state, 'playingIndex', value)
 }
+
+export function setPlaylistPage(state, value) {
+    Vue.set(state, 'playlistPage', value)
+}
