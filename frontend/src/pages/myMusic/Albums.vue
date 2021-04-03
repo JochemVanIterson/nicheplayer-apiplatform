@@ -2,13 +2,14 @@
   q-page(padding)
     .text-h2.q-pb-lg My Albums
     q-list(bordered separator class="rounded-borders")
-      q-item(v-for="album in albums" v-if="album" clickable :to="'/my/album/'+album.id")
+      q-item(v-for="album in filteredAlbums" v-if="album" :clickable="albumAllowed(album)" :disabled="!albumAllowed(album)" @click="albumClicked(album)")
         q-item-section(top avatar)
           q-avatar(rounded size="64px")
             q-img( :src="parsedURL(album.albumArt)" basic :ratio="1")
         q-item-section
           q-item-label {{album.name}}
           q-item-label(caption lines="2") {{album.artist}}
+        q-item-section(v-if="album.payment" side top) {{readableStatus(album)}}
 
 </template>
 
@@ -16,16 +17,53 @@
 export default {
   name: 'MyAlbums',
   computed: {
-    albums() { return this.$store.getters["cache/albums/getAllJoined"] }
+    albums() { return this.$store.getters["cache/albums/getAllJoined"] },
+    payments() { return this.$store.getters["cache/payments/getAllJoined"] },
+    filteredAlbums() {
+      return this.payments.map((e) => {
+        let album = this.albums[e.album.replace("/api/albums/", "")]
+        if (album && album != "collecting")
+          album.payment = e
+        return album
+      }).sort((a, b) => {
+        if (!a.payment || !b.payment) return 0
+        // Sort success payments on top
+        if (a.payment.paymentStatus != "success" && b.payment.paymentStatus == "success") return 1;
+        if (a.payment.paymentStatus == "success" && b.payment.paymentStatus != "success") return -1;
+        // else sort by name
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      })
+    }
   },
   methods: {
     parsedURL(value) {
       if (value && value.contentUrl) return this.$store.getters['system/getMediaURL'](value.contentUrl)
       else return ""
     },
+    readableStatus(album) {
+      if (!album.payment) return ""
+      const status = album.payment.paymentStatus
+      switch (status) {
+        case 'in_progress':
+          return "Payment in progress"
+        case 'requested':
+          return "Payment requested"
+        case 'declined':
+          return "Payment Declined"
+        default:
+          return ""
+      } 
+    },
+    albumAllowed(album) { return album.payment && album.payment.paymentStatus == 'success' },
+    albumClicked(album) {
+      if (this.albumAllowed(album)) this.$router.push(`/my/album/${album.id}`)
+    }
   },
   mounted() {
-    if (this.isLoggedIn != "") this.$store.dispatch("cache/albums/getAllFromAPI")
+    // if (this.isLoggedIn != "") this.$store.dispatch("cache/albums/getAllFromAPI")
+    if (this.isLoggedIn != "") this.$store.dispatch("cache/payments/getAllFromAPI")
   }
 }
 </script>
