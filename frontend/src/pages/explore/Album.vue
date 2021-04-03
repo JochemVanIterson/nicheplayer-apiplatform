@@ -92,20 +92,12 @@ export default {
     albumData() { return this.$store.getters['cache/albums/getObjectJoined'](this.albumID, ['albumArt', 'songs']) },
 
     albumArt() {
-      if (this.albumData && this.albumData.albumArt && this.albumData.albumArt.contentUrl) return this.$store.getters['system/getMediaURL'](this.albumData.albumArt.contentUrl)
-      else return ""
+      return (this.albumData && this.albumData.albumArt && this.albumData.albumArt.contentUrl)
+        ? this.$store.getters['system/getMediaURL'](this.albumData.albumArt.contentUrl) : ""
     },
-    songs() {
-      if (this.albumData && this.albumData.songs) return this.albumData.songs;
-      else return []
-    },
-    songsSorted() {
-      return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber)
-    },
-    songsExplorable() {
-      if (this.paymentObject && this.paymentStatus === 'success') return this.songsSorted
-      else return this.songsSorted.filter((song) => song.explorable);
-    },
+    songs() { return (this.albumData && this.albumData.songs) ? this.albumData.songs : [] },
+    songsSorted() { return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber) },
+    songsExplorable() { return (this.paymentObject && this.paymentStatus === 'success') ? this.songsSorted : this.songsSorted.filter((song) => song.explorable) },
     currentPlayingPage() { return this.$store.getters["audioplayer/getPlaylistPage"] },
     currentPlayingId() { return this.currentPlayingPage == this.$route.path && this.$store.getters["audioplayer/getSongID"]() }
   },

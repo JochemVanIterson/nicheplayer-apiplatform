@@ -39,9 +39,7 @@ export default {
         return 0;
       })
     },
-    songsPlayable() {
-      return this.orderedSongs.filter((song) => song.payment && song.payment.paymentStatus == "success");
-    },
+    songsPlayable() { return this.orderedSongs.filter((song) => song.payment && song.payment.paymentStatus == "success") },
     currentPlayingPage() { return this.$store.getters["audioplayer/getPlaylistPage"] },
     currentPlayingId() { return this.currentPlayingPage == this.$route.path && this.$store.getters["audioplayer/getSongID"]() }
   },
