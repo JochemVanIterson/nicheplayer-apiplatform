@@ -31,7 +31,7 @@
       bordered
       content-class="bg-grey-1")
       q-list
-        q-item(clickable to="/" exact :active="pathMatch('explore')")
+        q-item(clickable to="/explore" exact :active="pathMatch('explore')")
           q-item-section(avatar)
             q-icon(name="explore")
           q-item-section
@@ -86,9 +86,9 @@ export default {
       }
     },
     isLoggedIn() { return this.$store.getters["system/isLoggedIn"] },
-    userFullName() { return this.$store.getters["system/userFullName"] },
-    userProfilePic() { return this.$store.getters["system/userProfilePic"] },
-    userAdmin() { return this.$store.getters["system/userAdmin"] }
+    userFullName() { return this.isLoggedIn ? this.$store.getters["system/userFullName"] : '' },
+    userProfilePic() { return this.isLoggedIn ? this.$store.getters["system/userProfilePic"] : '' },
+    userAdmin() { return this.isLoggedIn ? this.$store.getters["system/userAdmin"] : false }
   },
   methods: {
     logoutButton() {
@@ -101,7 +101,7 @@ export default {
     },
     pathMatch(id) {
       if (id === 'explore') {
-        return this.$route.fullPath === '/' || this.$route.fullPath.startsWith('/explore')
+        return this.$route.fullPath.startsWith('/explore')
       } else return false
     }
   },

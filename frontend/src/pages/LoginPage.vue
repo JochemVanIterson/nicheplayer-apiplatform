@@ -23,6 +23,9 @@ export default {
       password: ''
     }
   },
+  computed: {
+    toRoute() { return this.$route.query.to || "explore" }
+  },
   methods: {
     attemptLogin() {
       const payload = {
@@ -39,7 +42,7 @@ export default {
       }
 
       this.$store.dispatch("system/attemptLogin", payload).then((status) => {
-        if (status) this.$router.go(-1)
+        if (status) this.$router.replace(this.toRoute)
         else {
           this.$q.notify(errorNotification(`Login failed, wrong credentials`))
         }
