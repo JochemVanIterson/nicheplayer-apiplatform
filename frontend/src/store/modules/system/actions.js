@@ -2,9 +2,9 @@ import fetch from '../../../utils/fetch'
 import { ENTRYPOINT } from "../../../config/1314272676_entrypoint";
 import { Cookies, LocalStorage } from 'quasar'
 
-export function apiRequest({ state }, { path, payload, method = 'GET', params }) {
-    const jwtToken = state.jwtToken
-    if (!jwtToken) return false
+export function apiRequest({ state }, { path, payload, method = 'GET', params, nojwt }) {
+    const jwtToken = !nojwt ? state.jwtToken : ""
+    if (!nojwt && !jwtToken) return false
     let body;
     if (payload) body = JSON.stringify(payload)
     return fetch({ id: path, ep: ENTRYPOINT, jwtToken }, { method: method, body, params })
