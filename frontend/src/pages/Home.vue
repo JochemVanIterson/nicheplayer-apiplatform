@@ -5,14 +5,17 @@
         q-img.bg-grey-4.window-height(src="http://mbp.audioware.nl/api/media/6061bc0b83806_IMG_20180720_074013.jpg")
           div(class="absolute-full text-subtitle2 flex flex-center bg-transparent")
             q-card#homeCard
-              img( alt="Quasar logo" src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" height="128px")
+              img.q-my-md(alt="Quasar logo" src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" height="128px")
               q-card-section
-                .text PLACEHOLDER
-              q-card-actions(v-if="isLoggedIn" align="center")
-                q-btn.full-width(label="Open" noCaps color="primary" to="/explore")
+                | PLACEHOLDER
+              .row.q-pa-sm.q-gutter-x-sm
+                  q-btn.col(v-if="isLoggedIn" label="Open" noCaps color="primary" to="/explore")
+                  q-btn.col(v-if="!isLoggedIn" label="Register" noCaps color="primary" to="/register")
+                  q-btn.col(v-if="!isLoggedIn" label="Login" noCaps color="primary" to="/login")
+
+        .flex.flex-center.q-pa-xl.bg-grey-4(style="min-height:300px")
+          | PLACEHOLDER
         q-toolbar.text-white.fixed-top#toolbar
-          q-avatar
-            img(src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg")
           q-toolbar-title Nicheplayer
           q-btn(v-if="!isLoggedIn" stretch flat label="Register" to="/register" no-caps)
           q-btn(v-if="!isLoggedIn" stretch flat label="Login" to="/login" no-caps)
@@ -36,6 +39,7 @@ export default {
   #homeCard {
     width: 100%;
     max-width: 400px;
-    color: black;
+    color: white;
+    background-color: #222222A0;
   }
 </style>
