@@ -51,8 +51,10 @@ class AuthenticationSuccessListener
             'fullname' => $user->getFullname(),
             'email' => $user->getEmail(),
             'profilepic' => $user->getProfilepic(),
-            'profilepicURL' => $this->storage->resolveUri($user->getProfilepic(), 'file')
+            'profilepicURL' => ""
         );
+
+        if ($user->getProfilepic()) $data['data']['profilepicURL'] = $this->storage->resolveUri($user->getProfilepic(), 'file');
 
         $event->setData($data);
 
