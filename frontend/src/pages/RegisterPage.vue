@@ -52,10 +52,16 @@ export default {
       }
 
       this.$store.dispatch("system/apiRequest", { path: "users", payload, method: "POST", nojwt: true }).then((status) => {
-        console.log(status)
-        if (status) this.$router.replace(this.toRoute)
-        else {
+        if (status) {
+          this.$store.dispatch("system/attemptLogin", { username: this.username, password: this.passwordZ }).then((loginStatus) => {
+            if (loginStatus) this.$router.replace(this.toRoute)
+            else {
+              this.$q.notify(errorNotification(`Login failed, wrong credentials`))
+            }
+          })
+        } else {
           this.$q.notify(errorNotification(`Registration failed`))
+          return false
         }
       })
     }
