@@ -6,9 +6,6 @@ import createPersistedState from 'vuex-persistedstate'
 import system from './modules/system'
 import audioplayer from './modules/audioplayer'
 
-// import albums from './modules/cache/albums'
-// import mediaObjects from './modules/cache/mediaObjects'
-// import songs from './modules/cache/songs'
 import cache from './modules/cache'
 
 Vue.use(Vuex)
