@@ -58,20 +58,13 @@ export default {
   name: 'ExploreAlbum',
   data() {
     return {
-      paymentObject: {
-        status: 'unknown'
-      }
     }
   },
   computed: {
     isLoggedIn() { return this.$store.getters["system/isLoggedIn"] },
-    paymentStatus () {
-      console.log("paymentStatus", this.paymentObject)
-      return (this.paymentObject) ? this.paymentObject.paymentStatus : 'unknown'
-    },
-    isPurchasing () {
-      return this.paymentStatus !== '' && this.paymentStatus !== 'unknown'
-    },
+    paymentObject() { return this.$store.getters["cache/payments/getObjectByAlbum"](this.albumID) },
+    paymentStatus () { return (this.paymentObject) ? this.paymentObject.paymentStatus : 'unknown' },
+    isPurchasing () { return this.paymentStatus !== '' && this.paymentStatus !== 'unknown' },
     paymentStatusPrintable () {
       if (!this.paymentStatus) return ''
       const options = {
@@ -121,9 +114,7 @@ export default {
     }
   },
   methods: {
-    songPlayable (song) {
-      return song.explorable || (this.paymentObject && this.paymentObject.paymentStatus) == 'success'
-    },
+    songPlayable (song) { return song.explorable || (this.paymentObject && this.paymentObject.paymentStatus) == 'success' },
     rowClicked (index) {
       let explorableIndex = this.songsExplorable.indexOf(this.songsSorted[index])
       if (this.songsSorted[index].explorable || this.paymentStatus === 'success') this.playAlbum(explorableIndex)
@@ -175,25 +166,7 @@ export default {
         })
     },
     updatePaymentStatus () {
-      let self = this
-      const userData = this.$store.getters['system/userData']
-      const params = {
-        user: userData.id,
-        album: parseInt(this.albumID),
-        type: 'album'
-      }
-      console.log("updatePaymentStatus", params)
-      return this.$store.dispatch("system/apiRequest", { path: `payments`, params })
-          .then((data) => {
-              console.log("updatePaymentStatus", data)
-              const arrayLength = data['hydra:member'].length
-              self.paymentObject = data['hydra:member'][arrayLength - 1]
-              return true
-          })
-          .catch((e) => {
-              console.log("updatePaymentStatus Failed", e)
-              return false
-          })
+      return this.$store.dispatch("cache/payments/getFromAPIByAlbum", { album: parseInt(this.albumID) })
     }
   },
   mounted() {

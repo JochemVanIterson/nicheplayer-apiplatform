@@ -8,6 +8,7 @@ import * as actions from './actions'
 import albums from './albums'
 import songs from './songs'
 import mediaObjects from './mediaObjects'
+import payments from './payments'
 
 export default {
     namespaced: true,
@@ -15,6 +16,7 @@ export default {
     modules: {
         albums,
         songs,
-        mediaObjects
+        mediaObjects,
+        payments
     }
 }

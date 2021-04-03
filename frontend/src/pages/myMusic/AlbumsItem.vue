@@ -4,9 +4,9 @@
       .col-xs-12.col-sm-4.flex
         q-img.rounded-borders(:src="albumArt" basic)
       
-      .col-xs-12.col-sm-8
-        q-card
-          q-card-section.column.justify-center
+      .col-xs-12.col-sm-8.column
+        q-card.col.row
+          q-card-section.col.column.justify-center
             .text-h2.text-weight-normal {{ albumData.name }}
             .text-h4.text-weight-thin {{ albumData.artist }}
 
@@ -15,7 +15,7 @@
         .text-h5 Tracks
         q-btn(
             color="primary"
-            label="Preview album"
+            label="Play album"
             no-caps
             @click="playAlbum()")
       q-markup-table
