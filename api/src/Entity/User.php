@@ -25,11 +25,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  *             "normalization_context"= {"groups" = {"get"}}
  *         },
  *         "post"={
- *             "security"="is_granted('ROLE_USER')",
+ *             "security"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
  *             "route_name"="api_users_post"
  *         }
  *     },
  *     itemOperations={
+ *         "delete"={"security"="is_granted('ROLE_ADMIN')"},
  *         "get"={
  *             "normalization_context"= {"groups" = {"get"}}
  *         },

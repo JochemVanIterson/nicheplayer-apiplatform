@@ -11,8 +11,9 @@
         q-btn-dropdown(v-else stretch flat no-caps)
           template(v-slot:label)
             div(class="row items-center no-wrap")
-              q-avatar
-                img.profilePic(:src="userProfilePic")
+              q-avatar(color="grey-6")
+                img.profilePic(v-if="userHasProfilePic" :src="userProfilePic")
+                span(v-else) {{userInitials}}
               div.q-ml-sm(class="text-center" v-if="$q.screen.gt.xs") {{userFullName}}
 
           q-list
@@ -93,6 +94,8 @@ export default {
     isLoggedIn() { return this.$store.getters["system/isLoggedIn"] },
     userFullName() { return this.isLoggedIn ? this.$store.getters["system/userFullName"] : '' },
     userProfilePic() { return this.isLoggedIn ? this.$store.getters["system/userProfilePic"] : '' },
+    userHasProfilePic() { return this.isLoggedIn ? this.$store.getters["system/userHasProfilePic"] : '' },
+    userInitials() { return this.isLoggedIn ? this.$store.getters["system/userInitials"] : '' },
     userAdmin() { return this.isLoggedIn ? this.$store.getters["system/userAdmin"] : false }
   },
   methods: {
