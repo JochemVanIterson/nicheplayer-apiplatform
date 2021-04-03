@@ -6,6 +6,11 @@ export default function () {
     playlist: [],
 
     /**
+     * Page on which the playlist is started
+     */
+    playlistPage: '',
+
+    /**
      * Index of playlist which file is playing. '-1' for unset
      */
     playingIndex: 0,
