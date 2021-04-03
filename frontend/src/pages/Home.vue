@@ -9,9 +9,9 @@
               q-card-section
                 | PLACEHOLDER
               .row.q-pa-sm.q-gutter-x-sm
-                  q-btn.col(v-if="isLoggedIn" label="Open" noCaps color="primary" to="/explore")
-                  q-btn.col(v-if="!isLoggedIn" label="Register" noCaps color="primary" to="/register")
-                  q-btn.col(v-if="!isLoggedIn" label="Login" noCaps color="primary" to="/login")
+                q-btn.col(v-if="isLoggedIn" label="Explore" noCaps color="primary" to="/explore")
+                q-btn.col(v-if="!isLoggedIn" label="Register" noCaps color="primary" to="/register")
+                q-btn.col(v-if="!isLoggedIn" label="Login" noCaps color="primary" to="/login")
 
         .flex.flex-center.q-pa-xl.bg-grey-4(style="min-height:300px")
           | PLACEHOLDER
@@ -19,7 +19,7 @@
           q-toolbar-title Nicheplayer
           q-btn(v-if="!isLoggedIn" stretch flat label="Register" to="/register" no-caps)
           q-btn(v-if="!isLoggedIn" stretch flat label="Login" to="/login" no-caps)
-          q-btn(v-if="isLoggedIn"  stretch flat label="Open" to="/explore" no-caps)
+          q-btn(v-if="isLoggedIn"  stretch flat label="Explore" to="/explore" no-caps)
           
 </template>
 

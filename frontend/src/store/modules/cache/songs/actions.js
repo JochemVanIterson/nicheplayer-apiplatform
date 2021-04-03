@@ -17,3 +17,13 @@ export function getFromAPI({ state, commit, rootState, dispatch }, { id, follow 
       commit("updateValue", { id: id, value: data })
     })
 }
+
+export function getAllFromAPI({ state, commit, rootState, dispatch }) {
+  return dispatch("system/apiRequest", { path: `songs` }, { root: true })
+    .then((data) => {
+      data['hydra:member'].forEach(element => {
+        dispatch("cache/albums/getFromAPI", { id: element.album, follow: true }, { root: true })
+        commit("updateValue", { id: element.id, value: element })
+      });
+    })
+}
