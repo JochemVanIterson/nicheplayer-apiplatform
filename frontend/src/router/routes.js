@@ -23,6 +23,12 @@ const routes = [
     component: () => import('pages/LoginPage.vue'),
     meta: { hideForAuth: true },
   },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('pages/RegisterPage.vue'),
+    meta: { hideForAuth: false },
+  },
 
   // Always leave this as last one,
   // but you can also remove it
