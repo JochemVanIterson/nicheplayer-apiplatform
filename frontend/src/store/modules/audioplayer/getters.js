@@ -1,5 +1,3 @@
-// import _ from "lodash"
-
 export function getPlaylist(state) {
     return state.playlist
 }
@@ -48,4 +46,8 @@ export function getMetaTrackNumber(state, getters) {
 export function getMetaAlbumArt(state, getters) {
     if (getters['getCurrentSong'].album && getters['getCurrentSong'].album.albumArt) return getters['getCurrentSong'].album.albumArt.contentUrl
     return ""
+}
+
+export function getPlaylistPage(state) {
+    return state.playlistPage
 }
