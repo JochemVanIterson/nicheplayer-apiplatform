@@ -48,7 +48,9 @@
           tbody
             tr(v-for="(song, i) in songsSorted" @click="rowClicked(i)" :class="{'q-tr--no-hover':!songPlayable(song), 'disabled':!songPlayable(song)}")
               td(class="text-right") {{song.trackNumber}}
-              td(class="text-left") {{song.name}}
+              td(class="text-left")
+                q-icon.q-pr-sm(name="volume_up" color="primary" size="sm" v-if="currentPlayingId == song.id")
+                span {{song.name}}
               td(class="text-left") {{song.songArtistt || albumData.artist}}
               td(class="text-left" v-if="$q.screen.gt.xs") {{`${song.duration}`}}
 </template>
@@ -103,7 +105,9 @@ export default {
     songsExplorable() {
       if (this.paymentObject && this.paymentStatus === 'success') return this.songsSorted
       else return this.songsSorted.filter((song) => song.explorable);
-    }
+    },
+    currentPlayingPage() { return this.$store.getters["audioplayer/getPlaylistPage"] },
+    currentPlayingId() { return this.currentPlayingPage == this.$route.path && this.$store.getters["audioplayer/getSongID"]() }
   },
   watch: {
     isLoggedIn(value) {
@@ -125,6 +129,7 @@ export default {
         const actionList = songList.map(song => this.$store.dispatch("audioplayer/appendPlaylist", { songID: song.id }))
         return Promise.all(actionList).then((values) => {
           this.$store.commit('audioplayer/setPlayingIndex', trackNumber)
+          this.$store.commit('audioplayer/setPlaylistPage', this.$route.path)
           this.$store.dispatch('audioplayer/setIsPlaying', true)
         });
       })

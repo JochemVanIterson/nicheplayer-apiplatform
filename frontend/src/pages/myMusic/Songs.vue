@@ -42,9 +42,8 @@ export default {
     songsPlayable() {
       return this.orderedSongs.filter((song) => song.payment && song.payment.paymentStatus == "success");
     },
-    currentPlayingId() {
-      return this.$store.getters["audioplayer/getSongID"]()
-    }
+    currentPlayingPage() { return this.$store.getters["audioplayer/getPlaylistPage"] },
+    currentPlayingId() { return this.currentPlayingPage == this.$route.path && this.$store.getters["audioplayer/getSongID"]() }
   },
   methods: {
     parsedURL(value) {
@@ -77,6 +76,7 @@ export default {
         const actionList = songList.map(song => this.$store.dispatch("audioplayer/appendPlaylist", { songID: song.id }))
         return Promise.all(actionList).then((values) => {
           this.$store.commit('audioplayer/setPlayingIndex', trackNumber)
+          this.$store.commit('audioplayer/setPlaylistPage', this.$route.path)
           this.$store.dispatch('audioplayer/setIsPlaying', true)
         });
       })
