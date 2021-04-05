@@ -12,6 +12,10 @@
           .text-weight-light {{artist}}
       .col
       .col-auto.q-gutter-x-sm
+        q-btn(round flat dense icon="volume_up" @click.stop="")
+          q-popup-edit(v-model="playerVolume" content-class="text-white" auto-save @before-show="volume = $howlerPlayer.getVolume()")
+            q-slider.q-my-md( v-model="playerVolume" :min="0" :max="1" :step="0"
+              reverse autofocus vertical dense :style="volumeSliderStyle")
         q-btn(round outline dense icon="fast_rewind" v-if="$q.screen.gt.xs" @click.stop="rewindClicked")
         q-btn(round outline :icon="isPlaying?'pause':'play_arrow'" @click.stop="playClicked")
         q-btn(round outline dense icon="fast_forward" @click.stop="forwardClick")
@@ -31,7 +35,8 @@ export default {
     return {
       progress: 0,
       playlistVisible: false,
-      color: {}
+      color: {},
+      volume: 0
     }
   },
   computed: {
@@ -55,6 +60,13 @@ export default {
     backgroundColor() { return (this.color && this.color.hex) ? this.color.hex : "#888888" },
     backgroundDark() { return this.color && this.color.hex && colors.luminosity(this.color.hex) > 0.3 },
     onTopColor() { return colors.lighten(this.backgroundColor, this.backgroundDark ? -70 : 70) },
+    playerVolume: {
+      get() { return this.volume },
+      set(val) {
+        console.log(val)
+        this.$howlerPlayer.volume(val)
+      }
+    },
     progressStyle() {
       return {
         color: colors.lighten(this.backgroundColor, this.backgroundDark ? -40 : 40),
@@ -65,6 +77,11 @@ export default {
       return {
         'background-color': this.backgroundColor,
         color: this.onTopColor
+      }
+    },
+    volumeSliderStyle() {
+      return {
+        color: this.backgroundColor
       }
     }
   },

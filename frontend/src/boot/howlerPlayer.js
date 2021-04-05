@@ -146,6 +146,10 @@ export default async ({ app, router, Vue, store }) => {
       Howler.volume(val)
     },
 
+    getVolume: function () {
+      return Howler.volume()
+    },
+
     /**
      * Seek to a new position in the currently playing track.
      * @param  {Number} per Percentage through the song to skip.
