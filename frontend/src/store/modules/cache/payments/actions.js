@@ -26,6 +26,7 @@ export function getFromAPIByAlbum({ state, commit, rootState, dispatch, rootGett
   return dispatch("system/apiRequest", { path: `payments`, params: { user: user.id, album } }, { root: true })
     .then((data) => {
       data = data['hydra:member'][0]
+      if (!data) return
       if (follow) {
         dispatch("cache/albums/getFromAPI", { id: data.album, follow: true }, { root: true })
       }

@@ -15,6 +15,8 @@ export function getObjectByAlbum(state) {
     let filtered = state.data.filter((e) => {
       return e.album == "/api/albums/" + album
     })
+
+    if (filtered.length == 0) return undefined
     let paymentObject = filtered[0]
     if (!paymentObject) return {}
     return paymentObject

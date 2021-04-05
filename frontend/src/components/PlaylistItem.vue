@@ -1,6 +1,6 @@
 <template lang="pug">
   q-item(clickable v-ripple v-close-popup @click="clicked")
-    q-item-section(avatar)
+    q-item-section(avatar v-if="!noimage")
       q-avatar(color="grey" rounded :icon="hasAlbumArt?undefined:'music_note'")
         img(v-if="hasAlbumArt" :src="parsedAlbumArt")
     q-item-section
@@ -17,7 +17,11 @@ export default {
   name: 'PlaylistItem',
   props: {
     songdata: [Object, String],
-    index: Number
+    index: Number,
+    noimage: {
+      default: false,
+      type: Boolean
+    }
   },
   data () {
     return {}
