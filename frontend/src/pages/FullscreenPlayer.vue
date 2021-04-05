@@ -33,13 +33,18 @@
           .col-auto.q-ma-md(:class="landscape?['flex','items-center']:[]")
             q-card(:style="controlsCardStyle")
               .q-px-md
-                q-slider(v-model="progress" :min="0" :max="1" :dark="backgroundDark" :style="sliderStyle")
+                q-slider(v-model="progress" :min="0" :max="1" :step="0" :dark="backgroundDark" :style="sliderStyle" @input="seek")
               .q-px-md.q-pb-sm.row
                 .col
                   .text-h6.text-weight-bold
                     span.q-pr-xs(v-if="hasTrackNumber") {{trackNumber}}.
                     span {{title}}
                   .text-weight-light {{artist}} - {{album}}
+                q-btn.col-auto(round flat icon="volume_up" @click.stop="")
+                  q-popup-edit(v-model="playerVolume" auto-save @before-show="volume = $howlerPlayer.getVolume()" anchor="top middle" self="top middle"
+                  )
+                    q-slider.q-my-md( v-model="playerVolume" :min="0" :max="1" :step="0"
+                      reverse autofocus vertical dense :style="volumeSliderStyle")
                 q-btn.col-auto(flat round icon="launch" @click="$router.push(currentPlayingPage)")
               q-separator(:dark="backgroundDark")
               q-card-section.row.justify-center
@@ -65,7 +70,8 @@ export default {
     return {
       progress: 0,
       drawerRight: false,
-      color: {}
+      color: {},
+      volume: 0
     }
   },
   computed: {
@@ -80,6 +86,13 @@ export default {
     album() { return this.$store.getters["audioplayer/getMetaAlbum"] },
     title() { return this.$store.getters["audioplayer/getMetaTitle"] },
     trackNumber() { return this.$store.getters["audioplayer/getMetaTrackNumber"] },
+    playerVolume: {
+      get() { return this.volume },
+      set(val) {
+        console.log(val)
+        this.$howlerPlayer.volume(val)
+      }
+    },
     hasAlbumArt() {
       let returnable = false
       if (typeof this.albumArt === "undefined") returnable = false
@@ -117,6 +130,11 @@ export default {
     },
     landscape() {
       return this.$q.screen.lt.md && this.$q.screen.width > this.$q.screen.height
+    },
+    volumeSliderStyle() {
+      return {
+        color: this.backgroundColor
+      }
     }
   },
   watch: {
@@ -133,6 +151,10 @@ export default {
     },
     playClicked() {
       this.$store.dispatch("audioplayer/toggleIsPlaying")
+    },
+    seek(val) {
+      console.log("seek", val)
+      this.$howlerPlayer.seek(val)
     },
     openPlaylist() {
       this.$store.dispatch("audioplayer/collectSongInfo")

@@ -13,7 +13,7 @@
       .col
       .col-auto.q-gutter-x-sm
         q-btn(round flat dense icon="volume_up" @click.stop="")
-          q-popup-edit(v-model="playerVolume" content-class="text-white" auto-save @before-show="volume = $howlerPlayer.getVolume()")
+          q-popup-edit(v-model="playerVolume" auto-save @before-show="volume = $howlerPlayer.getVolume()" anchor="top middle" self="top middle")
             q-slider.q-my-md( v-model="playerVolume" :min="0" :max="1" :step="0"
               reverse autofocus vertical dense :style="volumeSliderStyle")
         q-btn(round outline dense icon="fast_rewind" v-if="$q.screen.gt.xs" @click.stop="rewindClicked")
