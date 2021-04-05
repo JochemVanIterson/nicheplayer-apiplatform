@@ -1,7 +1,7 @@
 <template lang="pug">
   .flex(v-if="playlist.length > 0")
     q-linear-progress( :value="progress" :style="progressStyle" size="6px")
-    q-toolbar(@click="$router.push('/player')" :style="footerStyle")
+    q-toolbar(@click="$router.push('/player')" :style="footerStyle" v-touch-swipe.mouse.left.right="handleSwipe")
       .col-auto.row
         q-avatar(color="grey" rounded :icon="hasAlbumArt?undefined:'music_note'")
           img(v-if="hasAlbumArt" :src="parsedAlbumArt")
@@ -96,6 +96,10 @@ export default {
     },
     forwardClick() {
       this.$store.dispatch("audioplayer/goNext")
+    },
+    handleSwipe({ evt, ...info }) {
+      if (info.direction == 'left') this.forwardClick()
+      else if (info.direction == 'right') this.rewindClicked()
     },
     playClicked() {
       this.$store.dispatch("audioplayer/toggleIsPlaying")
