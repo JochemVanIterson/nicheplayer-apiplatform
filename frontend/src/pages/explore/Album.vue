@@ -38,7 +38,7 @@
               label="Preview album"
               no-caps
               @click="playAlbum()")
-        q-markup-table
+        q-markup-table#trackList
           thead
             tr
               th(class="text-right" style="width: 0px") Track
@@ -46,10 +46,10 @@
               th(class="text-left") Artist
               th(class="text-left" v-if="$q.screen.gt.xs") Duration
           tbody
-            tr(v-for="(song, i) in songsSorted" @click="rowClicked(i)" :class="{'q-tr--no-hover':!songPlayable(song), 'disabled':!songPlayable(song)}")
+            tr(v-for="(song, i) in songsSorted" @click="rowClicked(i)" :class="!songPlayable(song)?['q-tr--no-hover', 'disabled', 'track_disabled']:['cursor-pointer']")
               td(class="text-right") {{song.trackNumber}}
               td(class="text-left")
-                q-icon.q-pr-sm(name="volume_up" color="primary" size="sm" v-if="currentPlayingId == song.id")
+                q-icon.q-pr-sm(name="volume_up" color="primary" size="sm" v-if="currentPlayingId == song.id && isPlaying")
                 span {{song.name}}
               td(class="text-left") {{song.songArtistt || albumData.artist}}
               td(class="text-left" v-if="$q.screen.gt.xs") {{`${song.duration}`}}
@@ -99,7 +99,8 @@ export default {
     songsSorted() { return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber) },
     songsExplorable() { return (this.paymentObject && this.paymentStatus === 'success') ? this.songsSorted : this.songsSorted.filter((song) => song.explorable) },
     currentPlayingPage() { return this.$store.getters["audioplayer/getPlaylistPage"] },
-    currentPlayingId() { return this.currentPlayingPage == this.$route.path && this.$store.getters["audioplayer/getSongID"]() }
+    currentPlayingId() { return this.currentPlayingPage == this.$route.path && this.$store.getters["audioplayer/getSongID"]() },
+    isPlaying() { return this.$store.getters["audioplayer/getIsPlaying"] },
   },
   watch: {
     isLoggedIn(value) {
@@ -188,5 +189,8 @@ export default {
   .flex-break{
     width: 0 !important
   }
+}
+.track_disabled {
+  background-color: #ccc
 }
 </style>

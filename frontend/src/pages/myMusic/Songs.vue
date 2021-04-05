@@ -28,6 +28,9 @@ export default {
         })[0]
         song.payment = payment
         return song
+      }).filter((e) => {
+        console.log(e)
+        return e.payment
       }).sort((a, b) => {
         if (!a.payment || !b.payment) return 0
         // Sort success payments on top
