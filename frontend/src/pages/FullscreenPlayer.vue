@@ -26,7 +26,7 @@
       q-page.flex.justify-center
         div(style="max-width:600px; width:100%;" :class="landscape?'row':'column'")
           .col.flex.flex-center
-            q-img.col.rounded-borders.shadow-1.q-mx-sm-xl.q-mx-md(:src="parsedAlbumArt" :ratio="1" )
+            q-img.col.rounded-borders.shadow-1.q-mx-sm-xl.q-mx-md(:src="parsedAlbumArt" :ratio="1" v-touch-swipe.mouse.left.right="handleSwipe" )
               template(v-slot:error)
                 div(class="absolute-full flex flex-center bg-grey text-white")
                   q-icon(size="100px" name="music_note")
@@ -34,17 +34,19 @@
             q-card(:style="controlsCardStyle")
               .q-px-md
                 q-slider(v-model="progress" :min="0" :max="1" :dark="backgroundDark" :style="sliderStyle")
-              .q-px-md.q-pb-sm
-                .text-h6.text-weight-bold
-                  span.q-pr-xs(v-if="hasTrackNumber") {{trackNumber}}.
-                  span {{title}}
-                .text-weight-light {{artist}} - {{album}}
+              .q-px-md.q-pb-sm.row
+                .col
+                  .text-h6.text-weight-bold
+                    span.q-pr-xs(v-if="hasTrackNumber") {{trackNumber}}.
+                    span {{title}}
+                  .text-weight-light {{artist}} - {{album}}
+                q-btn.col-auto(flat round icon="launch" @click="$router.push(currentPlayingPage)")
               q-separator(:dark="backgroundDark")
               q-card-section.row.justify-center
                 .q-gutter-x-sm.q-gutter-sm-x-lg
-                  q-btn(size="md" round outline dense icon="fast_rewind" @click="rewindClicked")
+                  q-btn(size="md" round outline icon="fast_rewind" @click="rewindClicked")
                   q-btn(size="lg" round outline :icon="isPlaying?'pause':'play_arrow'" @click="playClicked")
-                  q-btn(size="md" round outline dense icon="fast_forward" @click="forwardClick")
+                  q-btn(size="md" round outline icon="fast_forward" @click="forwardClick")
 
 </template>
 
@@ -71,6 +73,7 @@ export default {
     playlist() { return this.$store.getters["audioplayer/getPlaylist"] },
     playlistData() { return this.$store.getters["audioplayer/getPlaylistData"] },
     currentSongData() { return this.$store.getters["audioplayer/getCurrentSong"] },
+    currentPlayingPage() { return this.$store.getters["audioplayer/getPlaylistPage"] },
     albumArt() { return this.$store.getters["audioplayer/getMetaAlbumArt"] },
     parsedAlbumArt() { return this.$store.getters['system/getMediaURL'](this.albumArt) },
     artist() { return this.$store.getters["audioplayer/getMetaArtist"] },
@@ -133,6 +136,10 @@ export default {
     },
     openPlaylist() {
       this.$store.dispatch("audioplayer/collectSongInfo")
+    },
+    handleSwipe({ evt, ...info }) {
+      if (info.direction == 'left') this.forwardClick()
+      else if (info.direction == 'right') this.rewindClicked()
     },
     calculateBackgroundColor() {
       if (!this.albumArt) return
