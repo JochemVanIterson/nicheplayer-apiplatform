@@ -16,7 +16,7 @@
         .flex.flex-center.q-pa-xl.bg-grey-4(style="min-height:300px")
           | PLACEHOLDER
         q-toolbar.text-white.fixed-top#toolbar
-          q-toolbar-title Nicheplayer
+          q-toolbar-title NichePlayer
           q-btn(v-if="!isLoggedIn" stretch flat label="Register" to="/register" no-caps)
           q-btn(v-if="!isLoggedIn" stretch flat label="Login" to="/login" no-caps)
           q-btn(v-if="isLoggedIn"  stretch flat label="Explore" to="/explore" no-caps)
