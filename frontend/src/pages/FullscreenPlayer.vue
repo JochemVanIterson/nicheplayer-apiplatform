@@ -11,7 +11,7 @@
       side="right"
       v-model="drawerRight"
       show-if-above elevated
-      :width="250"
+      :width="300"
       :breakpoint="1000"
       content-style="background-color: transparent"
       style="background-color: transparent")
@@ -85,14 +85,8 @@ export default {
       },
     hasTrackNumber() { return this.trackNumber > 0 },
     backgroundColor() { return (this.color && this.color.hex) ? this.color.hex : "#888888" },
-    backgroundDark() {
-      console.log(colors.luminosity(this.color.hex))
-      return this.color && this.color.hex && colors.luminosity(this.color.hex) > 0.3
-    },
-    onTopColor() {
-      console.log("opTopColor", this.backgroundColor)
-      return colors.lighten(this.backgroundColor, this.backgroundDark ? -70 : 70)
-    },
+    backgroundDark() { return this.color && this.color.hex && colors.luminosity(this.color.hex) > 0.3 },
+    onTopColor() { return colors.lighten(this.backgroundColor, this.backgroundDark ? -70 : 70) },
     pageStyle() {
       return {
         'background-image': `linear-gradient(to bottom right, ${this.backgroundColor}, ${colors.lighten(this.backgroundColor, -50)})`

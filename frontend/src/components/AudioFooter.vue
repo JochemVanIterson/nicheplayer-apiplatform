@@ -1,7 +1,7 @@
 <template lang="pug">
   .flex(v-if="playlist.length > 0")
-    q-linear-progress( :value="progress" color="secondary")
-    q-toolbar(@click="$router.push('/player')")
+    q-linear-progress( :value="progress" :style="progressStyle" size="6px")
+    q-toolbar(@click="$router.push('/player')" :style="footerStyle")
       .col-auto.row
         q-avatar(color="grey" rounded :icon="hasAlbumArt?undefined:'music_note'")
           img(v-if="hasAlbumArt" :src="parsedAlbumArt")
@@ -10,13 +10,6 @@
             span.q-pr-xs(v-if="hasTrackNumber") {{trackNumber}}.
             span {{title}}
           .text-weight-light {{artist}}
-        //- q-popup-proxy(@show="openPlaylist")
-        //-   q-card(style="min-width:250px")
-        //-     q-list
-        //-       q-item-label(header) Playlist
-        //-       PlaylistItem(v-for="(song, index) in playlistData" :index="index" :songdata="song")
-        //-       q-item(v-if="playlistData.length == 0")
-        //-         q-item-section Empty
       .col
       .col-auto.q-gutter-x-sm
         q-btn(round outline dense icon="fast_rewind" v-if="$q.screen.gt.xs" @click.stop="rewindClicked")
@@ -26,6 +19,8 @@
 
 <script>
 import PlaylistItem from "./PlaylistItem";
+import FastAverageColor from 'fast-average-color';
+import { colors } from 'quasar'
 
 export default {
   name: 'AudioFooter',
@@ -35,7 +30,8 @@ export default {
   data () {
     return {
       progress: 0,
-      playlistVisible: false
+      playlistVisible: false,
+      color: {}
     }
   },
   computed: {
@@ -55,7 +51,27 @@ export default {
       else returnable = this.albumArt !== ""
       return returnable
       },
-    hasTrackNumber() { return this.trackNumber > 0 }
+    hasTrackNumber() { return this.trackNumber > 0 },
+    backgroundColor() { return (this.color && this.color.hex) ? this.color.hex : "#888888" },
+    backgroundDark() { return this.color && this.color.hex && colors.luminosity(this.color.hex) > 0.3 },
+    onTopColor() { return colors.lighten(this.backgroundColor, this.backgroundDark ? -70 : 70) },
+    progressStyle() {
+      return {
+        color: colors.lighten(this.backgroundColor, this.backgroundDark ? -40 : 40),
+        'background-color': this.backgroundColor
+      }
+    },
+    footerStyle() {
+      return {
+        'background-color': this.backgroundColor,
+        color: this.onTopColor
+      }
+    }
+  },
+  watch: {
+    albumArt(val) {
+      this.calculateBackgroundColor()
+    }
   },
   methods: {
     rewindClicked() {
@@ -69,10 +85,23 @@ export default {
     },
     openPlaylist() {
       this.$store.dispatch("audioplayer/collectSongInfo")
+    },
+    calculateBackgroundColor() {
+      if (!this.albumArt) return
+
+      const fac = new FastAverageColor();
+      fac.getColorAsync(this.parsedAlbumArt)
+      .then(color => {
+        this.color = color
+      })
+      .catch(e => {
+          console.log(e);
+      });
     }
   },
   mounted() {
     this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
+    this.calculateBackgroundColor()
     setInterval(() => {
       this.progress = this.$howlerPlayer.progress / 100
     }, 100)
