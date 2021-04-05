@@ -3,7 +3,7 @@ export default function () {
     /**
      * List of song ids in original order
      */
-    playlist: [],
+    playlist: [13],
 
     /**
      * Page on which the playlist is started
