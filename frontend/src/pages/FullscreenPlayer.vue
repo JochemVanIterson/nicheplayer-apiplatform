@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-layout.bg-grey-4(view="lHh Lpr lFf")
+  q-layout(view="lHh Lpr lFf" :style="pageStyle")
     q-header.bg-transparent
       q-toolbar.text-white#toolbar
         q-btn(stretch flat label="Back" icon="arrow_back" @click="$router.go(-1)" no-caps)
@@ -10,42 +10,49 @@
     q-drawer(
       side="right"
       v-model="drawerRight"
-      show-if-above
-      bordered
+      show-if-above elevated
       :width="250"
-      :breakpoint="600")
-      q-scroll-area(class="fit")
-        q-list
+      :breakpoint="1000"
+      content-style="background-color: transparent"
+      style="background-color: transparent")
+      q-scroll-area(class="fit" :style="drawerStyle")
+        q-list(:dark="backgroundDark")
           q-item-label(header) Playlist
           PlaylistItem(v-for="(song, index) in playlistData" :index="index" :songdata="song" noimage)
           q-item(v-if="playlistData.length == 0")
             q-item-section Empty
 
     q-page-container
-      q-page.flex.justify-center(padding)
-        .column(style="max-width:600px; width:100%;")
+      q-page.flex.justify-center
+        div(style="max-width:600px; width:100%;" :class="landscape?'row':'column'")
           .col.flex.flex-center
-            //- q-responsive.col(:ratio="1")
-            //-   div(class="rounded-borders bg-primary text-white flex flex-center")
-            //-     | Ratio 1:1
             q-img.col.rounded-borders.shadow-1.q-mx-sm-xl.q-mx-md(:src="parsedAlbumArt" :ratio="1" )
               template(v-slot:error)
                 div(class="absolute-full flex flex-center bg-grey text-white")
                   q-icon(size="100px" name="music_note")
-          q-card.q-mt-md
-            .q-px-md
-              q-slider(v-model="progress" :min="0" :max="1")
-            q-card-section.row.justify-center
-              .q-gutter-x-sm.q-gutter-sm-x-lg
-                q-btn(size="md" round outline dense icon="fast_rewind" @click="rewindClicked")
-                q-btn(size="lg" round outline :icon="isPlaying?'pause':'play_arrow'" @click="playClicked")
-                q-btn(size="md" round outline dense icon="fast_forward" @click="forwardClick")
+          .col-auto.q-ma-md(:class="landscape?['flex','items-center']:[]")
+            q-card(:style="controlsCardStyle")
+              .q-px-md
+                q-slider(v-model="progress" :min="0" :max="1" :dark="backgroundDark" :style="sliderStyle")
+              .q-px-md.q-pb-sm
+                .text-h6.text-weight-bold
+                  span.q-pr-xs(v-if="hasTrackNumber") {{trackNumber}}.
+                  span {{title}}
+                .text-weight-light {{artist}} - {{album}}
+              q-separator(:dark="backgroundDark")
+              q-card-section.row.justify-center
+                .q-gutter-x-sm.q-gutter-sm-x-lg
+                  q-btn(size="md" round outline dense icon="fast_rewind" @click="rewindClicked")
+                  q-btn(size="lg" round outline :icon="isPlaying?'pause':'play_arrow'" @click="playClicked")
+                  q-btn(size="md" round outline dense icon="fast_forward" @click="forwardClick")
 
 </template>
 
 <script>
 
 import PlaylistItem from "../components/PlaylistItem";
+import FastAverageColor from 'fast-average-color';
+import { colors } from 'quasar'
 
 export default {
   name: 'FullscreenPlayer',
@@ -55,7 +62,8 @@ export default {
   data () {
     return {
       progress: 0,
-      drawerRight: false
+      drawerRight: false,
+      color: {}
     }
   },
   computed: {
@@ -75,7 +83,49 @@ export default {
       else returnable = this.albumArt !== ""
       return returnable
       },
-    hasTrackNumber() { return this.trackNumber > 0 }
+    hasTrackNumber() { return this.trackNumber > 0 },
+    backgroundColor() { return (this.color && this.color.hex) ? this.color.hex : "#888888" },
+    backgroundDark() {
+      console.log(colors.luminosity(this.color.hex))
+      return this.color && this.color.hex && colors.luminosity(this.color.hex) > 0.3
+    },
+    onTopColor() {
+      console.log("opTopColor", this.backgroundColor)
+      return colors.lighten(this.backgroundColor, this.backgroundDark ? -70 : 70)
+    },
+    pageStyle() {
+      return {
+        'background-image': `linear-gradient(to bottom right, ${this.backgroundColor}, ${colors.lighten(this.backgroundColor, -50)})`
+      }
+    },
+    controlsCardStyle() {
+      console.log("controlsCardStyle", this.backgroundColor)
+      return {
+        color: this.backgroundDark ? "white" : colors.lighten(this.backgroundColor, -30),
+        'background-color': colors.changeAlpha(this.onTopColor, 0.7),
+        'min-width': this.landscape ? '275px' : undefined
+      }
+    },
+    drawerStyle() {
+      return {
+        'background-color': colors.changeAlpha(this.onTopColor, 0.7),
+        'backdrop-filter': "blur(10px)",
+        color: this.backgroundDark ? "white" : colors.lighten(this.backgroundColor, -100),
+      }
+    },
+    sliderStyle() {
+      return {
+        color: this.backgroundDark ? "white" : colors.lighten(this.backgroundColor, -30),
+      }
+    },
+    landscape() {
+      return this.$q.screen.lt.md && this.$q.screen.width > this.$q.screen.height
+    }
+  },
+  watch: {
+    albumArt(val) {
+      this.calculateBackgroundColor()
+    }
   },
   methods: {
     rewindClicked() {
@@ -89,10 +139,23 @@ export default {
     },
     openPlaylist() {
       this.$store.dispatch("audioplayer/collectSongInfo")
+    },
+    calculateBackgroundColor() {
+      if (!this.albumArt) return
+
+      const fac = new FastAverageColor();
+      fac.getColorAsync(this.parsedAlbumArt)
+      .then(color => {
+        this.color = color
+      })
+      .catch(e => {
+          console.log(e);
+      });
     }
   },
   mounted() {
     this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
+    this.calculateBackgroundColor()
     setInterval(() => {
       this.progress = this.$howlerPlayer.progress / 100
     }, 100)
@@ -100,14 +163,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   #toolbar {
     background-color: #000000A0;
   }
-  #homeCard {
-    width: 100%;
-    max-width: 400px;
-    color: white;
-    background-color: #222222A0;
+  .q-drawer {
+    background-color: transparent;
   }
 </style>

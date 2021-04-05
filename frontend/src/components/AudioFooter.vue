@@ -1,7 +1,7 @@
 <template lang="pug">
   .flex(v-if="playlist.length > 0")
     q-linear-progress( :value="progress" color="secondary")
-    q-toolbar(@click.self="$router.push('/player')")
+    q-toolbar(@click="$router.push('/player')")
       .col-auto.row
         q-avatar(color="grey" rounded :icon="hasAlbumArt?undefined:'music_note'")
           img(v-if="hasAlbumArt" :src="parsedAlbumArt")
@@ -10,18 +10,18 @@
             span.q-pr-xs(v-if="hasTrackNumber") {{trackNumber}}.
             span {{title}}
           .text-weight-light {{artist}}
-        q-popup-proxy(@show="openPlaylist")
-          q-card(style="min-width:250px")
-            q-list
-              q-item-label(header) Playlist
-              PlaylistItem(v-for="(song, index) in playlistData" :index="index" :songdata="song")
-              q-item(v-if="playlistData.length == 0")
-                q-item-section Empty
+        //- q-popup-proxy(@show="openPlaylist")
+        //-   q-card(style="min-width:250px")
+        //-     q-list
+        //-       q-item-label(header) Playlist
+        //-       PlaylistItem(v-for="(song, index) in playlistData" :index="index" :songdata="song")
+        //-       q-item(v-if="playlistData.length == 0")
+        //-         q-item-section Empty
       .col
       .col-auto.q-gutter-x-sm
-        q-btn(round outline dense icon="fast_rewind" v-if="$q.screen.gt.xs" @click="rewindClicked")
-        q-btn(round outline :icon="isPlaying?'pause':'play_arrow'" @click="playClicked")
-        q-btn(round outline dense icon="fast_forward" @click="forwardClick")
+        q-btn(round outline dense icon="fast_rewind" v-if="$q.screen.gt.xs" @click.stop="rewindClicked")
+        q-btn(round outline :icon="isPlaying?'pause':'play_arrow'" @click.stop="playClicked")
+        q-btn(round outline dense icon="fast_forward" @click.stop="forwardClick")
 </template>
 
 <script>
