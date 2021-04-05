@@ -27,7 +27,13 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: () => import('pages/RegisterPage.vue'),
-    meta: { hideForAuth: false },
+    meta: { hideForAuth: true },
+  },
+  {
+    path: '/player',
+    name: 'Player',
+    meta: { requiresLogin: true },
+    component: () => import('pages/FullscreenPlayer.vue'),
   },
 
   // Always leave this as last one,
