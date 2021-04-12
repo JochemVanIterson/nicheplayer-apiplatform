@@ -27,11 +27,14 @@ class AudioParser extends BaseParser
         $id3Data = $this->getID3->analyze($this->file->getPathname());
         $this->getID3->CopyTagsToComments($id3Data);
 
+        $meta['duration'] = (isset($id3Data['playtime_seconds'])) ? $id3Data['playtime_seconds'] : 0;
+        
         if (isset($id3Data['tags']['id3v2'])) {
             $tag = $id3Data['tags']['id3v2'];
             if (isset($tag['artist'])) $meta['artist'] = $tag['artist'][0];
             if (isset($tag['title']))  $meta['title']  = $tag['title'][0];
             if (isset($tag['album']))  $meta['album']  = $tag['album'][0];
+            if (isset($tag['track']))  $meta['track']  = $tag['track'];
         }
 
         return $meta;
