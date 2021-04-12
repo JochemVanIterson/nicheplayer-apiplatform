@@ -17,6 +17,12 @@ RUN apk add --no-cache \
 		file \
 		gettext \
 		git \
+		freetype \
+		libjpeg-turbo \
+		libpng \
+		freetype-dev \
+		libjpeg-turbo-dev \
+		libpng-dev \
 	;
 
 ARG APCU_VERSION=5.1.19
@@ -28,14 +34,24 @@ RUN set -eux; \
 		postgresql-dev \
 		mysql-dev \
 		zlib-dev \
+		freetype-dev \
+		libjpeg-turbo-dev \
+		libpng-dev \
 	; \
 	\
 	docker-php-ext-configure zip; \
+	\
+	docker-php-ext-configure gd \
+		--with-freetype=/usr/include/ \
+		# --with-png=/usr/include/ \
+		--with-jpeg=/usr/include/ \
+	; \
 	docker-php-ext-install -j$(nproc) \
 		intl \
 		pdo_pgsql \
 		pdo_mysql \
 		zip \
+		gd \
 	; \
 	pecl install \
 		apcu-${APCU_VERSION} \
