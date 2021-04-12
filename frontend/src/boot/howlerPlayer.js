@@ -178,9 +178,15 @@ export default async ({ app, router, Vue, store }) => {
         var sound = data.howl
 
         // Convert the percent into a seek position.
-        if (sound && sound.playing() && data.duration) {
+        if (sound && data.duration) {
           sound.seek(data.duration * per)
         }
+
+        if (!sound.playing()) {
+          store.dispatch('audioplayer/setIsPlaying', true)
+        }
+
+        requestAnimationFrame(self.step.bind(self))
       },
 
       /**
@@ -216,7 +222,11 @@ export default async ({ app, router, Vue, store }) => {
       }
     },
     created() {
+      var self = this
       console.log("created", Howler.usingWebAudio)
+      setInterval(() => {
+        requestAnimationFrame(self.step.bind(self))
+      }, 1000)
     }
   })
 
