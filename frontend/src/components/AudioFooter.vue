@@ -33,10 +33,9 @@ export default {
   },
   data () {
     return {
-      progress: 0,
       playlistVisible: false,
       color: {},
-      volume: 0
+      volume: 0,
     }
   },
   computed: {
@@ -83,12 +82,15 @@ export default {
       return {
         color: this.backgroundColor
       }
+    },
+    progress() {
+      return this.$howlerPlayer.progress / 100
     }
   },
   watch: {
     albumArt(val) {
       this.calculateBackgroundColor()
-    }
+    },
   },
   methods: {
     rewindClicked() {
@@ -123,9 +125,6 @@ export default {
   mounted() {
     this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
     this.calculateBackgroundColor()
-    setInterval(() => {
-      this.progress = this.$howlerPlayer.progress / 100
-    }, 100)
   }
 }
 </script>

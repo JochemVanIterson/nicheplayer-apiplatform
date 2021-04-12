@@ -59,7 +59,7 @@ class Song
     private $file;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $duration;
 
@@ -130,12 +130,13 @@ class Song
         return $this;
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): ?float
     {
-        return $this->duration;
+        if ($this->duration) return $this->duration;
+        else return $this->file->getMeta()['duration'];
     }
 
-    public function setDuration(?int $duration): self
+    public function setDuration(?float $duration): self
     {
         $this->duration = $duration;
 

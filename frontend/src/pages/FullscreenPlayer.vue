@@ -33,7 +33,10 @@
           .col-auto.q-ma-md(:class="landscape?['flex','items-center']:[]")
             q-card(:style="controlsCardStyle")
               .q-px-md
-                q-slider(v-model="progress" :min="0" :max="1" :step="0" :dark="backgroundDark" :style="sliderStyle" @input="seek")
+                q-slider(v-model="progress" :min="0" :max="1" :step="0" :dark="backgroundDark" :style="sliderStyle")
+              .q-px-md.row.justify-between
+                .text-weight-light {{prettyDate(progress * duration)}}
+                .text-weight-light {{prettyDate(duration)}}
               .q-px-md.q-pb-sm.row
                 .col
                   .text-h6.text-weight-bold
@@ -59,7 +62,7 @@
 
 import PlaylistItem from "../components/PlaylistItem";
 import FastAverageColor from 'fast-average-color';
-import { colors } from 'quasar'
+import { colors, date } from 'quasar'
 
 export default {
   name: 'FullscreenPlayer',
@@ -68,7 +71,6 @@ export default {
   },
   data () {
     return {
-      progress: 0,
       drawerRight: false,
       color: {},
       volume: 0
@@ -86,11 +88,20 @@ export default {
     album() { return this.$store.getters["audioplayer/getMetaAlbum"] },
     title() { return this.$store.getters["audioplayer/getMetaTitle"] },
     trackNumber() { return this.$store.getters["audioplayer/getMetaTrackNumber"] },
+    duration() { return this.$store.getters["audioplayer/getMetaDuration"] },
     playerVolume: {
       get() { return this.volume },
       set(val) {
         console.log(val)
         this.$howlerPlayer.volume(val)
+      }
+    },
+    progress: {
+      get() {
+        return this.$howlerPlayer.progress / 100
+      },
+      set(val) {
+        this.$howlerPlayer.seek(val)
       }
     },
     hasAlbumArt() {
@@ -143,6 +154,9 @@ export default {
     }
   },
   methods: {
+    prettyDate (timestamp) {
+      return date.formatDate(date.buildDate({ minutes: 0, seconds: timestamp }), 'mm:ss')
+    },
     rewindClicked() {
       this.$store.dispatch("audioplayer/goBack")
     },
@@ -151,10 +165,6 @@ export default {
     },
     playClicked() {
       this.$store.dispatch("audioplayer/toggleIsPlaying")
-    },
-    seek(val) {
-      console.log("seek", val)
-      this.$howlerPlayer.seek(val)
     },
     openPlaylist() {
       this.$store.dispatch("audioplayer/collectSongInfo")
@@ -179,9 +189,6 @@ export default {
   mounted() {
     this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
     this.calculateBackgroundColor()
-    setInterval(() => {
-      this.progress = this.$howlerPlayer.progress / 100
-    }, 100)
   }
 }
 </script>

@@ -32,10 +32,11 @@
               q-icon.q-pr-sm(name="volume_up" color="primary" size="sm" v-if="currentPlayingId == song.id")
               span {{song.name}}
             td(class="text-left") {{song.songArtistt || albumData.artist}}
-            td(class="text-left" v-if="$q.screen.gt.xs") {{`${song.duration}`}}
+            td(class="text-left" v-if="$q.screen.gt.xs") {{`${prettyDate(song.duration)}`}}
 </template>
 
 <script>
+import { date } from 'quasar'
 export default {
   name: 'MyAlbumItem',
   data() {
@@ -68,6 +69,9 @@ export default {
     }
   },
   methods: {
+    prettyDate (timestamp) {
+      return date.formatDate(date.buildDate({ minutes: 0, seconds: timestamp }), 'mm:ss')
+    },
     rowClicked (index) {
       this.playAlbum(index)
     },
