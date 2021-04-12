@@ -33,7 +33,7 @@
           .col-auto.q-ma-md(:class="landscape?['flex','items-center']:[]")
             q-card(:style="controlsCardStyle")
               .q-px-md
-                q-slider(v-model="progress" :min="0" :max="1" :step="0" :dark="backgroundDark" :style="sliderStyle" @input="seek")
+                q-slider(v-model="progress" :min="0" :max="1" :step="0" :dark="backgroundDark" :style="sliderStyle")
               .q-px-md.q-pb-sm.row
                 .col
                   .text-h6.text-weight-bold
@@ -68,7 +68,6 @@ export default {
   },
   data () {
     return {
-      progress: 0,
       drawerRight: false,
       color: {},
       volume: 0
@@ -91,6 +90,14 @@ export default {
       set(val) {
         console.log(val)
         this.$howlerPlayer.volume(val)
+      }
+    },
+    progress: {
+      get() {
+        return this.$howlerPlayer.progress / 100
+      },
+      set(val) {
+        this.$howlerPlayer.seek(val)
       }
     },
     hasAlbumArt() {
@@ -152,10 +159,6 @@ export default {
     playClicked() {
       this.$store.dispatch("audioplayer/toggleIsPlaying")
     },
-    seek(val) {
-      console.log("seek", val)
-      this.$howlerPlayer.seek(val)
-    },
     openPlaylist() {
       this.$store.dispatch("audioplayer/collectSongInfo")
     },
@@ -179,9 +182,6 @@ export default {
   mounted() {
     this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
     this.calculateBackgroundColor()
-    setInterval(() => {
-      this.progress = this.$howlerPlayer.progress / 100
-    }, 100)
   }
 }
 </script>
