@@ -51,15 +51,18 @@ export default async ({ app, router, Vue, store }) => {
             },
             onplay: function () {
               // Display the duration.
-              self.$set(self, 'duration', sound.duration())
+              let duration = sound.duration();
+              if (!isFinite(duration)) duration = data.duration
+              self.$set(self, 'duration', duration)
 
               // Start updating the progress of the track.
               requestAnimationFrame(self.step.bind(self))
             },
             onload: function () {
               // Start the wave animation.
-              self.$set(self, 'loading', 'none')
-              console.log("onLoad", sound.duration())
+              let duration = sound.duration();
+              if (!isFinite(duration)) duration = data.duration
+              self.$set(self, 'duration', duration)
             },
             onend: function () {
               // Stop the wave animation.
@@ -171,11 +174,12 @@ export default async ({ app, router, Vue, store }) => {
         var self = this
 
         // Get the Howl we want to manipulate.
-        var sound = self.playlist[self.index].howl
+        var data = self.playlist[self.index]
+        var sound = data.howl
 
         // Convert the percent into a seek position.
-        if (sound && sound.playing() && sound.duration()) {
-          sound.seek(sound.duration() * per)
+        if (sound && sound.playing() && data.duration) {
+          sound.seek(data.duration * per)
         }
       },
 
@@ -186,11 +190,12 @@ export default async ({ app, router, Vue, store }) => {
         var self = this
 
         // Get the Howl we want to manipulate.
-        var sound = self.playlist[self.index].howl
+        var data = self.playlist[self.index]
+        var sound = data.howl
 
         // Determine our current seek position.
         var seek = sound.seek() || 0
-        self.$set(self, 'progress', (((seek / sound.duration()) * 100) || 0))
+        self.$set(self, 'progress', (((seek / data.duration) * 100) || 0))
 
         // If the sound is still playing, continue stepping.
         if (sound.playing()) {

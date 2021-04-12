@@ -71,7 +71,8 @@ export function appendPlaylist({ state, commit, dispatch, rootGetters }, { songI
     dispatch('cache/songs/getFromAPI', { id: songID }, { root: true }).then((data) => {
         const howlerObject = {
             id: songID,
-            file: rootGetters['system/getApiURL'](`/play/${songID}${explore ? '?explore' : ''}`)
+            file: rootGetters['system/getApiURL'](`/play/${songID}${explore ? '?explore' : ''}`),
+            duration: rootGetters['cache/songs/getObject'](songID).duration
         }
         Vue.prototype.$howlerPlayer.appendPlaylist(howlerObject)
     })

@@ -48,6 +48,11 @@ export function getMetaAlbumArt(state, getters) {
     return ""
 }
 
+export function getMetaDuration(state, getters) {
+    if (getters['getCurrentSong'].album && getters['getCurrentSong'].duration) return getters['getCurrentSong'].duration
+    return ""
+}
+
 export function getPlaylistPage(state) {
     return state.playlistPage
 }
