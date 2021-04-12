@@ -3,18 +3,19 @@ namespace App\MediaParsers;
 
 use App\MediaParsers\BaseParser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 
 require __DIR__.'/../../vendor/james-heinrich/getid3/getid3/getid3.php';
 
 class AudioParser extends BaseParser
 {
     private $getID3 = null;
-    function __construct(UploadedFile $file) {
+    function __construct(UploadedFile|File $file) {
         parent::__construct($file);
         $this->getID3 = new \getID3;
     }
 
-    public static function isType(UploadedFile $file): bool
+    public static function isType(UploadedFile|File $file): bool
     {
         $mime = $file->getMimeType();
         return str_contains($mime, "audio");

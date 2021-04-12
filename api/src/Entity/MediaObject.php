@@ -48,7 +48,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *                 }
  *             }
  *         },
- *         "get"
+ *         "get"={
+ *             "groups"={"media_object_read"}
+ *         }
  *     },
  *     itemOperations={
  *         "get",
