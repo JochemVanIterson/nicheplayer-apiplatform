@@ -206,6 +206,14 @@ export default async ({ app, router, Vue, store }) => {
         var seek = sound.seek() || 0
         self.$set(self, 'progress', (((seek / data.duration) * 100) || 0))
 
+        if ('setPositionState' in navigator.mediaSession) {
+          navigator.mediaSession.setPositionState({
+            duration: data.duration,
+            playbackRate: 1,
+            position: seek,
+          });
+        }
+
         // If the sound is still playing, continue stepping.
         if (sound.playing()) {
           requestAnimationFrame(self.step.bind(self))
@@ -245,6 +253,24 @@ export default async ({ app, router, Vue, store }) => {
       setInterval(() => {
         requestAnimationFrame(self.step.bind(self))
       }, 1000)
+
+      const actionHandlers = [
+        ['play', () => { store.dispatch("audioplayer/setIsPlaying", true) }],
+        ['pause', () => { store.dispatch("audioplayer/setIsPlaying", false) }],
+        ['previoustrack', () => { store.dispatch("audioplayer/goBack") }],
+        ['nexttrack', () => { store.dispatch("audioplayer/goNext") }],
+        ['seekto', (details) => {
+          self.seek(details.seekTime / self.duration)
+        }],
+      ];
+
+      for (const [action, handler] of actionHandlers) {
+        try {
+          navigator.mediaSession.setActionHandler(action, handler);
+        } catch (error) {
+          console.log(`The media session action "${action}" is not supported yet.`);
+        }
+      }
     }
   })
 
