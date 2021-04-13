@@ -35,7 +35,9 @@ class AudioParser extends BaseParser
             if (isset($tag['artist'])) $meta['artist'] = $tag['artist'][0];
             if (isset($tag['title']))  $meta['title']  = $tag['title'][0];
             if (isset($tag['album']))  $meta['album']  = $tag['album'][0];
-            if (isset($tag['track']))  $meta['track']  = $tag['track'];
+            if (isset($tag['track_number']))  $meta['track']  = $tag['track_number'][0];
+            if (isset($tag['totaltracks']))  $meta['totaltracks']  = $tag['totaltracks'][0];
+            if (isset($tag['year']))  $meta['year']  = $tag['year'][0];
         }
 
         return $meta;
