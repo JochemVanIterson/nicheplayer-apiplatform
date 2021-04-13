@@ -95,6 +95,7 @@ export default async ({ app, router, Vue, store }) => {
 
         // Keep track of the index we are currently playing.
         self.$set(self, 'index', index)
+        self.updateMediaSession()
       },
 
       /**
@@ -197,11 +198,21 @@ export default async ({ app, router, Vue, store }) => {
 
         // Get the Howl we want to manipulate.
         var data = self.playlist[self.index]
+        if (!data) return
         var sound = data.howl
+        if (!sound) return
 
         // Determine our current seek position.
         var seek = sound.seek() || 0
         self.$set(self, 'progress', (((seek / data.duration) * 100) || 0))
+
+        if ('setPositionState' in navigator.mediaSession) {
+          navigator.mediaSession.setPositionState({
+            duration: data.duration,
+            playbackRate: 1,
+            position: seek,
+          });
+        }
 
         // If the sound is still playing, continue stepping.
         if (sound.playing()) {
@@ -219,6 +230,21 @@ export default async ({ app, router, Vue, store }) => {
         var seconds = (secs - minutes * 60) || 0;
 
         return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+      },
+
+      updateMediaSession: function() {
+        if (!("mediaSession" in navigator)) return
+        const id = this.playlist[this.index].id
+        const data = store.getters["cache/songs/getObjectJoined"](id)
+        console.log("updateMediaSession", data)
+        navigator.mediaSession.metadata = new window.MediaMetadata({
+          title: data.name,
+          artist: data.songArtist || data.album.artist,
+          album: data.album.name,
+          artwork: [
+            { src: data.album.albumArt.contentUrl, type: data.album.albumArt.mime },
+          ]
+        });
       }
     },
     created() {
@@ -227,6 +253,24 @@ export default async ({ app, router, Vue, store }) => {
       setInterval(() => {
         requestAnimationFrame(self.step.bind(self))
       }, 1000)
+
+      const actionHandlers = [
+        ['play', () => { store.dispatch("audioplayer/setIsPlaying", true) }],
+        ['pause', () => { store.dispatch("audioplayer/setIsPlaying", false) }],
+        ['previoustrack', () => { store.dispatch("audioplayer/goBack") }],
+        ['nexttrack', () => { store.dispatch("audioplayer/goNext") }],
+        ['seekto', (details) => {
+          self.seek(details.seekTime / self.duration)
+        }],
+      ];
+
+      for (const [action, handler] of actionHandlers) {
+        try {
+          navigator.mediaSession.setActionHandler(action, handler);
+        } catch (error) {
+          console.log(`The media session action "${action}" is not supported yet.`);
+        }
+      }
     }
   })
 
