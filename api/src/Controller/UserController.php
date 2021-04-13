@@ -46,8 +46,10 @@ class UserController extends AbstractController
 
     protected function encodePassword(User $data, UserPasswordEncoderInterface $encoder): User
     {
-        $encoded = $encoder->encodePassword($data, $data->getPassword());
-        $data->setPassword($encoded);
+        if ($data->getPassword() && $data->getPassword() != "" && substr( $data->getPassword(), 0, 4 ) === "$"){
+            $encoded = $encoder->encodePassword($data, $data->getPassword());
+            $data->setPassword($encoded);
+        }
 
         return $data;
     }

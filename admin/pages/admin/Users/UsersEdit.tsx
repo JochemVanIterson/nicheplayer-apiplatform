@@ -17,7 +17,7 @@ const UsersEdit = (props) => (
     <InputGuesser fullWidth source="email" />
     <InputGuesser fullWidth source="firstname" />
     <InputGuesser fullWidth source="lastname" />
-    <PasswordInput fullWidth initialValue="Unchanged" source="password" />
+    <PasswordInput fullWidth source="password" />
     <SelectArrayInput fullWidth source="roles" choices={[
       { id: 'ROLE_ADMIN', name: 'Admin' },
       { id: 'ROLE_USER', name: 'User' },

@@ -48,7 +48,6 @@ const MyAppBar = props => {
                 className={classes.title}
                 id="react-admin-title"
             />
-            <span className={classes.spacer} />
             <MenuItem component="a" href="http://mbp.audioware.nl">Go Back</MenuItem>
         </AppBar>
     )
