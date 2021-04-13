@@ -2,7 +2,7 @@
   q-page.bg-grey-4(padding)
     .row.q-col-gutter-md.q-pb-md
       .col-xs-12.col-sm-4.flex
-        q-img.rounded-borders(:src="albumArt" basic)
+        q-img.rounded-borders.shadow-2(:src="albumArt" basic)
       
       .col-xs-12.col-sm-8.column
         q-card.col.row
