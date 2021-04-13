@@ -95,6 +95,7 @@ export default async ({ app, router, Vue, store }) => {
 
         // Keep track of the index we are currently playing.
         self.$set(self, 'index', index)
+        self.updateMediaSession()
       },
 
       /**
@@ -197,7 +198,9 @@ export default async ({ app, router, Vue, store }) => {
 
         // Get the Howl we want to manipulate.
         var data = self.playlist[self.index]
+        if (!data) return
         var sound = data.howl
+        if (!sound) return
 
         // Determine our current seek position.
         var seek = sound.seek() || 0
@@ -219,6 +222,21 @@ export default async ({ app, router, Vue, store }) => {
         var seconds = (secs - minutes * 60) || 0;
 
         return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+      },
+
+      updateMediaSession: function() {
+        if (!("mediaSession" in navigator)) return
+        const id = this.playlist[this.index].id
+        const data = store.getters["cache/songs/getObjectJoined"](id)
+        console.log("updateMediaSession", data)
+        navigator.mediaSession.metadata = new window.MediaMetadata({
+          title: data.name,
+          artist: data.songArtist || data.album.artist,
+          album: data.album.name,
+          artwork: [
+            { src: data.album.albumArt.contentUrl, type: data.album.albumArt.mime },
+          ]
+        });
       }
     },
     created() {
