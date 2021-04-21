@@ -21,7 +21,7 @@ const PaymentsCreate = (props) => {
     const albumNameRenderer = choice => `${choice.artist} - ${choice.name}`;
     return (
         <CreateGuesser {...props}>
-            <ReferenceInput fullWidth source="user" reference="users">
+            <ReferenceInput fullWidth source="user" reference="users" perPage={0}>
                 <SelectInput optionText={userRenderer} />
             </ReferenceInput>
 
@@ -50,7 +50,7 @@ const PaymentsCreate = (props) => {
                             return <Box display="flex" flexDirection="column">
                                 {
                                     (formData.type == "album" || formData.type == "song") ?
-                                        <ReferenceInput source="album" reference="albums" {...rest}>
+                                        <ReferenceInput source="album" reference="albums" perPage={0} {...rest}>
                                             <SelectInput optionText={albumNameRenderer} />
                                         </ReferenceInput> : null
                                 }
@@ -61,6 +61,7 @@ const PaymentsCreate = (props) => {
                                             reference="songs"
                                             sort={{ field: "trackNumber", order: 'ASC' }}
                                             filter={{ album: formData.album }}
+                                            perPage={0}
                                             {...rest}
                                         >
                                             <SelectInput optionText={songNameRenderer} />

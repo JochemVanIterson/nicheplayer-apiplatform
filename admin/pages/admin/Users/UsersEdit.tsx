@@ -28,6 +28,7 @@ const UsersEdit = (props) => (
       reference="media_objects"
       sort={{ field: "fileName", order: 'ASC' }}
       filter={{ type: "image" }}
+      perPage={0}
     >
       <SelectInput optionText="fileName" />
     </ReferenceInput>

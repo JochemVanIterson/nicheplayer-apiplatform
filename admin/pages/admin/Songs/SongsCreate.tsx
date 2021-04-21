@@ -57,6 +57,7 @@ const SongsCreate = (props) => {
                             reference="media_objects"
                             sort={{ field: "fileName", order: 'ASC' }}
                             filter={{ type: "audio" }}
+                            perPage={0}
                         >
                             <SelectInput optionText="fileName" />
                         </ReferenceInput>
@@ -68,7 +69,7 @@ const SongsCreate = (props) => {
                 
                 <TextInput fullWidth source="name" validate={[required()]} />
                 <TextInput fullWidth source="songArtist" />
-                <ReferenceInput fullWidth source="album" reference="albums">
+                <ReferenceInput fullWidth source="album" reference="albums" perPage={0}>
                     <SelectInput optionText={albumNameRenderer} />
                 </ReferenceInput>
                 <NumberInput fullWidth source="trackNumber" />
