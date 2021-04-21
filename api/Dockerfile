@@ -23,6 +23,7 @@ RUN apk add --no-cache \
 		freetype-dev \
 		libjpeg-turbo-dev \
 		libpng-dev \
+		openssl \
 	;
 
 ARG APCU_VERSION=5.1.19
@@ -115,6 +116,8 @@ RUN set -eux; \
 	composer run-script --no-dev post-install-cmd; \
 	chmod +x bin/console; sync
 VOLUME /srv/api/var
+
+RUN php bin/console lexik:jwt:generate-keypair
 
 COPY docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 RUN chmod +x /usr/local/bin/docker-healthcheck

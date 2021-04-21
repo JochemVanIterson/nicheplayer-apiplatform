@@ -45,6 +45,7 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 
 		if ls -A migrations/*.php >/dev/null 2>&1; then
 			php bin/console doctrine:migrations:migrate --no-interaction
+			php bin/console doctrine:schema:update --force  --no-interaction
 		fi
 	fi
 fi
