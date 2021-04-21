@@ -39,7 +39,7 @@ services:
     environment:
       ADMIN_UPSTREAM: admin:3000
       FRONTEND_UPSTREAM: frontend:8080
-      SERVER_NAME: ${SERVER_NAME:-:80, caddy:80}
+      SERVER_NAME: ${SERVER_NAME:-:80, caddy:80, mbp.audioware.nl:80, -:443, caddy:443, mbp.audioware.nl:443, caddy, mbp.audioware.nl}
       MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_PUBLISHER_JWT_KEY:-!ChangeMe!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_SUBSCRIBER_JWT_KEY:-!ChangeMe!}
     restart: unless-stopped
