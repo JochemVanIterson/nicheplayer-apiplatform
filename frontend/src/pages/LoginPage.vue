@@ -2,7 +2,7 @@
   q-layout(view="lHh Lpr lFf")
     q-page-container
       q-page.flex.flex-center.column.bg-grey-4()
-        q-img.bg-grey-4.window-height(src="http://mbp.audioware.nl/api/media/6061bc0b83806_IMG_20180720_074013.jpg")
+        q-img.bg-grey-4.window-height(src="background_image.jpg")
           div(class="absolute-full text-subtitle2 flex flex-center bg-transparent")
             q-card.q-mt-lg#loginCard
               q-card-section

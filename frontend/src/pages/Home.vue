@@ -2,7 +2,7 @@
   q-layout(view="lHh Lpr lFf")
     q-page-container
       q-page
-        q-img.bg-grey-4.window-height(src="http://mbp.audioware.nl/api/media/6061bc0b83806_IMG_20180720_074013.jpg")
+        q-img.bg-grey-4.window-height(src="background_image.jpg")
           div(class="absolute-full text-subtitle2 flex flex-center bg-transparent")
             q-card#homeCard
               img.q-my-md(alt="Quasar logo" src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" height="128px")

@@ -15,36 +15,41 @@ class AuthenticationTest extends ApiTestCase
     {
         $client = self::createClient();
 
+        // Create new User
         $user = new User();
         $user->setEmail('test@example.com');
         $user->setUsername('test');
+        $user->setFirstname('Test');
+        $user->setLastname('Test');
+        $user->setRoles(["ROLE_ADMIN"]);
         $user->setPassword(
-            self::$container->get('security.password_encoder')->encodePassword($user, '$3CR3T')
+            self::$container->get('security.password_encoder')->encodePassword($user, 'test')
         );
 
         $manager = self::$container->get('doctrine')->getManager();
         $manager->persist($user);
         $manager->flush();
 
+        // Test not authorized
+        $client->request('GET', '/api/albums');
+        $this->assertResponseStatusCodeSame(401);
+
         // retrieve a token
         $response = $client->request('POST', '/api/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
                 'username' => 'test',
-                'password' => '$3CR3T',
+                'password' => 'test',
             ],
         ]);
 
         $json = $response->toArray();
         $this->assertResponseIsSuccessful();
         $this->assertArrayHasKey('token', $json);
-
-        // test not authorized
-        $client->request('GET', '/greetings');
-        $this->assertResponseStatusCodeSame(401);
+        $this->assertArrayHasKey('refresh_token', $json);
 
         // test authorized
-        $client->request('GET', '/greetings', ['auth_bearer' => $json['token']]);
+        $client->request('GET', '/api/albums', ['auth_bearer' => $json['token']]);
         $this->assertResponseIsSuccessful();
     }
 }
