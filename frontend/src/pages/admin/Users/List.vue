@@ -79,7 +79,7 @@ export default {
       this.$router.push(`/admin/users/${row.id}/show`)
     },
     editClicked (id) {
-      this.$router.push(`/admin/users/${id}/show`)
+      this.$router.push(`/admin/users/${id}/edit`)
     }
   },
   mounted () {

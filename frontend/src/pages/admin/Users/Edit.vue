@@ -1,79 +1,81 @@
 <template lang="pug">
 q-page(padding)
-  q-table(
-    title="Users",
-    :data="data",
-    :columns="columns",
-    row-key="id"
-    :selected-rows-label="getSelectedString"
-    selection="multiple"
-    :selected.sync="selected"
-    :filter="filter"
-    flat bordered
-  )
-    template(v-slot:top-right)
-      q-input.q-pr-sm(outlined dense debounce="300" v-model="filter" placeholder="Search")
-        template(v-slot:append)
-          q-icon(name="search")
-      q-btn(icon="add" flat label="Create" no-caps)
-    template( v-slot:body-cell-fullname="props")
-      q-td(:props="props")
-        q-avatar.q-mr-sm(size="md" color="grey-6")
-          img.profilePic(v-if="props.row.profilePic" :src="props.row.profilePic")
-          q-icon(name="people" color="white")
-        q-badge(v-if="props.row.roles.includes('ROLE_ADMIN')" color="primary" :label="props.value")
-        div(v-else) {{props.value}}
-    template(v-slot:body-cell-actions="props")
-      q-td(:props="props")
-        q-btn(flat color="primary" icon="edit" label="Edit" no-caps)
+  q-card(flat bordered)
+    q-card-section
+      .q-gutter-y-md
+        .text-h5 Edit user
+        q-input(filled v-model="username" label="Username")
+        q-input(filled v-model="email" label="Email")
+        q-input(filled v-model="firstname" label="Firstname")
+        q-input(filled v-model="lastname" label="Lastname")
+        q-input(filled v-model="password" label="Password" :type="isPwd ? 'password' : 'text'")
+          template(v-slot:append)
+            q-icon(
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd")
+        q-select(filled v-model="roles" :options="roleOptions" multiple emit-value map-options use-chips label="Roles")
+        q-input(filled v-model="profilePic" label="Profile Picture")
+    q-card-actions(align="right")
+      q-btn(flat color="red" icon="delete" padding="xs md") Delete
+      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
 </template>
 
 <script>
 export default {
-  name: 'PageAdminUsersList',
+  name: 'PageAdminUsersCreate',
   data () {
     return {
-      filter: '',
-      selected: [],
-      columns: [
+      isPwd: true,
+      roleOptions: [
         {
-          name: 'fullname',
-          required: true,
-          label: 'Full name',
-          align: 'left',
-          field: (row) => `${row.firstname} ${row.lastname}`,
-          sortable: true
+          label: 'Admin',
+          value: 'ROLE_ADMIN'
         },
         {
-          name: 'username',
-          align: 'left',
-          label: 'Username',
-          field: 'username',
-          sortable: true
-        },
-        {
-          name: 'email',
-          align: 'left',
-          label: 'Email',
-          field: 'email',
-          sortable: true
-        },
-        {
-          name: 'actions',
-          align: 'right',
-          label: '',
-          sortable: false
+          label: 'User',
+          value: 'ROLE_USER'
         }
-      ]
+      ],
+      changedStore: {}
     }
   },
   computed: {
-    data () { return this.$store.getters['cache/users/getAllJoined'] }
+    id () { return this.$route.params.id },
+    oldStore () { return this.$store.getters['cache/users/getObjectJoined'](this.id) },
+
+    username: {
+      get () { return this.changedStore.username === undefined ? this.oldStore.username : this.changedStore.username },
+      set (val) { this.$set(this.changedStore, 'username', val) }
+    },
+    email: {
+      get () { return this.changedStore.email === undefined ? this.oldStore.email : this.changedStore.email },
+      set (val) { this.$set(this.changedStore, 'email', val) }
+    },
+    firstname: {
+      get () { return this.changedStore.firstname === undefined ? this.oldStore.firstname : this.changedStore.firstname },
+      set (val) { this.$set(this.changedStore, 'firstname', val) }
+    },
+    lastname: {
+      get () { return this.changedStore.lastname === undefined ? this.oldStore.lastname : this.changedStore.lastname },
+      set (val) { this.$set(this.changedStore, 'lastname', val) }
+    },
+    password: {
+      get () { return this.changedStore.password === undefined ? this.oldStore.password : this.changedStore.password },
+      set (val) { this.$set(this.changedStore, 'password', val) }
+    },
+    roles: {
+      get () { return this.changedStore.roles === undefined ? this.oldStore.roles : this.changedStore.roles },
+      set (val) { this.$set(this.changedStore, 'roles', val) }
+    },
+    profilePic: {
+      get () { return this.changedStore.profilePic === undefined ? this.oldStore.profilePic : this.changedStore.profilePic },
+      set (val) { this.$set(this.changedStore, 'profilePic', val) }
+    },
+
+    savable () { return Object.keys(this.changedStore).length > 0 }
   },
   methods: {
-    getSelectedString () {
-      return this.selected.length === 0 ? '' : `${this.selected.length} record${this.selected.length > 1 ? 's' : ''} selected of ${this.data.length}`
-    }
   },
   mounted () {
     this.$store.dispatch('cache/users/getAllFromAPI')

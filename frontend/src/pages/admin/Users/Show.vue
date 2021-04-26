@@ -21,6 +21,9 @@ q-page(padding)
           tr.q-tr--no-hover
             td Lastname
             td {{data.lastname}}
+    q-card-actions(align="right")
+      q-btn(color="primary" icon="edit" padding="xs md" @click="$router.push(`/admin/users/${id}/edit`)") Edit
+
 </template>
 
 <script>

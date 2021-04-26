@@ -14,10 +14,10 @@ q-page(padding)
               :name="isPwd ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isPwd = !isPwd")
-        q-select(filled v-model="roles" :options="roleOptions" multiple label="Roles")
+        q-select(filled v-model="roles" :options="roleOptions" multiple emit-value map-options use-chips label="Roles")
         q-input(filled v-model="profilePic" label="Profile Picture")
     q-card-actions(align="right")
-      q-btn(:disabled="!savable" outlined color="primary") Save
+      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
 </template>
 
 <script>
