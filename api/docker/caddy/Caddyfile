@@ -56,6 +56,17 @@ log
     || {path} == "/17.js"
     || {path} == "/18.js"
     || {path} == "/19.js"
+    || {path} == "/20.js"
+    || {path} == "/21.js"
+    || {path} == "/22.js"
+    || {path} == "/23.js"
+    || {path} == "/24.js"
+    || {path} == "/25.js"
+    || {path} == "/26.js"
+    || {path} == "/27.js"
+    || {path} == "/28.js"
+    || {path} == "/29.js"
+    || {path} == "/30.js"
     || {path}.startsWith("/sockjs-node")
     || {path}.startsWith("/fonts")
     || {path}.startsWith("/img")

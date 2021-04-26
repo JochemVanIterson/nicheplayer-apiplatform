@@ -31,6 +31,10 @@ const routes = [
       { path: 'users/:id/edit', component: () => import('pages/admin/Users/Edit.vue'), meta: { title: 'Users' } },
 
       { path: 'albums', component: () => import('pages/admin/Albums/List.vue'), meta: { title: 'Albums' } },
+      { path: 'albums/create', component: () => import('pages/admin/Albums/Create.vue'), meta: { title: 'Albums' } },
+      { path: 'albums/:id/show', component: () => import('pages/admin/Albums/Show.vue'), meta: { title: 'Albums' } },
+      { path: 'albums/:id/edit', component: () => import('pages/admin/Albums/Edit.vue'), meta: { title: 'Albums' } },
+
       { path: 'songs', component: () => import('pages/admin/Songs/List.vue'), meta: { title: 'Songs' } }
     ]
   },
