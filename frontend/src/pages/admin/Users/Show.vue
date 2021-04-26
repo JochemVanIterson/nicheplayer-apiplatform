@@ -25,22 +25,15 @@ q-page(padding)
 
 <script>
 export default {
-  name: 'PageAdminUsersList',
+  name: 'PageAdminUsersShow',
   data () {
-    return {
-    }
+    return {}
   },
   computed: {
     id () { return this.$route.params.id },
     data () { return this.$store.getters['cache/users/getObjectJoined'](this.id) }
   },
-  methods: {
-    getSelectedString () {
-      return this.selected.length === 0 ? '' : `${this.selected.length} record${this.selected.length > 1 ? 's' : ''} selected of ${this.data.length}`
-    }
-  },
   mounted () {
-    console.log(this.$route)
     this.$store.dispatch('cache/users/getAllFromAPI')
   }
 }
