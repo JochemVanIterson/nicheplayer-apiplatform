@@ -27,32 +27,32 @@ export default {
     return {}
   },
   computed: {
-    albumObject() {
+    albumObject () {
       if (this.songdata.album) return this.songdata.album
       else return {}
     },
-    albumArtObject() {
+    albumArtObject () {
       if (this.albumObject.albumArt) return this.albumObject.albumArt
       else return {}
     },
-    albumArt() { return this.albumArtObject.contentUrl },
-    parsedAlbumArt() { return this.$store.getters['system/getMediaURL'](this.albumArt) },
-    artist() { return this.albumObject.artist },
-    album() { return this.albumObject.name },
-    title() { return this.songdata.name },
-    trackNumber() { return this.songdata.trackNumber },
-    hasAlbumArt() { 
+    albumArt () { return this.albumArtObject.contentUrl },
+    parsedAlbumArt () { return this.$store.getters['system/getMediaURL'](this.albumArt) },
+    artist () { return this.albumObject.artist },
+    album () { return this.albumObject.name },
+    title () { return this.songdata.name },
+    trackNumber () { return this.songdata.trackNumber },
+    hasAlbumArt () {
       let returnable = false
-      if (typeof this.albumArt === "undefined") returnable = false
-      else returnable = this.albumArt !== ""
+      if (typeof this.albumArt === 'undefined') returnable = false
+      else returnable = this.albumArt !== ''
       return returnable
     },
-    hasTrackNumber() { return this.trackNumber > 0 },
-    isPlayingSong() { return this.$store.getters["audioplayer/getPlayingIndex"] === this.index }
+    hasTrackNumber () { return this.trackNumber > 0 },
+    isPlayingSong () { return this.$store.getters['audioplayer/getPlayingIndex'] === this.index }
   },
   methods: {
-    clicked() {
-      this.$store.dispatch("audioplayer/goToSong", this.index);
+    clicked () {
+      this.$store.dispatch('audioplayer/goToSong', this.index)
     }
   }
 }

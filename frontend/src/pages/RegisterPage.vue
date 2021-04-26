@@ -22,7 +22,7 @@
 <script>
 export default {
   name: 'RegisterPage',
-  data() {
+  data () {
     return {
       username: 'bleh',
       email: 'bleh@example.com',
@@ -32,10 +32,10 @@ export default {
     }
   },
   computed: {
-    toRoute() { return this.$route.query.to || "explore" }
+    toRoute () { return this.$route.query.to || 'explore' }
   },
   methods: {
-    registerAction() {
+    registerAction () {
       const payload = {
         username: this.username,
         email: this.email,
@@ -44,25 +44,25 @@ export default {
         roles: ['ROLE_USER'],
         password: this.password
       }
-      function errorNotification(message) {
+      function errorNotification (message) {
         return { type: 'negative', message, position: 'bottom', timeout: 4000 }
       }
 
       if (!this.username || !this.email || !this.firstname || !this.lastname || !this.password) {
-        this.$q.notify(errorNotification(`Empty fields`))
+        this.$q.notify(errorNotification('Empty fields'))
         return false
       }
 
-      this.$store.dispatch("system/apiRequest", { path: "users", payload, method: "POST", nojwt: true }).then((status) => {
+      this.$store.dispatch('system/apiRequest', { path: 'users', payload, method: 'POST', nojwt: true }).then((status) => {
         if (status) {
-          this.$store.dispatch("system/attemptLogin", { username: this.username, password: this.passwordZ }).then((loginStatus) => {
+          this.$store.dispatch('system/attemptLogin', { username: this.username, password: this.passwordZ }).then((loginStatus) => {
             if (loginStatus) this.$router.replace(this.toRoute)
             else {
-              this.$q.notify(errorNotification(`Login failed, wrong credentials`))
+              this.$q.notify(errorNotification('Login failed, wrong credentials'))
             }
           })
         } else {
-          this.$q.notify(errorNotification(`Registration failed`))
+          this.$q.notify(errorNotification('Registration failed'))
           return false
         }
       })

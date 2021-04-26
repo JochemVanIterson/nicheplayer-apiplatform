@@ -29,21 +29,21 @@ export default function ({ store }) {
 
   Router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresLogin)) {
-      store.dispatch("system/waitForLogin")
+      store.dispatch('system/waitForLogin')
         .then(() => {
           next()
         })
         .catch(() => {
-          console.log("to", to)
+          console.log('to', to)
           next({
-            path: "/login",
+            path: '/login',
             query: {
               to: to.fullPath
             }
           })
         })
     } else if (to.matched.some(record => record.meta.hideForAuth)) {
-      if (store.getters["system/isLoggedIn"]) next({ path: "/explore" })
+      if (store.getters['system/isLoggedIn']) next({ path: '/explore' })
       else next()
     } else next()
   })

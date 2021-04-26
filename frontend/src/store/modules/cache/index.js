@@ -9,14 +9,16 @@ import albums from './albums'
 import songs from './songs'
 import mediaObjects from './mediaObjects'
 import payments from './payments'
+import users from './users'
 
 export default {
-    namespaced: true,
-    actions: actions,
-    modules: {
-        albums,
-        songs,
-        mediaObjects,
-        payments
-    }
+  namespaced: true,
+  actions: actions,
+  modules: {
+    albums,
+    songs,
+    mediaObjects,
+    payments,
+    users
+  }
 }

@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import PlaylistItem from "./PlaylistItem";
-import FastAverageColor from 'fast-average-color';
+import PlaylistItem from './PlaylistItem'
+import FastAverageColor from 'fast-average-color'
 import { colors } from 'quasar'
 
 export default {
@@ -35,95 +35,95 @@ export default {
     return {
       playlistVisible: false,
       color: {},
-      volume: 0,
+      volume: 0
     }
   },
   computed: {
-    isPlaying() { return this.$store.getters["audioplayer/getIsPlaying"] },
-    playlist() { return this.$store.getters["audioplayer/getPlaylist"] },
-    playlistData() { return this.$store.getters["audioplayer/getPlaylistData"] },
-    currentSongData() { return this.$store.getters["audioplayer/getCurrentSong"] },
-    albumArt() { return this.$store.getters["audioplayer/getMetaAlbumArt"] },
-    parsedAlbumArt() { return this.$store.getters['system/getMediaURL'](this.albumArt) },
-    artist() { return this.$store.getters["audioplayer/getMetaArtist"] },
-    album() { return this.$store.getters["audioplayer/getMetaAlbum"] },
-    title() { return this.$store.getters["audioplayer/getMetaTitle"] },
-    trackNumber() { return this.$store.getters["audioplayer/getMetaTrackNumber"] },
-    hasAlbumArt() {
+    isPlaying () { return this.$store.getters['audioplayer/getIsPlaying'] },
+    playlist () { return this.$store.getters['audioplayer/getPlaylist'] },
+    playlistData () { return this.$store.getters['audioplayer/getPlaylistData'] },
+    currentSongData () { return this.$store.getters['audioplayer/getCurrentSong'] },
+    albumArt () { return this.$store.getters['audioplayer/getMetaAlbumArt'] },
+    parsedAlbumArt () { return this.$store.getters['system/getMediaURL'](this.albumArt) },
+    artist () { return this.$store.getters['audioplayer/getMetaArtist'] },
+    album () { return this.$store.getters['audioplayer/getMetaAlbum'] },
+    title () { return this.$store.getters['audioplayer/getMetaTitle'] },
+    trackNumber () { return this.$store.getters['audioplayer/getMetaTrackNumber'] },
+    hasAlbumArt () {
       let returnable = false
-      if (typeof this.albumArt === "undefined") returnable = false
-      else returnable = this.albumArt !== ""
+      if (typeof this.albumArt === 'undefined') returnable = false
+      else returnable = this.albumArt !== ''
       return returnable
-      },
-    hasTrackNumber() { return this.trackNumber > 0 },
-    backgroundColor() { return (this.color && this.color.hex) ? this.color.hex : "#888888" },
-    backgroundDark() { return this.color && this.color.hex && colors.luminosity(this.color.hex) > 0.3 },
-    onTopColor() { return colors.lighten(this.backgroundColor, this.backgroundDark ? -70 : 70) },
+    },
+    hasTrackNumber () { return this.trackNumber > 0 },
+    backgroundColor () { return (this.color && this.color.hex) ? this.color.hex : '#888888' },
+    backgroundDark () { return this.color && this.color.hex && colors.luminosity(this.color.hex) > 0.3 },
+    onTopColor () { return colors.lighten(this.backgroundColor, this.backgroundDark ? -70 : 70) },
     playerVolume: {
-      get() { return this.volume },
-      set(val) {
+      get () { return this.volume },
+      set (val) {
         console.log(val)
         this.$howlerPlayer.volume(val)
       }
     },
-    progressStyle() {
+    progressStyle () {
       return {
         color: colors.lighten(this.backgroundColor, this.backgroundDark ? -40 : 40),
         'background-color': this.backgroundColor
       }
     },
-    footerStyle() {
+    footerStyle () {
       return {
         'background-color': this.backgroundColor,
         color: this.onTopColor
       }
     },
-    volumeSliderStyle() {
+    volumeSliderStyle () {
       return {
         color: this.backgroundColor
       }
     },
-    progress() {
+    progress () {
       return this.$howlerPlayer.progress / 100
     }
   },
   watch: {
-    albumArt(val) {
+    albumArt (val) {
       this.calculateBackgroundColor()
-    },
-  },
-  methods: {
-    rewindClicked() {
-      this.$store.dispatch("audioplayer/goBack")
-    },
-    forwardClick() {
-      this.$store.dispatch("audioplayer/goNext")
-    },
-    handleSwipe({ evt, ...info }) {
-      if (info.direction == 'left') this.forwardClick()
-      else if (info.direction == 'right') this.rewindClicked()
-    },
-    playClicked() {
-      this.$store.dispatch("audioplayer/toggleIsPlaying")
-    },
-    openPlaylist() {
-      this.$store.dispatch("audioplayer/collectSongInfo")
-    },
-    calculateBackgroundColor() {
-      if (!this.albumArt) return
-
-      const fac = new FastAverageColor();
-      fac.getColorAsync(this.parsedAlbumArt)
-      .then(color => {
-        this.color = color
-      })
-      .catch(e => {
-          console.log(e);
-      });
     }
   },
-  mounted() {
-    this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
+  methods: {
+    rewindClicked () {
+      this.$store.dispatch('audioplayer/goBack')
+    },
+    forwardClick () {
+      this.$store.dispatch('audioplayer/goNext')
+    },
+    handleSwipe ({ evt, ...info }) {
+      if (info.direction === 'left') this.forwardClick()
+      else if (info.direction === 'right') this.rewindClicked()
+    },
+    playClicked () {
+      this.$store.dispatch('audioplayer/toggleIsPlaying')
+    },
+    openPlaylist () {
+      this.$store.dispatch('audioplayer/collectSongInfo')
+    },
+    calculateBackgroundColor () {
+      if (!this.albumArt) return
+
+      const fac = new FastAverageColor()
+      fac.getColorAsync(this.parsedAlbumArt)
+        .then(color => {
+          this.color = color
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    }
+  },
+  mounted () {
+    this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters['audioplayer/getSongID']() })
     this.calculateBackgroundColor()
   }
 }

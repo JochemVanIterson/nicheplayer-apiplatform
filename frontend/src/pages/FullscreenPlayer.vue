@@ -6,7 +6,6 @@
         q-toolbar-title
         q-btn(flat @click="drawerRight = !drawerRight" round dense icon="menu")
 
-
     q-drawer(
       side="right"
       v-model="drawerRight"
@@ -18,7 +17,7 @@
       q-scroll-area(class="fit" :style="drawerStyle")
         q-list(:dark="backgroundDark")
           q-item-label(header) Playlist
-          PlaylistItem(v-for="(song, index) in playlistData" :index="index" :songdata="song" noimage)
+          PlaylistItem(v-for="(song, index) in playlistData" :key="'playlist_item_'+index" :index="index" :songdata="song" noimage)
           q-item(v-if="playlistData.length == 0")
             q-item-section Empty
 
@@ -60,8 +59,8 @@
 
 <script>
 
-import PlaylistItem from "../components/PlaylistItem";
-import FastAverageColor from 'fast-average-color';
+import PlaylistItem from '../components/PlaylistItem'
+import FastAverageColor from 'fast-average-color'
 import { colors, date } from 'quasar'
 
 export default {
@@ -77,79 +76,79 @@ export default {
     }
   },
   computed: {
-    isPlaying() { return this.$store.getters["audioplayer/getIsPlaying"] },
-    playlist() { return this.$store.getters["audioplayer/getPlaylist"] },
-    playlistData() { return this.$store.getters["audioplayer/getPlaylistData"] },
-    currentSongData() { return this.$store.getters["audioplayer/getCurrentSong"] },
-    currentPlayingPage() { return this.$store.getters["audioplayer/getPlaylistPage"] },
-    albumArt() { return this.$store.getters["audioplayer/getMetaAlbumArt"] },
-    parsedAlbumArt() { return this.$store.getters['system/getMediaURL'](this.albumArt) },
-    artist() { return this.$store.getters["audioplayer/getMetaArtist"] },
-    album() { return this.$store.getters["audioplayer/getMetaAlbum"] },
-    title() { return this.$store.getters["audioplayer/getMetaTitle"] },
-    trackNumber() { return this.$store.getters["audioplayer/getMetaTrackNumber"] },
-    duration() { return this.$store.getters["audioplayer/getMetaDuration"] },
+    isPlaying () { return this.$store.getters['audioplayer/getIsPlaying'] },
+    playlist () { return this.$store.getters['audioplayer/getPlaylist'] },
+    playlistData () { return this.$store.getters['audioplayer/getPlaylistData'] },
+    currentSongData () { return this.$store.getters['audioplayer/getCurrentSong'] },
+    currentPlayingPage () { return this.$store.getters['audioplayer/getPlaylistPage'] },
+    albumArt () { return this.$store.getters['audioplayer/getMetaAlbumArt'] },
+    parsedAlbumArt () { return this.$store.getters['system/getMediaURL'](this.albumArt) },
+    artist () { return this.$store.getters['audioplayer/getMetaArtist'] },
+    album () { return this.$store.getters['audioplayer/getMetaAlbum'] },
+    title () { return this.$store.getters['audioplayer/getMetaTitle'] },
+    trackNumber () { return this.$store.getters['audioplayer/getMetaTrackNumber'] },
+    duration () { return this.$store.getters['audioplayer/getMetaDuration'] },
     playerVolume: {
-      get() { return this.volume },
-      set(val) {
+      get () { return this.volume },
+      set (val) {
         console.log(val)
         this.$howlerPlayer.volume(val)
       }
     },
     progress: {
-      get() {
+      get () {
         return this.$howlerPlayer.progress / 100
       },
-      set(val) {
+      set (val) {
         this.$howlerPlayer.seek(val)
       }
     },
-    hasAlbumArt() {
+    hasAlbumArt () {
       let returnable = false
-      if (typeof this.albumArt === "undefined") returnable = false
-      else returnable = this.albumArt !== ""
+      if (typeof this.albumArt === 'undefined') returnable = false
+      else returnable = this.albumArt !== ''
       return returnable
-      },
-    hasTrackNumber() { return this.trackNumber > 0 },
-    backgroundColor() { return (this.color && this.color.hex) ? this.color.hex : "#888888" },
-    backgroundDark() { return this.color && this.color.hex && colors.luminosity(this.color.hex) > 0.3 },
-    onTopColor() { return colors.lighten(this.backgroundColor, this.backgroundDark ? -70 : 70) },
-    pageStyle() {
+    },
+    hasTrackNumber () { return this.trackNumber > 0 },
+    backgroundColor () { return (this.color && this.color.hex) ? this.color.hex : '#888888' },
+    backgroundDark () { return this.color && this.color.hex && colors.luminosity(this.color.hex) > 0.3 },
+    onTopColor () { return colors.lighten(this.backgroundColor, this.backgroundDark ? -70 : 70) },
+    pageStyle () {
       return {
         'background-image': `linear-gradient(to bottom right, ${this.backgroundColor}, ${colors.lighten(this.backgroundColor, -50)})`
       }
     },
-    controlsCardStyle() {
-      console.log("controlsCardStyle", this.backgroundColor)
+    controlsCardStyle () {
+      console.log('controlsCardStyle', this.backgroundColor)
       return {
-        color: this.backgroundDark ? "white" : colors.lighten(this.backgroundColor, -30),
+        color: this.backgroundDark ? 'white' : colors.lighten(this.backgroundColor, -30),
         'background-color': colors.changeAlpha(this.onTopColor, 0.7),
         'min-width': this.landscape ? '275px' : undefined
       }
     },
-    drawerStyle() {
+    drawerStyle () {
       return {
         'background-color': colors.changeAlpha(this.onTopColor, 0.7),
-        'backdrop-filter': "blur(10px)",
-        color: this.backgroundDark ? "white" : colors.lighten(this.backgroundColor, -100),
+        'backdrop-filter': 'blur(10px)',
+        color: this.backgroundDark ? 'white' : colors.lighten(this.backgroundColor, -100)
       }
     },
-    sliderStyle() {
+    sliderStyle () {
       return {
-        color: this.backgroundDark ? "white" : colors.lighten(this.backgroundColor, -30),
+        color: this.backgroundDark ? 'white' : colors.lighten(this.backgroundColor, -30)
       }
     },
-    landscape() {
+    landscape () {
       return this.$q.screen.lt.md && this.$q.screen.width > this.$q.screen.height
     },
-    volumeSliderStyle() {
+    volumeSliderStyle () {
       return {
         color: this.backgroundColor
       }
     }
   },
   watch: {
-    albumArt(val) {
+    albumArt (val) {
       this.calculateBackgroundColor()
     }
   },
@@ -157,43 +156,43 @@ export default {
     prettyDate (timestamp) {
       return date.formatDate(date.buildDate({ minutes: 0, seconds: timestamp }), 'mm:ss')
     },
-    rewindClicked() {
-      this.$store.dispatch("audioplayer/goBack")
+    rewindClicked () {
+      this.$store.dispatch('audioplayer/goBack')
     },
-    forwardClick() {
-      this.$store.dispatch("audioplayer/goNext")
+    forwardClick () {
+      this.$store.dispatch('audioplayer/goNext')
     },
-    playClicked() {
-      this.$store.dispatch("audioplayer/toggleIsPlaying")
+    playClicked () {
+      this.$store.dispatch('audioplayer/toggleIsPlaying')
     },
-    openPlaylist() {
-      this.$store.dispatch("audioplayer/collectSongInfo")
+    openPlaylist () {
+      this.$store.dispatch('audioplayer/collectSongInfo')
     },
-    handleSwipe({ evt, ...info }) {
-      if (info.direction == 'left') this.forwardClick()
-      else if (info.direction == 'right') this.rewindClicked()
+    handleSwipe ({ evt, ...info }) {
+      if (info.direction === 'left') this.forwardClick()
+      else if (info.direction === 'right') this.rewindClicked()
     },
-    calculateBackgroundColor() {
+    calculateBackgroundColor () {
       if (!this.albumArt) return
 
-      const fac = new FastAverageColor();
+      const fac = new FastAverageColor()
       fac.getColorAsync(this.parsedAlbumArt)
-      .then(color => {
-        this.color = color
-      })
-      .catch(e => {
-          console.log(e);
-      });
+        .then(color => {
+          this.color = color
+        })
+        .catch(e => {
+          console.log(e)
+        })
     }
   },
-  mounted() {
-    this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters["audioplayer/getSongID"]() })
+  mounted () {
+    this.$store.dispatch('cache/songs/getFromAPI', { id: this.$store.getters['audioplayer/getSongID']() })
     this.calculateBackgroundColor()
   }
 }
 </script>
 
-<style lang="scss">
+<style lang='scss'>
   #toolbar {
     background-color: #000000A0;
   }

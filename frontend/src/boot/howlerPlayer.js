@@ -1,7 +1,7 @@
 // import something here
 import { Howl, Howler } from 'howler'
 
-// "async" is optional;
+// 'async' is optional
 // more info on params: https://quasar.dev/quasar-cli/boot-files
 export default async ({ app, router, Vue, store }) => {
   const PlayerVue = new Vue({
@@ -13,11 +13,11 @@ export default async ({ app, router, Vue, store }) => {
       loading: ''
     },
     methods: {
-      clearPlaylist() {
+      clearPlaylist () {
         if (this.playlist.length > 0 && this.playlist[this.index]) this.pause()
         this.$set(this, 'playlist', [])
       },
-      appendPlaylist(item) {
+      appendPlaylist (item) {
         this.playlist.push(item)
       },
 
@@ -25,7 +25,7 @@ export default async ({ app, router, Vue, store }) => {
        * Play a song in the playlist.
        * @param {Number} index Index of the song in the playlist (leave empty to play the first or current).
        */
-      play(index) {
+      play (index) {
         var self = this
         const token = store.state.system.jwtToken
 
@@ -45,13 +45,13 @@ export default async ({ app, router, Vue, store }) => {
             xhr: {
               method: 'GET',
               headers: {
-                Authorization: 'Bearer ' + token,
+                Authorization: 'Bearer ' + token
               },
-              withCredentials: true,
+              withCredentials: true
             },
             onplay: function () {
               // Display the duration.
-              let duration = sound.duration();
+              let duration = sound.duration()
               if (!isFinite(duration)) duration = data.duration
               self.$set(self, 'duration', duration)
 
@@ -60,13 +60,13 @@ export default async ({ app, router, Vue, store }) => {
             },
             onload: function () {
               // Start the wave animation.
-              let duration = sound.duration();
+              let duration = sound.duration()
               if (!isFinite(duration)) duration = data.duration
               self.$set(self, 'duration', duration)
             },
             onend: function () {
               // Stop the wave animation.
-              store.dispatch("audioplayer/goNext")
+              store.dispatch('audioplayer/goNext')
             },
             onpause: function () {
               // Stop the wave animation.
@@ -84,7 +84,7 @@ export default async ({ app, router, Vue, store }) => {
         // Begin playing the sound.
         sound.play()
 
-        if (sound.seek() == 0) store.dispatch('audioplayer/sendPlayHistory', data.id)
+        if (sound.seek() === 0) store.dispatch('audioplayer/sendPlayHistory', data.id)
 
         // Show the pause button.
         if (sound.state() === 'loaded') {
@@ -210,8 +210,8 @@ export default async ({ app, router, Vue, store }) => {
           navigator.mediaSession.setPositionState({
             duration: data.duration,
             playbackRate: 1,
-            position: seek,
-          });
+            position: seek
+          })
         }
 
         // If the sound is still playing, continue stepping.
@@ -226,53 +226,53 @@ export default async ({ app, router, Vue, store }) => {
        * @return {String}      Formatted time.
        */
       formatTime: function (secs) {
-        var minutes = Math.floor(secs / 60) || 0;
-        var seconds = (secs - minutes * 60) || 0;
+        var minutes = Math.floor(secs / 60) || 0
+        var seconds = (secs - minutes * 60) || 0
 
-        return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        return minutes + ':' + (seconds < 10 ? '0' : '') + seconds
       },
 
-      updateMediaSession: function() {
-        if (!("mediaSession" in navigator)) return
+      updateMediaSession: function () {
+        if (!('mediaSession' in navigator)) return
         const id = this.playlist[this.index].id
-        const data = store.getters["cache/songs/getObjectJoined"](id)
-        console.log("updateMediaSession", data)
+        const data = store.getters['cache/songs/getObjectJoined'](id)
+        console.log('updateMediaSession', data)
         navigator.mediaSession.metadata = new window.MediaMetadata({
           title: data.name,
           artist: data.songArtist || data.album.artist,
           album: data.album.name,
           artwork: [
-            { src: data.album.albumArt.contentUrl, type: data.album.albumArt.mime },
+            { src: data.album.albumArt.contentUrl, type: data.album.albumArt.mime }
           ]
-        });
+        })
       }
     },
-    created() {
+    created () {
       var self = this
-      console.log("created", Howler.usingWebAudio)
+      console.log('created', Howler.usingWebAudio)
       setInterval(() => {
         requestAnimationFrame(self.step.bind(self))
       }, 1000)
 
       const actionHandlers = [
-        ['play', () => { store.dispatch("audioplayer/setIsPlaying", true) }],
-        ['pause', () => { store.dispatch("audioplayer/setIsPlaying", false) }],
-        ['previoustrack', () => { store.dispatch("audioplayer/goBack") }],
-        ['nexttrack', () => { store.dispatch("audioplayer/goNext") }],
+        ['play', () => { store.dispatch('audioplayer/setIsPlaying', true) }],
+        ['pause', () => { store.dispatch('audioplayer/setIsPlaying', false) }],
+        ['previoustrack', () => { store.dispatch('audioplayer/goBack') }],
+        ['nexttrack', () => { store.dispatch('audioplayer/goNext') }],
         ['seekto', (details) => {
           self.seek(details.seekTime / self.duration)
-        }],
-      ];
+        }]
+      ]
 
       for (const [action, handler] of actionHandlers) {
         try {
-          navigator.mediaSession.setActionHandler(action, handler);
+          navigator.mediaSession.setActionHandler(action, handler)
         } catch (error) {
-          console.log(`The media session action "${action}" is not supported yet.`);
+          console.log(`The media session action '${action}' is not supported yet.`)
         }
       }
     }
   })
 
-  Vue.prototype.$howlerPlayer = PlayerVue;
+  Vue.prototype.$howlerPlayer = PlayerVue
 }
