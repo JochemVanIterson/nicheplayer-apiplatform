@@ -71,7 +71,11 @@ export default {
     }
   },
   computed: {
-    data () { return this.$store.getters['cache/users/getAllJoined'] }
+    data () {
+      return this.$store.getters['cache/users/getAllJoined'].filter((e) => {
+        return e !== undefined
+      })
+    }
   },
   methods: {
     getSelectedString () {
@@ -82,10 +86,13 @@ export default {
     },
     editClicked (id) {
       this.$router.push(`/admin/users/${id}/edit`)
+    },
+    refresh () {
+      this.$store.dispatch('cache/users/getAllFromAPI')
     }
   },
   mounted () {
-    this.$store.dispatch('cache/users/getAllFromAPI')
+    this.refresh()
   }
 }
 </script>

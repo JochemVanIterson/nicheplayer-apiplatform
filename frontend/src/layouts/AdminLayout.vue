@@ -24,7 +24,7 @@
               q-item-section
                 q-item-label Logout
 
-    q-drawer(show-if-above v-model="leftDrawerOpen" side="left" bordered)
+    q-drawer(show-if-above v-model="leftDrawerOpen" side="left" bordered :width="250")
       q-list(class="rounded-borders")
         q-item(clickable v-ripple to="/admin/dashboard" exact :active="pathMatch('dashboard')")
           q-item-section(avatar)
@@ -76,7 +76,7 @@ export default {
     userFullName () { return this.$store.getters['system/userFullName'] },
     userProfilePic () { return this.$store.getters['system/userProfilePic'] },
     userHasProfilePic () { return this.$store.getters['system/userHasProfilePic'] },
-    userInitials () { return this.$store.getters['system/userInitials'] },
+    userInitials () { return this.$store.getters['system/userInitials'] }
   },
   methods: {
     logoutButton () {

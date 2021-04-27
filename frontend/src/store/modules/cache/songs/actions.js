@@ -23,6 +23,7 @@ export function getAllFromAPI ({ state, commit, rootState, dispatch }) {
     .then((data) => {
       data['hydra:member'].forEach(element => {
         dispatch('cache/albums/getFromAPI', { id: element.album, follow: true }, { root: true })
+        dispatch('cache/mediaObjects/getFromAPI', { id: element.file, follow: true }, { root: true })
         commit('updateValue', { id: element.id, value: element })
       })
     })

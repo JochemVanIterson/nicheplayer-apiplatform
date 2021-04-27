@@ -37,7 +37,7 @@ export default {
           label: 'Dollar ($)',
           value: 'dollar'
         }
-      ],
+      ]
     }
   },
   computed: {

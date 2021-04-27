@@ -21,10 +21,7 @@ q-page(padding)
         q-btn(icon="add" flat label="Create" no-caps @click="$router.push('/admin/albums/create')")
     template( v-slot:body-cell-albumart="props")
       q-td(:props="props")
-        q-img(
-          :src="props.value"
-          style="width: 64px; height: 64px;"
-          :ratio="1")
+        q-img(:src="props.value" style="width: 64px; height: 64px;" :ratio="1")
     template(v-slot:body-cell-actions="props")
       q-td(:props="props")
         q-btn(flat color="primary" icon="edit" label="Edit" no-caps @click.stop="editClicked(props.row.id)")
@@ -77,7 +74,11 @@ export default {
     }
   },
   computed: {
-    data () { return this.$store.getters['cache/albums/getAllJoined'] }
+    data () {
+      return this.$store.getters['cache/albums/getAllJoined'].filter((e) => {
+        return e !== undefined
+      })
+    }
   },
   methods: {
     getSelectedString () {
