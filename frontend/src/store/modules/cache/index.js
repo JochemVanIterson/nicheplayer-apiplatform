@@ -10,6 +10,7 @@ import songs from './songs'
 import mediaObjects from './mediaObjects'
 import payments from './payments'
 import users from './users'
+import sources from './sources'
 
 export default {
   namespaced: true,
@@ -19,6 +20,7 @@ export default {
     songs,
     mediaObjects,
     payments,
-    users
+    users,
+    sources
   }
 }

@@ -38,7 +38,12 @@ const routes = [
       { path: 'songs', component: () => import('pages/admin/Songs/List.vue'), meta: { title: 'Songs' } },
       { path: 'songs/create', component: () => import('pages/admin/Songs/Create.vue'), meta: { title: 'Songs' } },
       { path: 'songs/:id/show', component: () => import('pages/admin/Songs/Show.vue'), meta: { title: 'Songs' } },
-      { path: 'songs/:id/edit', component: () => import('pages/admin/Songs/Edit.vue'), meta: { title: 'Songs' } }
+      { path: 'songs/:id/edit', component: () => import('pages/admin/Songs/Edit.vue'), meta: { title: 'Songs' } },
+
+      { path: 'media_objects', component: () => import('pages/admin/MediaObjects/List.vue'), meta: { title: 'Media' } },
+      { path: 'media_objects/create', component: () => import('pages/admin/MediaObjects/Create.vue'), meta: { title: 'Media' } },
+      { path: 'media_objects/:id/show', component: () => import('pages/admin/MediaObjects/Show.vue'), meta: { title: 'Media' } },
+      { path: 'media_objects/:id/edit', component: () => import('pages/admin/MediaObjects/Edit.vue'), meta: { title: 'Media' } }
     ]
   },
   {

@@ -44,7 +44,7 @@
             q-icon(name="music_note")
           q-item-section Songs
 
-        q-item(clickable v-ripple to="/admin/media" exact :active="pathMatch('media')")
+        q-item(clickable v-ripple to="/admin/media_objects" exact :active="pathMatch('media')")
           q-item-section(avatar)
             q-icon(name="photo")
           q-item-section Media
