@@ -36,16 +36,46 @@ export default {
           value: 'ROLE_USER'
         }
       ],
-      username: '',
-      email: '',
-      firstname: '',
-      lastname: '',
-      password: '',
-      roles: null,
-      profilePic: null
+      newStore: {
+        username: '',
+        email: '',
+        firstname: '',
+        lastname: '',
+        password: '',
+        roles: null,
+        profilePic: null
+      }
     }
   },
   computed: {
+    username: {
+      get () { return this.newStore.username },
+      set (val) { this.$set(this.newStore, 'username', val) }
+    },
+    email: {
+      get () { return this.newStore.email },
+      set (val) { this.$set(this.newStore, 'email', val) }
+    },
+    firstname: {
+      get () { return this.newStore.firstname },
+      set (val) { this.$set(this.newStore, 'firstname', val) }
+    },
+    lastname: {
+      get () { return this.newStore.lastname },
+      set (val) { this.$set(this.newStore, 'lastname', val) }
+    },
+    password: {
+      get () { return this.newStore.password },
+      set (val) { this.$set(this.newStore, 'password', val) }
+    },
+    roles: {
+      get () { return this.newStore.roles },
+      set (val) { this.$set(this.newStore, 'roles', val) }
+    },
+    profilePic: {
+      get () { return this.newStore.profilePic },
+      set (val) { this.$set(this.newStore, 'profilePic', val) }
+    },
     savable () { return this.username !== '' && this.email !== '' && this.firstname !== '' && this.lastname !== '' && this.password !== '' }
   },
   methods: {

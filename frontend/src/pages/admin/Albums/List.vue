@@ -13,10 +13,12 @@ q-page(padding)
     @row-click="rowClicked"
   )
     template(v-slot:top-right)
-      q-input.q-pr-sm(outlined dense debounce="300" v-model="filter" placeholder="Search")
-        template(v-slot:append)
-          q-icon(name="search")
-      q-btn(icon="add" flat label="Create" no-caps @click="$router.push('/admin/albums/create')")
+      .row.items-center.q-gutter-x-sm
+        q-btn(icon="refresh" flat round @click="refresh")
+        q-input(outlined dense debounce="300" v-model="filter" placeholder="Search")
+          template(v-slot:append)
+            q-icon(name="search")
+        q-btn(icon="add" flat label="Create" no-caps @click="$router.push('/admin/albums/create')")
     template( v-slot:body-cell-albumart="props")
       q-td(:props="props")
         q-img(
@@ -86,10 +88,13 @@ export default {
     },
     editClicked (id) {
       this.$router.push(`/admin/albums/${id}/edit`)
+    },
+    refresh () {
+      this.$store.dispatch('cache/albums/getAllFromAPI')
     }
   },
   mounted () {
-    this.$store.dispatch('cache/albums/getAllFromAPI')
+    this.refresh()
   }
 }
 </script>

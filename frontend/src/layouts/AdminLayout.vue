@@ -7,7 +7,6 @@
         q-toolbar-title {{$route.meta.title}}
         q-space
         q-btn(stretch flat label="Go Back" no-caps @click="$router.push('/')")
-        q-btn(stretch flat icon="refresh")
         q-btn-dropdown(stretch flat no-caps)
           template(v-slot:label)
             div(class="row items-center no-wrap")
@@ -27,37 +26,37 @@
 
     q-drawer(show-if-above v-model="leftDrawerOpen" side="left" bordered)
       q-list(class="rounded-borders")
-        q-item(clickable v-ripple to="/admin/dashboard" exact)
+        q-item(clickable v-ripple to="/admin/dashboard" exact :active="pathMatch('dashboard')")
           q-item-section(avatar)
             q-icon(name="dashboard")
           q-item-section Dashboard
-        q-item(clickable v-ripple to="/admin/users" exact)
+        q-item(clickable v-ripple to="/admin/users" exact :active="pathMatch('users')")
           q-item-section(avatar)
             q-icon(name="people")
           q-item-section Users
 
-        q-item(clickable v-ripple to="/admin/albums" exact)
+        q-item(clickable v-ripple to="/admin/albums" exact :active="pathMatch('albums')")
           q-item-section(avatar)
             q-icon(name="album")
           q-item-section Albums
-        q-item(clickable v-ripple to="/admin/songs" exact)
+        q-item(clickable v-ripple to="/admin/songs" exact :active="pathMatch('songs')")
           q-item-section(avatar)
             q-icon(name="music_note")
           q-item-section Songs
 
-        q-item(clickable v-ripple to="/admin/media" exact)
+        q-item(clickable v-ripple to="/admin/media" exact :active="pathMatch('media')")
           q-item-section(avatar)
             q-icon(name="photo")
           q-item-section Media
-        q-item(clickable v-ripple to="/admin/sources" exact)
+        q-item(clickable v-ripple to="/admin/sources" exact :active="pathMatch('sources')")
           q-item-section(avatar)
             q-icon(name="account_balance")
           q-item-section Sources
-        q-item(clickable v-ripple to="/admin/payments" exact)
+        q-item(clickable v-ripple to="/admin/payments" exact :active="pathMatch('payments')")
           q-item-section(avatar)
             q-icon(name="credit_card")
           q-item-section Payments
-        q-item(clickable v-ripple to="/admin/play_history" exact)
+        q-item(clickable v-ripple to="/admin/play_history" exact :active="pathMatch('play_history')")
           q-item-section(avatar)
             q-icon(name="assessment")
           q-item-section Play History
@@ -85,8 +84,8 @@ export default {
         this.$router.replace('/')
       })
     },
-    refreshAction () {
-      
+    pathMatch (id) {
+      return this.$route.fullPath.startsWith('/admin/' + id)
     }
   }
 }
