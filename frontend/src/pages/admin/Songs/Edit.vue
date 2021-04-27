@@ -4,25 +4,28 @@ q-page(padding)
     q-card-section
       .q-gutter-y-md
         .text-h5 Edit song
-        q-input(filled v-model="file" label="File")
+        .row.items-center
+          q-select.col(
+            label="File" filled v-model="file" :options="files" option-value="@id"
+            :option-label="(item) => item.fileName" emit-value map-options @filter="filterFiles")
+          .col-auto
+            q-btn.q-ml-sm(color="primary" label="Get From Metadata" no-caps @click="loadFromMetadata")
         q-input(filled v-model="name" label="Name")
         q-input(filled v-model="songArtist" label="Song Artist")
-        q-input(filled v-model="album" label="Album")
+        q-select(
+          label="Album"
+          filled
+          v-model="album"
+          :options="albums"
+          option-value="@id"
+          :option-label="(item) => `${item.artist} - ${item.name}`"
+          emit-value
+          map-options
+          @filter="filterAlbums")
         q-input(filled v-model="trackNumber" label="Track Number")
         q-field(filled label="Explorable" stack-label)
           q-toggle(:label="explorable?'On':'Off'" v-model="explorable")
         q-input(filled v-model="duration" label="Duration")
-        //- q-input(filled v-model="releaseDate" label="Release Date" mask="date" :rules="['date']")
-        //-   template(v-slot:append)
-        //-     q-icon(name="event" class="cursor-pointer")
-        //-       q-popup-proxy(ref="qDateProxy" transition-show="scale" transition-hide="scale")
-        //-         q-date(v-model="releaseDate" mask="YYYY/MM/DD")
-        //-           div(class="row items-center justify-end")
-        //-             q-btn(v-close-popup label="Close" color="primary" flat)
-        //- q-input(filled v-model="songArt" label="Song Art")
-        //- .row
-        //-   q-input.col.q-pr-xs( v-model.number="price" label="Price" type="number" filled :step="0.01" :max-decimals="2" :min="0")
-        //-   q-select.col-sm-auto(filled v-model="currency" :options="currencyOptions" emit-value map-options label="Currency" style="width:120px")
     q-card-actions(align="right")
       q-btn(flat color="red" icon="delete" padding="xs md") Delete
       q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
@@ -38,7 +41,16 @@ export default {
   },
   computed: {
     id () { return this.$route.params.id },
+
     oldStore () { return this.$store.getters['cache/songs/getObject'](this.id) },
+
+    albums () { return this.$store.getters['cache/albums/getAll'] },
+
+    files () {
+      return this.$store.getters['cache/mediaObjects/getAll'].filter((e) => {
+        return e.type === 'audio'
+      })
+    },
 
     name: {
       get () { return this.changedStore.name === undefined ? this.oldStore.name : this.changedStore.name },
@@ -72,9 +84,26 @@ export default {
     savable () { return Object.keys(this.changedStore).length > 0 }
   },
   methods: {
+    filterAlbums (val, update, abort) {
+      this.$store.dispatch('cache/albums/getAllFromAPI').then(() => {
+        update()
+      })
+    },
+    filterFiles (val, update, abort) {
+      this.$store.dispatch('cache/mediaObjects/getAllFromAPI').then(() => {
+        update()
+      })
+    },
+    loadFromMetadata () {
+      const currentFile = this.files.filter((e) => e['@id'] === this.file)[0]
+      this.$set(this, 'name', currentFile.meta.title)
+      this.$set(this, 'songArtist', currentFile.meta.artist)
+      this.$set(this, 'trackNumber', currentFile.meta.track)
+      this.$set(this, 'duration', currentFile.meta.duration)
+    }
   },
   mounted () {
-    this.$store.dispatch('cache/songs/getAllFromAPI')
+    this.$store.dispatch('cache/songs/getFromAPI', { id: this.id, follow: true })
   }
 }
 </script>

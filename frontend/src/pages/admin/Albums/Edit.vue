@@ -13,7 +13,16 @@ q-page(padding)
                 q-date(v-model="releaseDate" mask="YYYY/MM/DD")
                   div(class="row items-center justify-end")
                     q-btn(v-close-popup label="Close" color="primary" flat)
-        q-input(filled v-model="albumArt" label="Album Art")
+        q-select(
+          label="File"
+          filled
+          v-model="albumArt"
+          :options="files"
+          option-value="@id"
+          :option-label="(item) => item.fileName"
+          emit-value
+          map-options
+          @filter="filterFiles")
         .row
           q-input.col.q-pr-xs( v-model.number="price" label="Price" type="number" filled :step="0.01" :max-decimals="2" :min="0")
           q-select.col-sm-auto(filled v-model="currency" :options="currencyOptions" emit-value map-options label="Currency" style="width:120px")
@@ -44,6 +53,12 @@ export default {
     id () { return this.$route.params.id },
     oldStore () { return this.$store.getters['cache/albums/getObjectJoined'](this.id) },
 
+    files () {
+      return this.$store.getters['cache/mediaObjects/getAll'].filter((e) => {
+        return e.type === 'image'
+      })
+    },
+
     name: {
       get () { return this.changedStore.name === undefined ? this.oldStore.name : this.changedStore.name },
       set (val) { this.$set(this.changedStore, 'name', val) }
@@ -72,6 +87,15 @@ export default {
     savable () { return Object.keys(this.changedStore).length > 0 }
   },
   methods: {
+    filterFiles (val, update, abort) {
+      if (this.files.length > 0) {
+        update()
+        return
+      }
+      this.$store.dispatch('cache/mediaObjects/getAllFromAPI').then(() => {
+        update()
+      })
+    }
   },
   mounted () {
     this.$store.dispatch('cache/albums/getAllFromAPI')

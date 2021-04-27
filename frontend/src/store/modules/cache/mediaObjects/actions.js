@@ -16,3 +16,12 @@ export function getFromAPI ({ state, commit, rootState, dispatch }, { id, follow
       commit('updateValue', { id: id, value: data })
     })
 }
+
+export function getAllFromAPI ({ state, commit, rootState, dispatch }) {
+  return dispatch('system/apiRequest', { path: 'media_objects' }, { root: true })
+    .then((data) => {
+      data['hydra:member'].forEach(element => {
+        commit('updateValue', { id: element.id, value: element })
+      })
+    })
+}

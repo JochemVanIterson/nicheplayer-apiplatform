@@ -17,3 +17,7 @@ export function getObjectJoined (state, getters, rootState, rootGetters) {
     return albumObject
   }
 }
+
+export function getAll (state, getters, rootState, rootGetters) {
+  return state.data
+}

@@ -15,7 +15,10 @@ q-page(padding)
               class="cursor-pointer"
               @click="isPwd = !isPwd")
         q-select(filled v-model="roles" :options="roleOptions" multiple emit-value map-options use-chips label="Roles")
-        q-input(filled v-model="profilePic" label="Profile Picture")
+        q-select(
+          label="Profile Picture" filled v-model="profilePic" :options="files" option-value="@id"
+          :option-label="(item) => item.fileName" emit-value map-options @filter="filterFiles"
+        )
     q-card-actions(align="right")
       q-btn(flat color="red" icon="delete" padding="xs md") Delete
       q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
@@ -43,6 +46,12 @@ export default {
   computed: {
     id () { return this.$route.params.id },
     oldStore () { return this.$store.getters['cache/users/getObjectJoined'](this.id) },
+
+    files () {
+      return this.$store.getters['cache/mediaObjects/getAll'].filter((e) => {
+        return e.type === 'image'
+      })
+    },
 
     username: {
       get () { return this.changedStore.username === undefined ? this.oldStore.username : this.changedStore.username },
@@ -76,6 +85,15 @@ export default {
     savable () { return Object.keys(this.changedStore).length > 0 }
   },
   methods: {
+    filterFiles (val, update, abort) {
+      if (this.files.length > 0) {
+        update()
+        return
+      }
+      this.$store.dispatch('cache/mediaObjects/getAllFromAPI').then(() => {
+        update()
+      })
+    }
   },
   mounted () {
     this.$store.dispatch('cache/users/getAllFromAPI')
