@@ -65,7 +65,7 @@ export default {
     albumClicked (album) { if (this.albumAllowed(album)) this.$router.push(`/my/album/${album.id}`) }
   },
   mounted () {
-    if (this.isLoggedIn !== '') this.$store.dispatch('cache/payments/getAllFromAPI')
+    if (this.isLoggedIn !== '') this.$store.dispatch('cache/payments/getAllFromAPIByUser')
   }
 }
 </script>

@@ -85,7 +85,7 @@ export default {
   },
   mounted () {
     if (this.isLoggedIn !== '') this.$store.dispatch('cache/songs/getAllFromAPI')
-    if (this.isLoggedIn !== '') this.$store.dispatch('cache/payments/getAllFromAPI')
+    if (this.isLoggedIn !== '') this.$store.dispatch('cache/payments/getAllFromAPIByUser')
   }
 }
 </script>

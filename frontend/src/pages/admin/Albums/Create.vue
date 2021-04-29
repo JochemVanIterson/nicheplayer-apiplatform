@@ -13,7 +13,16 @@ q-page(padding)
                 q-date(v-model="releaseDate" mask="YYYY/MM/DD")
                   div(class="row items-center justify-end")
                     q-btn(v-close-popup label="Close" color="primary" flat)
-        q-input(filled v-model="albumArt" label="Album Art")
+        q-select(
+          label="Album Art"
+          filled
+          v-model="albumArt"
+          :options="files"
+          option-value="@id"
+          :option-label="(item) => item.fileName"
+          emit-value
+          map-options
+          @filter="filterFiles")
         .row
           q-input.col.q-pr-xs( v-model.number="price" label="Price" type="number" filled :step="0.01" :max-decimals="2" :min="0")
           q-select.col-sm-auto(filled v-model="currency" :options="currencyOptions" emit-value map-options label="Currency" style="width:120px")
@@ -48,6 +57,12 @@ export default {
     }
   },
   computed: {
+    files () {
+      return this.$store.getters['cache/mediaObjects/getAll'].filter((e) => {
+        return e.type === 'image'
+      })
+    },
+
     name: {
       get () { return this.newStore.name },
       set (val) { this.$set(this.newStore, 'name', val) }
@@ -76,6 +91,11 @@ export default {
     savable () { return this.username !== '' && this.email !== '' && this.firstname !== '' && this.lastname !== '' && this.password !== '' }
   },
   methods: {
+    filterFiles (val, update, abort) {
+      this.$store.dispatch('cache/mediaObjects/getAllFromAPI').then(() => {
+        update()
+      })
+    }
   },
   mounted () {
   }

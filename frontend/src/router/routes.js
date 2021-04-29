@@ -48,7 +48,12 @@ const routes = [
       { path: 'sources', component: () => import('pages/admin/Sources/List.vue'), meta: { title: 'Sources' } },
       { path: 'sources/create', component: () => import('pages/admin/Sources/Create.vue'), meta: { title: 'Sources' } },
       { path: 'sources/:id/show', component: () => import('pages/admin/Sources/Show.vue'), meta: { title: 'Sources' } },
-      { path: 'sources/:id/edit', component: () => import('pages/admin/Sources/Edit.vue'), meta: { title: 'Sources' } }
+      { path: 'sources/:id/edit', component: () => import('pages/admin/Sources/Edit.vue'), meta: { title: 'Sources' } },
+
+      { path: 'payments', component: () => import('pages/admin/Payments/List.vue'), meta: { title: 'Payments' } },
+      { path: 'payments/create', component: () => import('pages/admin/Payments/Create.vue'), meta: { title: 'Payments' } },
+      { path: 'payments/:id/show', component: () => import('pages/admin/Payments/Show.vue'), meta: { title: 'Payments' } },
+      { path: 'payments/:id/edit', component: () => import('pages/admin/Payments/Edit.vue'), meta: { title: 'Payments' } }
     ]
   },
   {

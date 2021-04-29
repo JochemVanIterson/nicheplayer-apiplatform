@@ -14,7 +14,7 @@ q-page(padding)
                   div(class="row items-center justify-end")
                     q-btn(v-close-popup label="Close" color="primary" flat)
         q-select(
-          label="File"
+          label="Album Art"
           filled
           v-model="albumArt"
           :options="files"
@@ -88,10 +88,6 @@ export default {
   },
   methods: {
     filterFiles (val, update, abort) {
-      if (this.files.length > 0) {
-        update()
-        return
-      }
       this.$store.dispatch('cache/mediaObjects/getAllFromAPI').then(() => {
         update()
       })

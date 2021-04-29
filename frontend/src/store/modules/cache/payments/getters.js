@@ -26,6 +26,18 @@ export function getObjectByAlbum (state) {
 export function getObjectJoined (state, getters, rootState, rootGetters) {
   return (id) => {
     const paymentObject = _.clone(getters.getObject(id))
+    if (paymentObject.album) {
+      const albumID = paymentObject.album.replace('/api/albums/', '')
+      paymentObject.album = rootGetters['cache/albums/getObjectJoined'](albumID)
+    }
+    if (paymentObject.song) {
+      const songID = paymentObject.song.replace('/api/songs/', '')
+      paymentObject.song = rootGetters['cache/songs/getObjectJoined'](songID)
+    }
+    if (paymentObject.user) {
+      const userID = paymentObject.user.replace('/api/users/', '')
+      paymentObject.user = rootGetters['cache/users/getObjectJoined'](userID)
+    }
     return paymentObject
   }
 }
@@ -37,6 +49,18 @@ export function getAll (state, getters, rootState, rootGetters) {
 export function getAllJoined (state, getters, rootState, rootGetters) {
   return getters.getAll.map(e => {
     const paymentObject = _.clone(e)
+    if (paymentObject.album) {
+      const albumID = paymentObject.album.replace('/api/albums/', '')
+      paymentObject.album = rootGetters['cache/albums/getObjectJoined'](albumID)
+    }
+    if (paymentObject.song) {
+      const songID = paymentObject.song.replace('/api/songs/', '')
+      paymentObject.song = rootGetters['cache/songs/getObjectJoined'](songID)
+    }
+    if (paymentObject.user) {
+      const userID = paymentObject.user.replace('/api/users/', '')
+      paymentObject.user = rootGetters['cache/users/getObjectJoined'](userID)
+    }
     return paymentObject
   })
 }
