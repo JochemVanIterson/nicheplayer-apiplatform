@@ -1,6 +1,6 @@
 // Payments
 
-export function getFromAPI({ state, commit, rootState, dispatch }, { id, joinFields = ['song', 'user'], force }) {
+export function getFromAPI ({ state, commit, rootState, dispatch }, { id, joinFields = ['song', 'user'], force }) {
   if (!id) return
   if (typeof id === 'string') id = id.replace('/api/play_histories/', '')
   if (!force && (typeof state.data[id] !== 'undefined')) return
@@ -20,7 +20,7 @@ export function getFromAPI({ state, commit, rootState, dispatch }, { id, joinFie
     })
 }
 
-export function getFromAPIByAlbum({ state, commit, rootState, dispatch, rootGetters }, { album, joinFields = ['song', 'user'] }) {
+export function getFromAPIByAlbum ({ state, commit, rootState, dispatch, rootGetters }, { album, joinFields = ['song', 'user'] }) {
   if (!album) return
   if (typeof album === 'string') album = album.replace('/api/albums/', '')
   const user = rootGetters['system/userData']
@@ -51,7 +51,7 @@ export function getAllFromAPIByUser ({ state, commit, rootState, dispatch, rootG
     })
 }
 
-export function getAllFromAPI({ state, commit, rootState, dispatch, rootGetters }) {
+export function getAllFromAPI ({ state, commit, rootState, dispatch, rootGetters }) {
   return dispatch('system/apiRequest', { path: 'play_histories' }, { root: true })
     .then((data) => {
       data['hydra:member'].forEach(element => {

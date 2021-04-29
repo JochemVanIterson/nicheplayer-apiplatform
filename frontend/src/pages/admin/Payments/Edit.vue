@@ -55,7 +55,7 @@ export default {
           label: 'Declined',
           value: 'declined'
         }
-      ],
+      ]
     }
   },
   computed: {
@@ -109,7 +109,7 @@ export default {
     savable () { return Object.keys(this.changedStore).length > 0 }
   },
   methods: {
-    parseDate (timestamp) { return date.formatDate(timestamp, 'DD-MM-YYYY HH:mm:ss') },
+    parseDate (timestamp) { return date.formatDate(timestamp, 'DD-MM-YYYY HH:mm:ss') }
   },
   mounted () {
     this.$store.dispatch('cache/payments/getFromAPI', { id: this.id })

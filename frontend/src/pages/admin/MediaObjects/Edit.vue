@@ -94,7 +94,7 @@ export default {
       this.$store.dispatch('cache/sources/getAllFromAPI').then(() => {
         update()
       })
-    },
+    }
   },
   mounted () {
     this.$store.dispatch('cache/mediaObjects/getAllFromAPI')

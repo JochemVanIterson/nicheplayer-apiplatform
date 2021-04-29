@@ -97,7 +97,7 @@ export default {
       return this.$store.getters['cache/albums/getAll']
     },
     songs () {
-      return this.$store.getters['cache/songs/getAll'].filter((e) => e.album == this.album)
+      return this.$store.getters['cache/songs/getAll'].filter((e) => e.album === this.album)
     },
 
     user: {
@@ -132,7 +132,7 @@ export default {
       set (val) { this.$set(this.newStore, 'song', val) }
     },
 
-    savable () { return this.user && this.paymentStatus && this.type && this.album && (this.type != 'song' || this.song) }
+    savable () { return this.user && this.paymentStatus && this.type && this.album && (this.type !== 'song' || this.song) }
   },
   methods: {
     filterUsers (val, update, abort) {

@@ -42,7 +42,7 @@ export default {
     data () { return this.$store.getters['cache/payments/getObjectJoined'](this.id) }
   },
   methods: {
-    parseDate (timestamp) { return date.formatDate(timestamp, 'DD-MM-YYYY HH:mm:ss') },
+    parseDate (timestamp) { return date.formatDate(timestamp, 'DD-MM-YYYY HH:mm:ss') }
   },
   mounted () {
     this.$store.dispatch('cache/payments/getAllFromAPI')

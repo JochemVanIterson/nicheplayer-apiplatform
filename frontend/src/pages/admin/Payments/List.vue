@@ -28,7 +28,6 @@ q-page(padding)
     template(v-slot:body-cell-song="props")
       q-td(:props="props" auto-width)
         router-link(v-if="props.row.song" @click.native.stop="" :to="`/admin/songs/${props.row.song.id}/show`") {{props.value}}
-    
     template(v-slot:body-cell-actions="props")
       q-td(:props="props" auto-width)
         q-btn(flat color="primary" icon="edit" label="Edit" no-caps @click.stop="editClicked(props.row.id)" no-wrap)
