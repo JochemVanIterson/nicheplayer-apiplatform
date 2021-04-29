@@ -11,6 +11,7 @@ import mediaObjects from './mediaObjects'
 import payments from './payments'
 import users from './users'
 import sources from './sources'
+import playHistory from './playHistory'
 
 export default {
   namespaced: true,
@@ -21,6 +22,7 @@ export default {
     mediaObjects,
     payments,
     users,
-    sources
+    sources,
+    playHistory
   }
 }

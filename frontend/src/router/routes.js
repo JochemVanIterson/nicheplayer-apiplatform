@@ -53,7 +53,10 @@ const routes = [
       { path: 'payments', component: () => import('pages/admin/Payments/List.vue'), meta: { title: 'Payments' } },
       { path: 'payments/create', component: () => import('pages/admin/Payments/Create.vue'), meta: { title: 'Payments' } },
       { path: 'payments/:id/show', component: () => import('pages/admin/Payments/Show.vue'), meta: { title: 'Payments' } },
-      { path: 'payments/:id/edit', component: () => import('pages/admin/Payments/Edit.vue'), meta: { title: 'Payments' } }
+      { path: 'payments/:id/edit', component: () => import('pages/admin/Payments/Edit.vue'), meta: { title: 'Payments' } },
+
+      { path: 'play_history', component: () => import('pages/admin/PlayHistory/List.vue'), meta: { title: 'Play History' } },
+      { path: 'play_history/:id/show', component: () => import('pages/admin/PlayHistory/Show.vue'), meta: { title: 'Play History' } },
     ]
   },
   {
