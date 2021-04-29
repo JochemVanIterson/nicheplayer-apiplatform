@@ -4,7 +4,7 @@ q-page(padding)
     q-card-section
       .q-gutter-y-md
         .text-h5 Edit user
-        q-input(filled v-model="username" label="Username")
+        q-input(filled v-model="username" label="Username" disable)
         q-input(filled v-model="email" label="Email")
         q-input(filled v-model="firstname" label="Firstname")
         q-input(filled v-model="lastname" label="Lastname")
@@ -16,15 +16,17 @@ q-page(padding)
               @click="isPwd = !isPwd")
         q-select(filled v-model="roles" :options="roleOptions" multiple emit-value map-options use-chips label="Roles")
         q-select(
-          label="Profile Picture" filled v-model="profilePic" :options="files" option-value="@id"
+          label="Profile Picture" filled v-model="profilepic" :options="files" option-value="@id"
           :option-label="(item) => item.fileName" emit-value map-options @filter="filterFiles"
         )
     q-card-actions(align="right")
-      q-btn(flat color="red" icon="delete" padding="xs md") Delete
-      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
+      q-btn(flat color="red" icon="delete" padding="xs md" @click="deleteAction") Delete
+      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
 </template>
 
 <script>
+import _ from 'lodash'
+
 export default {
   name: 'PageAdminUsersCreate',
   data () {
@@ -77,21 +79,38 @@ export default {
       get () { return this.changedStore.roles === undefined ? this.oldStore.roles : this.changedStore.roles },
       set (val) { this.$set(this.changedStore, 'roles', val) }
     },
-    profilePic: {
-      get () { return this.changedStore.profilePic === undefined ? this.oldStore.profilePic : this.changedStore.profilePic },
-      set (val) { this.$set(this.changedStore, 'profilePic', val) }
+    profilepic: {
+      get () { return this.changedStore.profilepic === undefined ? this.oldStore.profilepic : this.changedStore.profilepic },
+      set (val) { this.$set(this.changedStore, 'profilepic', val) }
     },
 
     savable () { return Object.keys(this.changedStore).length > 0 }
   },
   methods: {
     filterFiles (val, update, abort) {
-      if (this.files.length > 0) {
-        update()
-        return
-      }
       this.$store.dispatch('cache/mediaObjects/getAllFromAPI').then(() => {
         update()
+      })
+    },
+    saveAction () {
+      let newStore = {}
+      _.merge(newStore, this.oldStore, this.changedStore)
+      this.$store.dispatch('cache/users/updateAPI', { id: this.id, payload: newStore }).then((res) => {
+        console.log(res)
+        this.$router.go(-1)
+      })
+    },
+    deleteAction () {
+      this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to delete this user',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.$store.dispatch('cache/users/deleteAPI', this.id).then((res) => {
+          console.log(res)
+          this.$router.replace('/admin/users')
+        })
       })
     }
   },

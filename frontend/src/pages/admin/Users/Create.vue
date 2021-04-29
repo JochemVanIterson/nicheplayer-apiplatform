@@ -15,9 +15,11 @@ q-page(padding)
               class="cursor-pointer"
               @click="isPwd = !isPwd")
         q-select(filled v-model="roles" :options="roleOptions" multiple emit-value map-options use-chips label="Roles")
-        q-input(filled v-model="profilePic" label="Profile Picture")
+        q-select(
+          label="Profile Picture" filled v-model="profilepic" :options="files" option-value="@id"
+          :option-label="(item) => item.fileName" emit-value map-options @filter="filterFiles")
     q-card-actions(align="right")
-      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
+      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
 </template>
 
 <script>
@@ -42,12 +44,18 @@ export default {
         firstname: '',
         lastname: '',
         password: '',
-        roles: null,
-        profilePic: null
+        roles: ['ROLE_USER'],
+        profilepic: null
       }
     }
   },
   computed: {
+    files () {
+      return this.$store.getters['cache/mediaObjects/getAll'].filter((e) => {
+        return e.type === 'image'
+      })
+    },
+
     username: {
       get () { return this.newStore.username },
       set (val) { this.$set(this.newStore, 'username', val) }
@@ -72,13 +80,23 @@ export default {
       get () { return this.newStore.roles },
       set (val) { this.$set(this.newStore, 'roles', val) }
     },
-    profilePic: {
-      get () { return this.newStore.profilePic },
-      set (val) { this.$set(this.newStore, 'profilePic', val) }
+    profilepic: {
+      get () { return this.newStore.profilepic },
+      set (val) { this.$set(this.newStore, 'profilepic', val) }
     },
     savable () { return this.username !== '' && this.email !== '' && this.firstname !== '' && this.lastname !== '' && this.password !== '' }
   },
   methods: {
+    filterFiles (val, update, abort) {
+      this.$store.dispatch('cache/mediaObjects/getAllFromAPI').then(() => {
+        update()
+      })
+    },
+    saveAction () {
+      this.$store.dispatch('cache/users/insertAPI', this.newStore).then((res) => {
+        this.$router.go(-1)
+      })
+    }
   },
   mounted () {
   }

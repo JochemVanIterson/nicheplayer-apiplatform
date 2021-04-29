@@ -21,11 +21,12 @@ q-page(padding)
         q-btn(icon="add" flat label="Create" no-caps @click="$router.push('/admin/users/create')")
     template( v-slot:body-cell-fullname="props")
       q-td(:props="props")
-        q-avatar.q-mr-sm(size="md" color="grey-6")
-          img.profilePic(v-if="props.row.profilePic" :src="props.row.profilePic")
-          q-icon(name="people" color="white")
-        q-badge(v-if="props.row.roles.includes('ROLE_ADMIN')" color="primary" :label="props.value")
-        div(v-else) {{props.value}}
+        .row.items-center
+          q-avatar.q-mr-sm(size="md" color="grey-6")
+            img.profilePic(v-if="props.row.profilepic" :src="props.row.profilepic.contentUrl")
+            q-icon(name="people" color="white")
+          q-badge(v-if="props.row.roles.includes('ROLE_ADMIN')" color="primary" :label="props.value")
+          div(v-else) {{props.value}}
     template(v-slot:body-cell-actions="props")
       q-td(:props="props")
         q-btn(flat color="primary" icon="edit" label="Edit" no-caps @click.stop="editClicked(props.row.id)")
@@ -96,3 +97,9 @@ export default {
   }
 }
 </script>
+
+<style lang='scss' scoped>
+  .profilePic {
+    object-fit: cover;
+  }
+</style>

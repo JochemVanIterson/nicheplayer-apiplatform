@@ -28,7 +28,7 @@ q-page(padding)
         q-input(filled v-model="duration" label="Duration")
     q-card-actions(align="right")
       q-btn(flat color="red" icon="delete" padding="xs md") Delete
-      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
+      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
 </template>
 
 <script>

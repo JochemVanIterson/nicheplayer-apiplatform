@@ -90,3 +90,9 @@ export default {
   }
 }
 </script>
+
+<style lang='scss' scoped>
+  .profilePic {
+    object-fit: cover;
+  }
+</style>

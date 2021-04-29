@@ -3,7 +3,7 @@ q-page(padding)
   q-card(flat bordered)
     q-card-section.column.items-center
       q-avatar(size="400px" color="grey-6")
-        img.profilePic(v-if="data.profilePic" :src="data.profilePic")
+        img.profilePic(v-if="data.profilepic" :src="data.profilepic.contentUrl")
         q-icon(name="person" color="white")
       .text-h3.q-pt-md {{data.firstname}} {{data.lastname}}
     q-card-section
@@ -41,3 +41,9 @@ export default {
   }
 }
 </script>
+
+<style lang='scss' scoped>
+  .profilePic {
+    object-fit: cover;
+  }
+</style>

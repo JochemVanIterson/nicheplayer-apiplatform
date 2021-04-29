@@ -14,9 +14,9 @@ export function getObjectJoined (state, getters, rootState, rootGetters) {
   return (id) => {
     const userObject = _.clone(getters.getObject(id))
 
-    if (userObject.profilePic) {
-      const profilePicID = userObject.profilePic.replace('/api/media_objects/', '')
-      userObject.profilePic = rootGetters['cache/mediaObjects/getObjectJoined'](profilePicID)
+    if (userObject.profilepic) {
+      const profilepicID = userObject.profilepic.replace('/api/media_objects/', '')
+      userObject.profilepic = rootGetters['cache/mediaObjects/getObjectJoined'](profilepicID)
     }
     return userObject
   }
@@ -30,9 +30,9 @@ export function getAllJoined (state, getters, rootState, rootGetters) {
   return getters.getAll.map(e => {
     const userObject = _.clone(e)
 
-    if (userObject.profilePic) {
-      const profilePicID = userObject.profilePic.replace('/api/media_objects/', '')
-      userObject.profilePic = rootGetters['cache/mediaObjects/getObjectJoined'](profilePicID)
+    if (userObject.profilepic) {
+      const profilepicID = userObject.profilepic.replace('/api/media_objects/', '')
+      userObject.profilepic = rootGetters['cache/mediaObjects/getObjectJoined'](profilepicID)
     }
     return userObject
   })
