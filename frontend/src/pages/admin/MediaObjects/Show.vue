@@ -18,7 +18,7 @@ q-page(padding)
         div
           .text-caption.text-weight-light Preview
           div(v-if="data.type === 'image'")
-            q-img(:src="data.contentUrl" style="height: 170px; max-width: 300px")
+            q-img(:src="data.contentUrl" style="max-width: 300px")
           div(v-else-if="data.type === 'audio'")
             audio(controls :src="data.contentUrl")
           div(v-else) {{data.contentUrl}}
