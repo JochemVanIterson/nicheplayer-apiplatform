@@ -32,10 +32,11 @@ export function getAllFromAPI ({ state, commit, rootState, dispatch }) {
         })
         commit('updateValue', { id: element.id, value: element })
       })
+      return data['hydra:member']
     })
 }
 
-export function insertAPI({ state, commit, rootState, dispatch }, payload) {
+export function insertAPI ({ state, commit, rootState, dispatch }, payload) {
   console.log(payload)
   if (payload.albumArt && typeof payload.albumArt !== 'string') payload.albumArt = payload.albumArt['@id']
 
@@ -45,7 +46,7 @@ export function insertAPI({ state, commit, rootState, dispatch }, payload) {
     })
 }
 
-export function updateAPI({ state, commit, rootState, dispatch }, { id, payload }) {
+export function updateAPI ({ state, commit, rootState, dispatch }, { id, payload }) {
   if (!id) return
   if (typeof id === 'string') id = id.replace('/api/albums/', '')
 
@@ -57,7 +58,7 @@ export function updateAPI({ state, commit, rootState, dispatch }, { id, payload 
     })
 }
 
-export function deleteAPI({ state, commit, rootState, dispatch }, id) {
+export function deleteAPI ({ state, commit, rootState, dispatch }, id) {
   if (!id) return
   if (typeof id === 'string') id = id.replace('/api/albums/', '')
 

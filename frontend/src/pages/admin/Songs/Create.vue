@@ -27,7 +27,7 @@ q-page(padding)
           q-toggle(:label="explorable?'On':'Off'" v-model="explorable")
         q-input(filled v-model="duration" label="Duration")
     q-card-actions(align="right")
-      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
+      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
 </template>
 
 <script>
@@ -112,8 +112,21 @@ export default {
       const currentFile = this.files.filter((e) => e['@id'] === this.file)[0]
       this.$set(this, 'name', currentFile.meta.title)
       this.$set(this, 'songArtist', currentFile.meta.artist)
-      this.$set(this, 'trackNumber', currentFile.meta.track)
-      this.$set(this, 'duration', currentFile.meta.duration)
+      this.$set(this, 'trackNumber', parseInt(currentFile.meta.track))
+      this.$set(this, 'duration', parseFloat(currentFile.meta.duration))
+      this.$store.dispatch('cache/albums/getAllFromAPI').then((albums) => {
+        for (const album of albums) {
+          if (album.name.toUpperCase() === currentFile.meta.album.toUpperCase()) {
+            this.$set(this, 'album', album['@id'])
+            continue
+          }
+        }
+      })
+    },
+    saveAction () {
+      this.$store.dispatch('cache/songs/insertAPI', this.newStore).then((res) => {
+        this.$router.go(-1)
+      })
     }
   },
   mounted () {

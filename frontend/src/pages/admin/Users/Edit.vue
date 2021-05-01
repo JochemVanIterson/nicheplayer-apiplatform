@@ -93,7 +93,7 @@ export default {
       })
     },
     saveAction () {
-      let newStore = {}
+      const newStore = {}
       _.merge(newStore, this.oldStore, this.changedStore)
       this.$store.dispatch('cache/users/updateAPI', { id: this.id, payload: newStore }).then((res) => {
         console.log(res)

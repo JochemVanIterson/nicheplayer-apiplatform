@@ -27,11 +27,13 @@ q-page(padding)
           q-toggle(:label="explorable?'On':'Off'" v-model="explorable")
         q-input(filled v-model="duration" label="Duration")
     q-card-actions(align="right")
-      q-btn(flat color="red" icon="delete" padding="xs md") Delete
+      q-btn(flat color="red" icon="delete" padding="xs md" @click="deleteAction") Delete
       q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
 </template>
 
 <script>
+import _ from 'lodash'
+
 export default {
   name: 'PageAdminSongsCreate',
   data () {
@@ -98,8 +100,37 @@ export default {
       const currentFile = this.files.filter((e) => e['@id'] === this.file)[0]
       this.$set(this, 'name', currentFile.meta.title)
       this.$set(this, 'songArtist', currentFile.meta.artist)
-      this.$set(this, 'trackNumber', currentFile.meta.track)
-      this.$set(this, 'duration', currentFile.meta.duration)
+      this.$set(this, 'trackNumber', parseInt(currentFile.meta.track))
+      this.$set(this, 'duration', parseFloat(currentFile.meta.duration))
+      this.$store.dispatch('cache/albums/getAllFromAPI').then((albums) => {
+        for (const album of albums) {
+          if (album.name.toUpperCase() === currentFile.meta.album.toUpperCase()) {
+            this.$set(this, 'album', album['@id'])
+            continue
+          }
+        }
+      })
+    },
+    saveAction () {
+      const newStore = {}
+      _.merge(newStore, this.oldStore, this.changedStore)
+      this.$store.dispatch('cache/songs/updateAPI', { id: this.id, payload: newStore }).then((res) => {
+        console.log(res)
+        this.$router.go(-1)
+      })
+    },
+    deleteAction () {
+      this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to delete this user',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.$store.dispatch('cache/songs/deleteAPI', this.id).then((res) => {
+          console.log(res)
+          this.$router.replace('/admin/songs')
+        })
+      })
     }
   },
   mounted () {
