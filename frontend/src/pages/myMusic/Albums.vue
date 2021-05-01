@@ -21,14 +21,16 @@
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   name: 'MyAlbums',
   computed: {
-    albums () { return this.$store.getters['cache/albums/getAllJoined'] },
     payments () { return this.$store.getters['cache/payments/getAllJoined'] },
     filteredAlbums () {
-      return this.payments.map((e) => {
-        const album = this.albums[e.album.replace('/api/albums/', '')]
+      return this.payments.filter((e) => {
+        return e.album !== 'collecting'
+      }).map((e) => {
+        let album = _.clone(e.album)
         if (album && album !== 'collecting') album.payment = e
         return album
       }).sort((a, b) => {

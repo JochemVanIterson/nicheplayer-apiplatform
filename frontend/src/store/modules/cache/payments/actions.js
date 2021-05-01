@@ -50,7 +50,7 @@ export function getAllFromAPIByUser ({ state, commit, rootState, dispatch, rootG
   return dispatch('system/apiRequest', { path: 'payments', params: { user: user.id } }, { root: true })
     .then((data) => {
       data['hydra:member'].forEach(element => {
-        if (element.album) dispatch('cache/albums/getFromAPI', { id: element.album, joinFields: [] }, { root: true })
+        if (element.album) dispatch('cache/albums/getFromAPI', { id: element.album, joinFields: ['albumArt'] }, { root: true })
         if (element.song) dispatch('cache/songs/getFromAPI', { id: element.song, joinFields: [] }, { root: true })
         if (element.user) dispatch('cache/users/getFromAPI', { id: element.user, joinFields: [] }, { root: true })
         commit('updateValue', { id: element.id, value: element })

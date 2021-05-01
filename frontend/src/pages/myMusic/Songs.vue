@@ -20,7 +20,7 @@ export default {
   name: 'MySongs',
   computed: {
     songs () { return this.$store.getters['cache/songs/getAllJoined'] },
-    payments () { return this.$store.getters['cache/payments/getAllJoined'] },
+    payments () { return this.$store.getters['cache/payments/getAll'] },
     orderedSongs () {
       return this.songs.map((song) => {
         const payment = this.payments.filter((e) => {
