@@ -8,7 +8,7 @@ q-page(padding)
           .text-caption.text-weight-light User
           router-link(v-if="userID > 0" @click.native.stop="" :to="`/admin/users/${userObject.id}/show`") {{userObject.firstname}} {{userObject.lastname}}
         div
-          .text-caption.text-weight-light Payment Statuw
+          .text-caption.text-weight-light Payment Status
           q-select(filled v-model="paymentStatus" :options="statusOptions" emit-value map-options label="Payment Status")
         div
           .text-caption.text-weight-light Type
@@ -26,12 +26,13 @@ q-page(padding)
           .text-caption.text-weight-light Price
           .text {{price}}
     q-card-actions(align="right")
-      q-btn(flat color="red" icon="delete" padding="xs md") Delete
-      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
+      q-btn(flat color="red" icon="delete" padding="xs md" @click="deleteAction") Delete
+      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
 </template>
 
 <script>
 import { date } from 'quasar'
+import _ from 'lodash'
 
 export default {
   name: 'PageAdminPaymentsCreate',
@@ -109,7 +110,28 @@ export default {
     savable () { return Object.keys(this.changedStore).length > 0 }
   },
   methods: {
-    parseDate (timestamp) { return date.formatDate(timestamp, 'DD-MM-YYYY HH:mm:ss') }
+    parseDate (timestamp) { return date.formatDate(timestamp, 'DD-MM-YYYY HH:mm:ss') },
+    saveAction () {
+      const newStore = {}
+      _.merge(newStore, this.oldStore, this.changedStore)
+      this.$store.dispatch('cache/payments/updateAPI', { id: this.id, payload: newStore }).then((res) => {
+        console.log(res)
+        this.$router.go(-1)
+      })
+    },
+    deleteAction () {
+      this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to delete this user',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.$store.dispatch('cache/payments/deleteAPI', this.id).then((res) => {
+          console.log(res)
+          this.$router.replace('/admin/payments')
+        })
+      })
+    }
   },
   mounted () {
     this.$store.dispatch('cache/payments/getFromAPI', { id: this.id })

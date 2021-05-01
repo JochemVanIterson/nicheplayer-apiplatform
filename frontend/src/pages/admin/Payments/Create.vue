@@ -45,7 +45,7 @@ q-page(padding)
                 map-options
                 @filter="filterSongs")
     q-card-actions(align="right")
-      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
+      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
 </template>
 
 <script>
@@ -148,6 +148,11 @@ export default {
     filterSongs (val, update, abort) {
       this.$store.dispatch('cache/songs/getAllFromAPI').then(() => {
         update()
+      })
+    },
+    saveAction () {
+      this.$store.dispatch('cache/payments/insertAPI', this.newStore).then((res) => {
+        this.$router.go(-1)
       })
     }
   },

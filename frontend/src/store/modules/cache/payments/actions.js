@@ -69,3 +69,40 @@ export function getAllFromAPI ({ state, commit, rootState, dispatch, rootGetters
       })
     })
 }
+
+export function insertAPI({ state, commit, rootState, dispatch }, payload) {
+  console.log(payload)
+  if (payload.album && typeof payload.album !== 'string') payload.album = payload.album['@id']
+  if (payload.song && typeof payload.song !== 'string') payload.song = payload.song['@id']
+  if (payload.user && typeof payload.user !== 'string') payload.user = payload.user['@id']
+
+  return dispatch('system/apiRequest', { path: 'payments', payload, method: 'POST' }, { root: true })
+    .then((data) => {
+      return data
+    })
+}
+
+export function updateAPI({ state, commit, rootState, dispatch }, { id, payload }) {
+  if (!id) return
+  if (typeof id === 'string') id = id.replace('/api/payments/', '')
+
+  if (payload.album && typeof payload.album !== 'string') payload.album = payload.album['@id']
+  if (payload.song && typeof payload.song !== 'string') payload.song = payload.song['@id']
+  if (payload.user && typeof payload.user !== 'string') payload.user = payload.user['@id']
+
+  return dispatch('system/apiRequest', { path: `payments/${id}`, payload, method: 'PUT' }, { root: true })
+    .then((data) => {
+      return data
+    })
+}
+
+export function deleteAPI({ state, commit, rootState, dispatch }, id) {
+  if (!id) return
+  if (typeof id === 'string') id = id.replace('/api/payments/', '')
+
+  return dispatch('system/apiRequest', { path: `payments/${id}`, method: 'DELETE' }, { root: true })
+    .then((data) => {
+      commit('updateValue', { id: id, value: undefined })
+      return data
+    })
+}
