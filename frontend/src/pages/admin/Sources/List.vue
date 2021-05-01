@@ -18,7 +18,7 @@ q-page(padding)
         q-input(outlined dense debounce="300" v-model="filter" placeholder="Search")
           template(v-slot:append)
             q-icon(name="search")
-        q-btn(icon="add" flat label="Create" no-caps @click="$router.push('/admin/sources/create')")
+        //- q-btn(icon="add" flat label="Create" no-caps @click="$router.push('/admin/sources/create')")
     template( v-slot:body-cell-sourceart="props")
       q-td(:props="props")
         q-img(
@@ -34,9 +34,9 @@ q-page(padding)
     template(v-slot:body-cell-explorable="props")
       q-td(:props="props" auto-width)
         q-icon(:name="props.value?'check':'close'" size="sm")
-    template(v-slot:body-cell-actions="props")
-      q-td(:props="props" auto-width)
-        q-btn(flat color="primary" icon="edit" label="Edit" no-caps @click.stop="editClicked(props.row.id)" no-wrap)
+    //- template(v-slot:body-cell-actions="props")
+    //-   q-td(:props="props" auto-width)
+    //-     q-btn(flat color="primary" icon="edit" label="Edit" no-caps @click.stop="editClicked(props.row.id)" no-wrap)
 </template>
 
 <script>

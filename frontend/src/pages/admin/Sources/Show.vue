@@ -12,8 +12,8 @@ q-page(padding)
         div
           .text-caption.text-weight-light Config
           .text {{data.config}}
-    q-card-actions(align="right")
-      q-btn(color="primary" icon="edit" padding="xs md" @click="$router.push(`/admin/sources/${id}/edit`)") Edit
+    //- q-card-actions(align="right")
+    //-   q-btn(color="primary" icon="edit" padding="xs md" @click="$router.push(`/admin/sources/${id}/edit`)") Edit
 
 </template>
 
