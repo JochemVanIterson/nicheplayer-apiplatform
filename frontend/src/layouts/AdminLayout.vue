@@ -24,7 +24,7 @@
               q-item-section
                 q-item-label Logout
 
-    q-drawer(show-if-above v-model="leftDrawerOpen" side="left" bordered :width="250")
+    q-drawer(show-if-above v-model="leftDrawerOpen" side="left" bordered :width="250" content-class="bg-white")
       q-list(class="rounded-borders")
         q-item(clickable v-ripple to="/admin/dashboard" exact :active="pathMatch('dashboard')")
           q-item-section(avatar)
