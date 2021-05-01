@@ -10,7 +10,7 @@ q-page.row(padding)
       :selected-rows-label="getSelectedString"
       selection="multiple"
       :selected.sync="selected"
-      :filter="filter"
+      :filter="filterString"
       flat bordered
       @row-click="openPreview"
       ref="mediaTable"
@@ -18,11 +18,12 @@ q-page.row(padding)
     )
       template(v-slot:top-right)
         .row.items-center.q-gutter-x-sm
+          q-select(outlined dense rounded v-model="filterType" :options="['All', 'Audio', 'Image']" :display-value="`Type: ${filterType}`")
           q-btn-toggle(
-            no-caps rounded unelevated toggle-color="primary" color="white" text-color="primary" :style="'border: 1px solid '+buttonColor"
-            v-model="viewMode" :options="[ {label: 'Grid', value: 'grid'}, {label: 'List', value: 'list'} ]")
+            no-caps rounded unelevated toggle-color="black" color="white" text-color="black" :style="'border: 1px solid black'"
+            v-model="viewMode" :options="[ {value: 'grid', icon: 'apps'}, {value: 'list', icon: 'view_headline'} ]")
           q-btn(icon="refresh" flat round @click="refresh")
-          q-input(outlined dense debounce="300" v-model="filter" placeholder="Search")
+          q-input(outlined dense debounce="300" v-model="filterString" placeholder="Search")
             template(v-slot:append)
               q-icon(name="search")
           q-btn(icon="add" flat label="Create" no-caps @click="$router.push('/admin/media_objects/create')")
@@ -76,7 +77,8 @@ export default {
   name: 'PageAdminMediaObjectsList',
   data () {
     return {
-      filter: '',
+      filterString: '',
+      filterType: 'All',
       selected: [],
       columns: [
         {
@@ -136,7 +138,9 @@ export default {
   computed: {
     data () {
       return this.$store.getters['cache/mediaObjects/getAll'].filter((e) => {
-        return e !== undefined
+        if (e === undefined) return false
+        if (this.filterType !== 'All' && e.type !== this.filterType.toLowerCase()) return false
+        else return true
       })
     },
     buttonColor () { return colors.getBrand('primary') },
