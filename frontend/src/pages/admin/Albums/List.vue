@@ -14,7 +14,7 @@ q-page(padding)
     :pagination="{rowsPerPage: 10}"
   )
     template(v-slot:top-right)
-      .row.items-center.q-gutter-x-sm
+      .row.items-center.q-gutter-sm
         q-btn(icon="refresh" flat round @click="refresh")
         q-input(outlined dense debounce="300" v-model="filter" placeholder="Search")
           template(v-slot:append)

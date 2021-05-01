@@ -17,7 +17,7 @@ q-page.row(padding)
       :pagination="{rowsPerPage: 10}"
     )
       template(v-slot:top-right)
-        .row.items-center.q-gutter-x-sm
+        .row.items-center.q-gutter-sm
           q-select(outlined dense rounded v-model="filterType" :options="['All', 'Audio', 'Image']" :display-value="`Type: ${filterType}`")
           q-btn-toggle(
             no-caps rounded unelevated toggle-color="black" color="white" text-color="black" :style="'border: 1px solid black'"

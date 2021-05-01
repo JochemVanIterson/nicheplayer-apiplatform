@@ -14,12 +14,11 @@ q-page(padding)
     :pagination="{rowsPerPage: 10}"
   )
     template(v-slot:top-right)
-      .row.items-center.q-gutter-x-sm
+      .row.items-center.q-gutter-sm
         q-btn(icon="refresh" flat round @click="refresh")
         q-input(outlined dense debounce="300" v-model="filter" placeholder="Search")
           template(v-slot:append)
             q-icon(name="search")
-        //- q-btn(icon="add" flat label="Create" no-caps @click="$router.push('/admin/sources/create')")
     template( v-slot:body-cell-sourceart="props")
       q-td(:props="props")
         q-img(
