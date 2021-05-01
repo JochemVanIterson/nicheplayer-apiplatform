@@ -5,7 +5,7 @@ q-page(padding)
       .q-gutter-y-md
         .text-h5 New song
         .row.items-center
-          MediaField.col(v-model="file" filled stack-label label="File")
+          MediaField.col(v-model="file" type="Audio" filled stack-label label="File")
           .col-auto
             q-btn.q-ml-sm(color="primary" label="Get From Metadata" no-caps @click="loadFromMetadata")
         q-input(filled v-model="name" label="Name")

@@ -13,16 +13,7 @@ q-page(padding)
                 q-date(v-model="releaseDate" mask="YYYY/MM/DD")
                   div(class="row items-center justify-end")
                     q-btn(v-close-popup label="Close" color="primary" flat)
-        q-select(
-          label="Album Art"
-          filled
-          v-model="albumArt"
-          :options="files"
-          option-value="@id"
-          :option-label="(item) => item.fileName"
-          emit-value
-          map-options
-          @filter="filterFiles")
+        MediaField(v-model="albumArt" type="Image" filled stack-label label="Album Art")
         .row
           q-input.col.q-pr-xs( v-model.number="price" label="Price" type="number" filled :step="0.01" :max-decimals="2" :min="0")
           q-select.col-sm-auto(filled v-model="currency" :options="currencyOptions" emit-value map-options label="Currency" style="width:120px")
@@ -33,9 +24,13 @@ q-page(padding)
 
 <script>
 import _ from 'lodash'
+import MediaField from 'components/MediaField'
 
 export default {
   name: 'PageAdminAlbumsCreate',
+  components: {
+    MediaField
+  },
   data () {
     return {
       changedStore: {},
@@ -74,7 +69,7 @@ export default {
       set (val) { this.$set(this.changedStore, 'releaseDate', val) }
     },
     albumArt: {
-      get () { return this.changedStore.albumArt === undefined ? this.oldStore.albumArt : this.changedStore.albumArt },
+      get () { return this.changedStore.albumArt === undefined ? this.oldStore.albumArt['@id'] : this.changedStore.albumArt },
       set (val) { this.$set(this.changedStore, 'albumArt', val) }
     },
     price: {

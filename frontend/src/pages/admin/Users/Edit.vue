@@ -15,10 +15,7 @@ q-page(padding)
               class="cursor-pointer"
               @click="isPwd = !isPwd")
         q-select(filled v-model="roles" :options="roleOptions" multiple emit-value map-options use-chips label="Roles")
-        q-select(
-          label="Profile Picture" filled v-model="profilepic" :options="files" option-value="@id"
-          :option-label="(item) => item.fileName" emit-value map-options @filter="filterFiles"
-        )
+        MediaField(v-model="profilepic" type="Image" filled stack-label label="Profile Picture")
     q-card-actions(align="right")
       q-btn(flat color="red" icon="delete" padding="xs md" @click="deleteAction") Delete
       q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
@@ -26,9 +23,12 @@ q-page(padding)
 
 <script>
 import _ from 'lodash'
-
+import MediaField from 'components/MediaField'
 export default {
   name: 'PageAdminUsersCreate',
+  components: {
+    MediaField
+  },
   data () {
     return {
       isPwd: true,
@@ -80,7 +80,7 @@ export default {
       set (val) { this.$set(this.changedStore, 'roles', val) }
     },
     profilepic: {
-      get () { return this.changedStore.profilepic === undefined ? this.oldStore.profilepic : this.changedStore.profilepic },
+      get () { return this.changedStore.profilepic === undefined ? this.oldStore.profilepic['@id'] : this.changedStore.profilepic },
       set (val) { this.$set(this.changedStore, 'profilepic', val) }
     },
 

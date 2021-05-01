@@ -44,7 +44,7 @@ export default {
       this.$q.dialog({
         component: MediaBrowser,
         parent: this,
-        type: 'Audio',
+        type: this.type,
         value: this.value
       }).onOk((mediaObject) => {
         this.$emit('input', mediaObject['@id'])

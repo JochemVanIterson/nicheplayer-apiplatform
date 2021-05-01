@@ -15,16 +15,18 @@ q-page(padding)
               class="cursor-pointer"
               @click="isPwd = !isPwd")
         q-select(filled v-model="roles" :options="roleOptions" multiple emit-value map-options use-chips label="Roles")
-        q-select(
-          label="Profile Picture" filled v-model="profilepic" :options="files" option-value="@id"
-          :option-label="(item) => item.fileName" emit-value map-options @filter="filterFiles")
+        MediaField(v-model="profilepic" type="Image" filled stack-label label="Profile Picture")
     q-card-actions(align="right")
       q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
 </template>
 
 <script>
+import MediaField from 'components/MediaField'
 export default {
   name: 'PageAdminUsersCreate',
+  components: {
+    MediaField
+  },
   data () {
     return {
       isPwd: true,
