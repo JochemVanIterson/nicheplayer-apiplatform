@@ -11,6 +11,7 @@ q-page(padding)
     :filter="filter"
     flat bordered
     @row-click="rowClicked"
+    :pagination="{rowsPerPage: 10}"
   )
     template(v-slot:top-right)
       .row.items-center.q-gutter-x-sm
