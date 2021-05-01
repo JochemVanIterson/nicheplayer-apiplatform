@@ -71,7 +71,7 @@ q-page.row(padding)
 </template>
 
 <script>
-import { format, colors } from 'quasar'
+import { format } from 'quasar'
 
 export default {
   name: 'PageAdminMediaObjectsList',
@@ -143,7 +143,6 @@ export default {
         else return true
       })
     },
-    buttonColor () { return colors.getBrand('primary') },
     selectedItm () { return this.selected.length === 1 ? this.selected[0] : {} }
   },
   methods: {

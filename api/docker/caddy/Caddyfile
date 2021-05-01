@@ -36,6 +36,7 @@ log
     || {path} == "/app.js"
     || {path} == "/manifest.json"
     || {path} == "/robots.txt"
+    || {path} == "/chunk-common.js"
     || {path} == "/0.js"
     || {path} == "/1.js"
     || {path} == "/2.js"
@@ -77,6 +78,16 @@ log
     || {path} == "/38.js"
     || {path} == "/39.js"
     || {path} == "/40.js"
+    || {path} == "/41.js"
+    || {path} == "/42.js"
+    || {path} == "/43.js"
+    || {path} == "/44.js"
+    || {path} == "/45.js"
+    || {path} == "/46.js"
+    || {path} == "/47.js"
+    || {path} == "/48.js"
+    || {path} == "/49.js"
+    || {path} == "/50.js"
     || {path}.startsWith("/sockjs-node")
     || {path}.startsWith("/fonts")
     || {path}.startsWith("/img")

@@ -5,9 +5,7 @@ q-page(padding)
       .q-gutter-y-md
         .text-h5 Edit song
         .row.items-center
-          q-select.col(
-            label="File" filled v-model="file" :options="files" option-value="@id"
-            :option-label="(item) => item.fileName" emit-value map-options @filter="filterFiles")
+          MediaField.col(v-model="file" filled stack-label label="File")
           .col-auto
             q-btn.q-ml-sm(color="primary" label="Get From Metadata" no-caps @click="loadFromMetadata")
         q-input(filled v-model="name" label="Name")
@@ -33,9 +31,13 @@ q-page(padding)
 
 <script>
 import _ from 'lodash'
+import MediaField from 'components/MediaField'
 
 export default {
   name: 'PageAdminSongsCreate',
+  components: {
+    MediaField
+  },
   data () {
     return {
       changedStore: {}
