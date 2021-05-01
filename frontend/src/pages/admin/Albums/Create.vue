@@ -27,7 +27,7 @@ q-page(padding)
           q-input.col.q-pr-xs( v-model.number="price" label="Price" type="number" filled :step="0.01" :max-decimals="2" :min="0")
           q-select.col-sm-auto(filled v-model="currency" :options="currencyOptions" emit-value map-options label="Currency" style="width:120px")
     q-card-actions(align="right")
-      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
+      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
 </template>
 
 <script>
@@ -94,6 +94,11 @@ export default {
     filterFiles (val, update, abort) {
       this.$store.dispatch('cache/mediaObjects/getAllFromAPI').then(() => {
         update()
+      })
+    },
+    saveAction () {
+      this.$store.dispatch('cache/albums/insertAPI', this.newStore).then((res) => {
+        this.$router.go(-1)
       })
     }
   },

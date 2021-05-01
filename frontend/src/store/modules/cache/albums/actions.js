@@ -34,3 +34,36 @@ export function getAllFromAPI ({ state, commit, rootState, dispatch }) {
       })
     })
 }
+
+export function insertAPI({ state, commit, rootState, dispatch }, payload) {
+  console.log(payload)
+  if (payload.albumArt && typeof payload.albumArt !== 'string') payload.albumArt = payload.albumArt['@id']
+
+  return dispatch('system/apiRequest', { path: 'albums', payload, method: 'POST' }, { root: true })
+    .then((data) => {
+      return data
+    })
+}
+
+export function updateAPI({ state, commit, rootState, dispatch }, { id, payload }) {
+  if (!id) return
+  if (typeof id === 'string') id = id.replace('/api/albums/', '')
+
+  if (payload.albumArt && typeof payload.albumArt !== 'string') payload.albumArt = payload.albumArt['@id']
+
+  return dispatch('system/apiRequest', { path: `albums/${id}`, payload, method: 'PUT' }, { root: true })
+    .then((data) => {
+      return data
+    })
+}
+
+export function deleteAPI({ state, commit, rootState, dispatch }, id) {
+  if (!id) return
+  if (typeof id === 'string') id = id.replace('/api/albums/', '')
+
+  return dispatch('system/apiRequest', { path: `albums/${id}`, method: 'DELETE' }, { root: true })
+    .then((data) => {
+      commit('updateValue', { id: id, value: undefined })
+      return data
+    })
+}

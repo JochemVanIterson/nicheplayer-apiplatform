@@ -27,11 +27,13 @@ q-page(padding)
           q-input.col.q-pr-xs( v-model.number="price" label="Price" type="number" filled :step="0.01" :max-decimals="2" :min="0")
           q-select.col-sm-auto(filled v-model="currency" :options="currencyOptions" emit-value map-options label="Currency" style="width:120px")
     q-card-actions(align="right")
-      q-btn(flat color="red" icon="delete" padding="xs md") Delete
-      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md") Save
+      q-btn(flat color="red" icon="delete" padding="xs md" @click="deleteAction") Delete
+      q-btn(:disabled="!savable" color="primary" icon="save" padding="xs md" @click="saveAction") Save
 </template>
 
 <script>
+import _ from 'lodash'
+
 export default {
   name: 'PageAdminAlbumsCreate',
   data () {
@@ -90,6 +92,27 @@ export default {
     filterFiles (val, update, abort) {
       this.$store.dispatch('cache/mediaObjects/getAllFromAPI').then(() => {
         update()
+      })
+    },
+    saveAction () {
+      let newStore = {}
+      _.merge(newStore, this.oldStore, this.changedStore)
+      this.$store.dispatch('cache/albums/updateAPI', { id: this.id, payload: newStore }).then((res) => {
+        console.log(res)
+        this.$router.go(-1)
+      })
+    },
+    deleteAction () {
+      this.$q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to delete this user',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.$store.dispatch('cache/albums/deleteAPI', this.id).then((res) => {
+          console.log(res)
+          this.$router.replace('/admin/albums')
+        })
       })
     }
   },
