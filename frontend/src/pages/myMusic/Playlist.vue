@@ -5,6 +5,6 @@
 
 <script>
 export default {
-  name: 'Playlist',
+  name: 'Playlist'
 }
 </script>

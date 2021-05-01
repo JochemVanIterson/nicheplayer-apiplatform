@@ -20,14 +20,13 @@
           q-btn(v-if="!isLoggedIn" stretch flat label="Register" to="/register" no-caps)
           q-btn(v-if="!isLoggedIn" stretch flat label="Login" to="/login" no-caps)
           q-btn(v-if="isLoggedIn"  stretch flat label="Explore" to="/explore" no-caps)
-          
 </template>
 
 <script>
 export default {
   // name: 'PageName',
   computed: {
-    isLoggedIn() { return this.$store.getters["system/isLoggedIn"] }
+    isLoggedIn () { return this.$store.getters['system/isLoggedIn'] }
   }
 }
 </script>

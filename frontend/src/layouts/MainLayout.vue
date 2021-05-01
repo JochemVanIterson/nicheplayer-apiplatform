@@ -79,35 +79,35 @@ export default {
   },
   data () {
     return {
-      leftDrawerOpen: false,
+      leftDrawerOpen: false
     }
   },
   computed: {
     drawerOpen: {
-      get() {
+      get () {
         return this.$q.screen.gt.md ? true : this.leftDrawerOpen
       },
-      set(value) {
+      set (value) {
         this.leftDrawerOpen = value
       }
     },
-    isLoggedIn() { return this.$store.getters["system/isLoggedIn"] },
-    userFullName() { return this.isLoggedIn ? this.$store.getters["system/userFullName"] : '' },
-    userProfilePic() { return this.isLoggedIn ? this.$store.getters["system/userProfilePic"] : '' },
-    userHasProfilePic() { return this.isLoggedIn ? this.$store.getters["system/userHasProfilePic"] : '' },
-    userInitials() { return this.isLoggedIn ? this.$store.getters["system/userInitials"] : '' },
-    userAdmin() { return this.isLoggedIn ? this.$store.getters["system/userAdmin"] : false }
+    isLoggedIn () { return this.$store.getters['system/isLoggedIn'] },
+    userFullName () { return this.isLoggedIn ? this.$store.getters['system/userFullName'] : '' },
+    userProfilePic () { return this.isLoggedIn ? this.$store.getters['system/userProfilePic'] : '' },
+    userHasProfilePic () { return this.isLoggedIn ? this.$store.getters['system/userHasProfilePic'] : '' },
+    userInitials () { return this.isLoggedIn ? this.$store.getters['system/userInitials'] : '' },
+    userAdmin () { return this.isLoggedIn ? this.$store.getters['system/userAdmin'] : false }
   },
   methods: {
-    logoutButton() {
-      this.$store.dispatch("system/logoutAction").then(() => {
+    logoutButton () {
+      this.$store.dispatch('system/logoutAction').then(() => {
         this.$router.replace('/')
       })
     },
-    goToAdminPanel() {
-      window.location = this.$store.getters['system/getMediaURL']('/admin')
+    goToAdminPanel () {
+      this.$router.push('/admin')
     },
-    pathMatch(id) {
+    pathMatch (id) {
       if (id === 'explore') {
         return this.$route.fullPath.startsWith('/explore')
       } else if (id === 'my/album') {
@@ -117,12 +117,12 @@ export default {
       } else return false
     }
   },
-  mounted() {
+  mounted () {
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
   .profilePic {
     object-fit: cover;
   }

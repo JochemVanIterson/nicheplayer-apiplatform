@@ -18,34 +18,34 @@
 <script>
 export default {
   name: 'LoginPage',
-  data() {
+  data () {
     return {
       username: '',
       password: ''
     }
   },
   computed: {
-    toRoute() { return this.$route.query.to || "explore" }
+    toRoute () { return this.$route.query.to || 'explore' }
   },
   methods: {
-    attemptLogin() {
+    attemptLogin () {
       const payload = {
         username: this.username,
         password: this.password
       }
-      function errorNotification(message) {
+      function errorNotification (message) {
         return { type: 'negative', message, position: 'bottom', timeout: 4000 }
       }
 
       if (!this.username || !this.password) {
-        this.$q.notify(errorNotification(`Empty fields`))
+        this.$q.notify(errorNotification('Empty fields'))
         return false
       }
 
-      this.$store.dispatch("system/attemptLogin", payload).then((status) => {
+      this.$store.dispatch('system/attemptLogin', payload).then((status) => {
         if (status) this.$router.replace(this.toRoute)
         else {
-          this.$q.notify(errorNotification(`Login failed, wrong credentials`))
+          this.$q.notify(errorNotification('Login failed, wrong credentials'))
         }
       })
     }

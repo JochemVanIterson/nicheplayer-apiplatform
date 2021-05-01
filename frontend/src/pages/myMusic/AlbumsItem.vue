@@ -3,7 +3,7 @@
     .row.q-col-gutter-md.q-pb-md
       .col-xs-12.col-sm-4.flex
         q-img.rounded-borders.shadow-2(:src="albumArt" basic)
-      
+
       .col-xs-12.col-sm-8.column
         q-card.col.row
           q-card-section.col.column.justify-center
@@ -39,7 +39,7 @@
 import { date } from 'quasar'
 export default {
   name: 'MyAlbumItem',
-  data() {
+  data () {
     return {
       paymentObject: {
         status: 'unknown'
@@ -47,24 +47,24 @@ export default {
     }
   },
   computed: {
-    isLoggedIn() { return this.$store.getters["system/isLoggedIn"] },
+    isLoggedIn () { return this.$store.getters['system/isLoggedIn'] },
 
-    albumID() { return this.$route.params.id },
-    albumData() { return this.$store.getters['cache/albums/getObjectJoined'](this.albumID, ['albumArt', 'songs']) },
+    albumID () { return this.$route.params.id },
+    albumData () { return this.$store.getters['cache/albums/getObjectJoined'](this.albumID, ['albumArt', 'songs']) },
 
-    albumArt() {
+    albumArt () {
       return (this.albumData && this.albumData.albumArt && this.albumData.albumArt.contentUrl)
-        ? this.$store.getters['system/getMediaURL'](this.albumData.albumArt.contentUrl) : ""
+        ? this.$store.getters['system/getMediaURL'](this.albumData.albumArt.contentUrl) : ''
     },
-    songs() { return (this.albumData && this.albumData.songs) ? this.albumData.songs : [] },
-    songsSorted() { return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber) },
-    currentPlayingPage() { return this.$store.getters["audioplayer/getPlaylistPage"] },
-    currentPlayingId() { return this.currentPlayingPage == this.$route.path && this.$store.getters["audioplayer/getSongID"]() }
+    songs () { return (this.albumData && this.albumData.songs) ? this.albumData.songs : [] },
+    songsSorted () { return this.songs.slice().sort((a, b) => a.trackNumber - b.trackNumber) },
+    currentPlayingPage () { return this.$store.getters['audioplayer/getPlaylistPage'] },
+    currentPlayingId () { return this.currentPlayingPage === this.$route.path && this.$store.getters['audioplayer/getSongID']() }
   },
   watch: {
-    isLoggedIn(value) {
-      if (value != "") {
-        this.$store.dispatch("cache/albums/getFromAPI", { id: this.albumID, joinFields: ['albumArt', 'songs'], force: true })
+    isLoggedIn (value) {
+      if (value !== '') {
+        this.$store.dispatch('cache/albums/getFromAPI', { id: this.albumID, joinFields: ['albumArt', 'songs'], force: true })
       }
     }
   },
@@ -76,20 +76,20 @@ export default {
       this.playAlbum(index)
     },
     playAlbum (trackNumber = 0) {
-      this.$store.dispatch("audioplayer/clearPlaylist").then(() => {
-        const songList = this.songsSorted;
-        const actionList = songList.map(song => this.$store.dispatch("audioplayer/appendPlaylist", { songID: song.id }))
+      this.$store.dispatch('audioplayer/clearPlaylist').then(() => {
+        const songList = this.songsSorted
+        const actionList = songList.map(song => this.$store.dispatch('audioplayer/appendPlaylist', { songID: song.id }))
         return Promise.all(actionList).then((values) => {
           this.$store.commit('audioplayer/setPlayingIndex', trackNumber)
           this.$store.commit('audioplayer/setPlaylistPage', this.$route.path)
           this.$store.dispatch('audioplayer/setIsPlaying', true)
-        });
+        })
       })
-    },
+    }
   },
-  mounted() {
-    if (this.isLoggedIn != "") {
-      this.$store.dispatch("cache/albums/getFromAPI", { id: this.albumID, joinFields: ['albumArt', 'songs'], force: true })
+  mounted () {
+    if (this.isLoggedIn !== '') {
+      this.$store.dispatch('cache/albums/getFromAPI', { id: this.albumID, joinFields: ['albumArt', 'songs'], force: true })
     }
   }
 }

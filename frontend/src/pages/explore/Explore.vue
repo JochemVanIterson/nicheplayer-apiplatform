@@ -15,29 +15,29 @@
 <script>
 export default {
   name: 'Explore',
-  data() {
+  data () {
     return {}
   },
   computed: {
-    isLoggedIn() { return this.$store.getters["system/isLoggedIn"] },
-    albums() { return this.$store.getters["cache/albums/getAllJoined"] }
+    isLoggedIn () { return this.$store.getters['system/isLoggedIn'] },
+    albums () { return this.$store.getters['cache/albums/getAllJoined'] }
   },
   watch: {
-    isLoggedIn(value) {
-      if (value != "") this.$store.dispatch("cache/albums/getAllFromAPI")
+    isLoggedIn (value) {
+      if (value !== '') this.$store.dispatch('cache/albums/getAllFromAPI')
     }
   },
   methods: {
-    parsedURL(value) {
+    parsedURL (value) {
       if (value && value.contentUrl) return this.$store.getters['system/getMediaURL'](value.contentUrl)
-      else return ""
+      else return ''
     },
-    albumClicked(data) {
+    albumClicked (data) {
       this.$router.push(`/explore/album/${data.id}`)
     }
   },
-  mounted() {
-    if (this.isLoggedIn != "") this.$store.dispatch("cache/albums/getAllFromAPI")
+  mounted () {
+    if (this.isLoggedIn !== '') this.$store.dispatch('cache/albums/getAllFromAPI')
   }
 }
 </script>

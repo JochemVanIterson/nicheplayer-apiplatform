@@ -1,7 +1,7 @@
 const routes = [
   {
     path: '/',
-    component: () => import('pages/Home.vue'),
+    component: () => import('pages/Home.vue')
   },
   {
     path: '/',
@@ -14,26 +14,68 @@ const routes = [
       { path: 'my/album', component: () => import('pages/myMusic/Albums.vue') },
       { path: 'my/album/:id', component: () => import('pages/myMusic/AlbumsItem.vue') },
       { path: 'my/songs', component: () => import('pages/myMusic/Songs.vue') },
-      { path: 'my/playlist/:id', component: () => import('pages/myMusic/Playlist.vue') },
+      { path: 'my/playlist/:id', component: () => import('pages/myMusic/Playlist.vue') }
+    ]
+  },
+  {
+    path: '/admin',
+    component: () => import('layouts/AdminLayout.vue'),
+    meta: { requiresLogin: true },
+    redirect: '/admin/dashboard',
+    children: [
+      { path: 'dashboard', component: () => import('pages/admin/Dashboard.vue'), meta: { title: 'Dashboard' } },
+
+      { path: 'users', component: () => import('pages/admin/Users/List.vue'), meta: { title: 'Users' } },
+      { path: 'users/create', component: () => import('pages/admin/Users/Create.vue'), meta: { title: 'Users' } },
+      { path: 'users/:id/show', component: () => import('pages/admin/Users/Show.vue'), meta: { title: 'Users' } },
+      { path: 'users/:id/edit', component: () => import('pages/admin/Users/Edit.vue'), meta: { title: 'Users' } },
+
+      { path: 'albums', component: () => import('pages/admin/Albums/List.vue'), meta: { title: 'Albums' } },
+      { path: 'albums/create', component: () => import('pages/admin/Albums/Create.vue'), meta: { title: 'Albums' } },
+      { path: 'albums/:id/show', component: () => import('pages/admin/Albums/Show.vue'), meta: { title: 'Albums' } },
+      { path: 'albums/:id/edit', component: () => import('pages/admin/Albums/Edit.vue'), meta: { title: 'Albums' } },
+
+      { path: 'songs', component: () => import('pages/admin/Songs/List.vue'), meta: { title: 'Songs' } },
+      { path: 'songs/create', component: () => import('pages/admin/Songs/Create.vue'), meta: { title: 'Songs' } },
+      { path: 'songs/:id/show', component: () => import('pages/admin/Songs/Show.vue'), meta: { title: 'Songs' } },
+      { path: 'songs/:id/edit', component: () => import('pages/admin/Songs/Edit.vue'), meta: { title: 'Songs' } },
+
+      { path: 'media_objects', component: () => import('pages/admin/MediaObjects/List.vue'), meta: { title: 'Media' } },
+      { path: 'media_objects/create', component: () => import('pages/admin/MediaObjects/Create.vue'), meta: { title: 'Media' } },
+      { path: 'media_objects/:id/show', component: () => import('pages/admin/MediaObjects/Show.vue'), meta: { title: 'Media' } },
+      { path: 'media_objects/:id/edit', component: () => import('pages/admin/MediaObjects/Edit.vue'), meta: { title: 'Media' } },
+
+      { path: 'sources', component: () => import('pages/admin/Sources/List.vue'), meta: { title: 'Sources' } },
+      // { path: 'sources/create', component: () => import('pages/admin/Sources/Create.vue'), meta: { title: 'Sources' } },
+      { path: 'sources/:id/show', component: () => import('pages/admin/Sources/Show.vue'), meta: { title: 'Sources' } },
+      // { path: 'sources/:id/edit', component: () => import('pages/admin/Sources/Edit.vue'), meta: { title: 'Sources' } },
+
+      { path: 'payments', component: () => import('pages/admin/Payments/List.vue'), meta: { title: 'Payments' } },
+      { path: 'payments/create', component: () => import('pages/admin/Payments/Create.vue'), meta: { title: 'Payments' } },
+      { path: 'payments/:id/show', component: () => import('pages/admin/Payments/Show.vue'), meta: { title: 'Payments' } },
+      { path: 'payments/:id/edit', component: () => import('pages/admin/Payments/Edit.vue'), meta: { title: 'Payments' } },
+
+      { path: 'play_history', component: () => import('pages/admin/PlayHistory/List.vue'), meta: { title: 'Play History' } },
+      { path: 'play_history/:id/show', component: () => import('pages/admin/PlayHistory/Show.vue'), meta: { title: 'Play History' } }
     ]
   },
   {
     path: '/login',
     name: 'Login',
     component: () => import('pages/LoginPage.vue'),
-    meta: { hideForAuth: true },
+    meta: { hideForAuth: true }
   },
   {
     path: '/register',
     name: 'Register',
     component: () => import('pages/RegisterPage.vue'),
-    meta: { hideForAuth: true },
+    meta: { hideForAuth: true }
   },
   {
     path: '/player',
     name: 'Player',
     meta: { requiresLogin: true },
-    component: () => import('pages/FullscreenPlayer.vue'),
+    component: () => import('pages/FullscreenPlayer.vue')
   },
 
   // Always leave this as last one,

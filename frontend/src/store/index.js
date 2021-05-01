@@ -31,7 +31,7 @@ export default function (/* { ssrContext } */) {
       // mediaObjects,
       // songs,
       cache,
-      
+
       // Local system stores
       system,
       audioplayer
