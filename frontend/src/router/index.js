@@ -27,25 +27,21 @@ export default function ({ store }) {
     base: process.env.VUE_ROUTER_BASE
   })
 
-  Router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresLogin)) {
-      store.dispatch('system/waitForLogin')
-        .then(() => {
-          next()
-        })
-        .catch(() => {
-          console.log('to', to)
-          next({
-            path: '/login',
-            query: {
-              to: to.fullPath
-            }
-          })
-        })
-    } else if (to.matched.some(record => record.meta.hideForAuth)) {
-      if (store.getters['system/isLoggedIn']) next({ path: '/explore' })
+  Router.beforeEach(async (to, from, next) => {
+    let requiresLogin = to.matched.some(record => record.meta.requiresLogin);
+    let hideForAuth = to.matched.some(record => record.meta.hideForAuth);
+    let requiresAdmin = to.matched.some(record => record.meta.requiresAdmin);
+    if (requiresLogin) {
+      let response = await store.dispatch('system/waitForLogin')
+      if (!response) next({ path: '/login', query: { to: to.fullPath } })
       else next()
-    } else next()
+    } else if (requiresAdmin) {
+      let response = await store.dispatch('system/waitForLogin')
+      if (!response) next({ path: '/login', query: { to: to.fullPath } })
+      else if (!response.roles.includes('ROLE_ADMIN')) next({ path: '/error401', query: { to: from.fullPath } })
+      else next()
+    } else if (hideForAuth && (store.getters['system/isLoggedIn'])) next({ path: '/explore' })
+    else next()
   })
 
   return Router

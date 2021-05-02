@@ -24,11 +24,11 @@ export default {
   name: 'RegisterPage',
   data () {
     return {
-      username: 'bleh',
-      email: 'bleh@example.com',
-      firstname: 'Bleh',
-      lastname: 'Bleh',
-      password: 'bleh'
+      username: '',
+      email: '',
+      firstname: '',
+      lastname: '',
+      password: ''
     }
   },
   computed: {

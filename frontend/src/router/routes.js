@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/admin',
     component: () => import('layouts/AdminLayout.vue'),
-    meta: { requiresLogin: true },
+    meta: { requiresAdmin: true },
     redirect: '/admin/dashboard',
     children: [
       { path: 'dashboard', component: () => import('pages/admin/Dashboard.vue'), meta: { title: 'Dashboard' } },
@@ -78,10 +78,16 @@ const routes = [
     component: () => import('pages/FullscreenPlayer.vue')
   },
 
+  {
+    path: '/error401',
+    name: 'error401',
+    component: () => import('pages/Error401.vue')
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
     path: '*',
+    name: 'error404',
     component: () => import('pages/Error404.vue')
   }
 ]

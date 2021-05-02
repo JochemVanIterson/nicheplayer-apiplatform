@@ -92,9 +92,9 @@ export function waitForLogin ({ state, dispatch, getters }) {
     const loader = setInterval(() => {
       if (retryCount > 40) {
         clearInterval(loader)
-        reject()
+        resolve(false)
       }
-      if (getters.isLoggedIn) resolve()
+      if (getters.isLoggedIn) resolve(state.userData)
       retryCount++
     }, 50)
   })
