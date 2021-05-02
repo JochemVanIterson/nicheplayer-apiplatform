@@ -12,6 +12,7 @@
           .text-weight-light {{artist}}
       .col
       .col-auto.q-gutter-x-sm
+        q-btn(round flat dense icon="open_in_full" @click.stop="$router.push('/player')")
         q-btn(round flat dense icon="volume_up" @click.stop="")
           q-popup-edit(v-model="playerVolume" auto-save @before-show="volume = $howlerPlayer.getVolume()" anchor="top middle" self="top middle")
             q-slider.q-my-md( v-model="playerVolume" :min="0" :max="1" :step="0"
