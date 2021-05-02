@@ -11,12 +11,12 @@ services:
     environment:
       APP_ENV: dev
 
-  admin:
-    build:
-      context: ./admin
-      target: api_platform_admin_dev
-    volumes:
-      - ./admin:/usr/src/admin:rw,cached
+  # admin:
+  #   build:
+  #     context: ./admin
+  #     target: api_platform_admin_dev
+  #   volumes:
+  #     - ./admin:/usr/src/admin:rw,cached
   
   frontend:
     build:

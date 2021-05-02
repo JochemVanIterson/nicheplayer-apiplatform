@@ -16,12 +16,12 @@ services:
       retries: 3
       start_period: 30s
 
-  admin:
-    build:
-      context: ./admin
-      target: api_platform_admin_prod
-    environment:
-      API_PLATFORM_CLIENT_GENERATOR_ENTRYPOINT: http://caddy
+  # admin:
+  #   build:
+  #     context: ./admin
+  #     target: api_platform_admin_prod
+  #   environment:
+  #     API_PLATFORM_CLIENT_GENERATOR_ENTRYPOINT: http://caddy
 
   frontend:
     build:
@@ -34,10 +34,10 @@ services:
       target: api_platform_caddy
     depends_on:
       - php
-      - admin
+      # - admin
       - frontend
     environment:
-      ADMIN_UPSTREAM: admin:3000
+      # ADMIN_UPSTREAM: admin:3000
       FRONTEND_UPSTREAM: frontend:8080
       SERVER_NAME: ${SERVER_NAME:-:80, caddy:80, mbp.audioware.nl:80, localhost:80, -:443, caddy:443, mbp.audioware.nl:443, localhost:443, caddy, mbp.audioware.nl, localhost}
       MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_PUBLISHER_JWT_KEY:-!ChangeMe!}

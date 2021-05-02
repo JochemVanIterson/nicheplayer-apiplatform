@@ -17,19 +17,19 @@ log
 
 # Matches requests for HTML documents, for static files and for Next.js files,
 # except for known API paths and paths with extensions handled by API Platform
-@admin expression `(
-        {header.Accept}.matches("\\btext/html\\b")
-        && !{path}.matches("(?i)(?:^/docs|^/graphql|^/bundles/|^/_profiler|^/_wdt|\\.(?:json|html$|csv$|ya?ml$|xml$))")
-    )
-    || {path} == "/favicon.ico"
-    || {path} == "/manifest.json"
-    || {path} == "/robots.txt"
-    || {path}.startsWith("/_next")
-    || {path}.startsWith("/sitemap")`
+# @admin expression `(
+#         {header.Accept}.matches("\\btext/html\\b")
+#         && !{path}.matches("(?i)(?:^/docs|^/graphql|^/bundles/|^/_profiler|^/_wdt|\\.(?:json|html$|csv$|ya?ml$|xml$))")
+#     )
+#     || {path} == "/favicon.ico"
+#     || {path} == "/manifest.json"
+#     || {path} == "/robots.txt"
+#     || {path}.startsWith("/_next")
+#     || {path}.startsWith("/sitemap")`
 
 @frontend expression `(
         {header.Accept}.matches("\\btext/html\\b")
-        && !{path}.matches("(?i)(?:^/admin|^/docs|^/graphql|^/bundles/|^/_profiler|^/_wdt|\\.(?:json|html$|csv$|ya?ml$|xml$))")
+        && !{path}.matches("(?i)(?:^/docs|^/graphql|^/bundles/|^/_profiler|^/_wdt|\\.(?:json|html$|csv$|ya?ml$|xml$))")
     )
     || {path} == "/favicon.ico"
     || {path} == "/vendor.js"
@@ -37,57 +37,7 @@ log
     || {path} == "/manifest.json"
     || {path} == "/robots.txt"
     || {path} == "/chunk-common.js"
-    || {path} == "/0.js"
-    || {path} == "/1.js"
-    || {path} == "/2.js"
-    || {path} == "/3.js"
-    || {path} == "/4.js"
-    || {path} == "/5.js"
-    || {path} == "/6.js"
-    || {path} == "/7.js"
-    || {path} == "/8.js"
-    || {path} == "/9.js"
-    || {path} == "/10.js"
-    || {path} == "/11.js"
-    || {path} == "/12.js"
-    || {path} == "/13.js"
-    || {path} == "/14.js"
-    || {path} == "/15.js"
-    || {path} == "/16.js"
-    || {path} == "/17.js"
-    || {path} == "/18.js"
-    || {path} == "/19.js"
-    || {path} == "/20.js"
-    || {path} == "/21.js"
-    || {path} == "/22.js"
-    || {path} == "/23.js"
-    || {path} == "/24.js"
-    || {path} == "/25.js"
-    || {path} == "/26.js"
-    || {path} == "/27.js"
-    || {path} == "/28.js"
-    || {path} == "/29.js"
-    || {path} == "/30.js"
-    || {path} == "/31.js"
-    || {path} == "/32.js"
-    || {path} == "/33.js"
-    || {path} == "/34.js"
-    || {path} == "/35.js"
-    || {path} == "/36.js"
-    || {path} == "/37.js"
-    || {path} == "/38.js"
-    || {path} == "/39.js"
-    || {path} == "/40.js"
-    || {path} == "/41.js"
-    || {path} == "/42.js"
-    || {path} == "/43.js"
-    || {path} == "/44.js"
-    || {path} == "/45.js"
-    || {path} == "/46.js"
-    || {path} == "/47.js"
-    || {path} == "/48.js"
-    || {path} == "/49.js"
-    || {path} == "/50.js"
+    || {path}.matches("(?i)(^/\\b([0-9]|[1-9][0-9])\\b\\.js)")
     || {path}.startsWith("/sockjs-node")
     || {path}.startsWith("/fonts")
     || {path}.startsWith("/img")
@@ -118,9 +68,11 @@ route {
     # Comment the following line if you don't want Next.js to catch requests for HTML documents.
     # In this case, they will be handled by the PHP app.
 
+    # Enable reactadmin frontend
+    # reverse_proxy @admin http://{$ADMIN_UPSTREAM}
+
+    # Enable system frontend
     reverse_proxy @frontend http://{$FRONTEND_UPSTREAM}
-    
-    reverse_proxy @admin http://{$ADMIN_UPSTREAM}
 
     php_fastcgi unix//var/run/php/php-fpm.sock
     encode zstd gzip
