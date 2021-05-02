@@ -6,7 +6,7 @@ q-page(padding)
         .text-h5 Edit album
         q-input(filled v-model="name" label="Name")
         q-input(filled v-model="artist" label="Artist")
-        q-input(filled v-model="releaseDate" label="Release Date" mask="date" :rules="['date']")
+        q-input(filled v-model="releaseDate" label="Release Date" mask="date" :rules="['date']" hide-bottom-space)
           template(v-slot:append)
             q-icon(name="event" class="cursor-pointer")
               q-popup-proxy(ref="qDateProxy" transition-show="scale" transition-hide="scale")

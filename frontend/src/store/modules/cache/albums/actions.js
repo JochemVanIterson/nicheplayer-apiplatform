@@ -64,7 +64,7 @@ export function deleteAPI ({ state, commit, rootState, dispatch }, id) {
 
   return dispatch('system/apiRequest', { path: `albums/${id}`, method: 'DELETE' }, { root: true })
     .then((data) => {
-      commit('updateValue', { id: id, value: undefined })
+      commit('deleteValue', id)
       return data
     })
 }

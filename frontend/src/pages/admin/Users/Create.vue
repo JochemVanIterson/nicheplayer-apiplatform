@@ -4,11 +4,13 @@ q-page(padding)
     q-card-section
       .q-gutter-y-md
         .text-h5 Create new user
-        q-input(filled v-model="username" label="Username")
+        q-input(filled v-model="username" label="Username"
+          :rules="[val => !!val || 'Username cant be empty']" hide-bottom-space)
         q-input(filled v-model="email" label="Email")
         q-input(filled v-model="firstname" label="Firstname")
         q-input(filled v-model="lastname" label="Lastname")
-        q-input(filled v-model="password" label="Password" :type="isPwd ? 'password' : 'text'")
+        q-input(filled v-model="password" label="Password" :type="isPwd ? 'password' : 'text'" hide-bottom-space
+          :rules="[val => val.charAt(0)!=='$' || 'Password cant start with a $', val => !!val || 'Password cant be empty']")
           template(v-slot:append)
             q-icon(
               :name="isPwd ? 'visibility_off' : 'visibility'"

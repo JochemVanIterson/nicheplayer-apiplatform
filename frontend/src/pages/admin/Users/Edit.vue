@@ -8,7 +8,8 @@ q-page(padding)
         q-input(filled v-model="email" label="Email")
         q-input(filled v-model="firstname" label="Firstname")
         q-input(filled v-model="lastname" label="Lastname")
-        q-input(filled v-model="password" label="Password" :type="isPwd ? 'password' : 'text'")
+        q-input(filled v-model="password" :label="password ? 'Password' : 'Password (Unchanged)'" :type="isPwd ? 'password' : 'text'"
+          :rules="[val => val.charAt(0)!=='$' || 'Password cant start with a $']" hide-bottom-space)
           template(v-slot:append)
             q-icon(
               :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -80,7 +81,11 @@ export default {
       set (val) { this.$set(this.changedStore, 'roles', val) }
     },
     profilepic: {
-      get () { return this.changedStore.profilepic === undefined ? this.oldStore.profilepic['@id'] : this.changedStore.profilepic },
+      get () {
+        if (this.oldStore.profilepic || this.changedStore.profilepic) {
+          return this.changedStore.profilepic === undefined ? this.oldStore.profilepic['@id'] : this.changedStore.profilepic
+        } else return undefined
+      },
       set (val) { this.$set(this.changedStore, 'profilepic', val) }
     },
 
