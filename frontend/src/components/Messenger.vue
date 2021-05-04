@@ -7,8 +7,8 @@
           span.text-weight-bold.q-pl-xs {{roomName || room}}
     q-separator
     q-responsive(:ratio="4/3" style="max-height: 300px")
-      q-scroll-area(:ref="'scrollArea_'+room")
-        q-card-section(v-if="messages.length>0")
+      q-scroll-area(:ref="'scrollArea_'+room" v-if="messages.length>0")
+        q-card-section
           q-chat-message(v-for="message in messagesCollapsed"
             :name="getUserMe(message.userID) ? 'me' : `${message.userdata.firstname} ${message.userdata.lastname}` "
             :sent="getUserMe(message.userID)"
@@ -18,7 +18,10 @@
             :text-color="getUserMe(message.userID) ? 'black' : 'white'"
             text-sanitize
           )
-        q-card-section(v-else) No messages have been send in the time that you've opened the chat. Be the first to send a message!
+      q-card-section.flex.items-center.text-center(v-else)
+        .col
+          .text No messages have been send in the time that you've opened the chat. Be the first to send a message!
+          .text-weight-thin.q-pt-sm Messages will not be stored on the server and are only received by users who are currently on this page.
     q-separator
     q-card-actions.row
       q-input.col(filled v-model="textField" @keydown.enter.prevent="sendMessage" placeholder="Send a message!")
