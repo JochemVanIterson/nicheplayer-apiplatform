@@ -10,11 +10,16 @@
             .absolute-bottom
               .text-subtitle2.text-center {{album.name}}
               .text-subtitle.text-center {{album.artist}}
+    Messenger.q-ma-md(room="explore")
 </template>
 
 <script>
+import Messenger from 'components/Messenger'
 export default {
   name: 'Explore',
+  components: {
+    Messenger
+  },
   data () {
     return {}
   },

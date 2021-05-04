@@ -71,6 +71,13 @@ route {
     # Enable reactadmin frontend
     # reverse_proxy @admin http://{$ADMIN_UPSTREAM}
 
+    handle_path /phpmyadmin* {
+		reverse_proxy http://{$PHPMYADMIN_UPSTREAM}
+	}
+    handle_path /message_relay* {
+		reverse_proxy http://{$MESSAGE_RELAY_UPSTREAM}
+	}
+
     # Enable system frontend
     reverse_proxy @frontend http://{$FRONTEND_UPSTREAM}
 
