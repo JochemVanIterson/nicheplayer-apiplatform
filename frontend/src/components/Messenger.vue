@@ -1,13 +1,13 @@
 <template lang="pug">
-  q-card(flat bordered)
+  q-card(:flat="flat" :bordered="bordered")
     q-item
       q-item-section
         q-item-label
           span.text Room:
-          span.text-weight-bold.q-pl-xs {{room}}
+          span.text-weight-bold.q-pl-xs {{roomName || room}}
     q-separator
     q-responsive(:ratio="4/3" style="max-height: 300px")
-      q-scroll-area(ref="scrollArea")
+      q-scroll-area(:ref="'scrollArea_'+room")
         q-card-section(v-if="messages.length>0")
           q-chat-message(v-for="message in messagesCollapsed"
             :name="getUserMe(message.userID) ? 'me' : `${message.userdata.firstname} ${message.userdata.lastname}` "
@@ -16,6 +16,7 @@
             :stamp="formatTimestamp(message.timestamp)"
             :bg-color="getUserMe(message.userID) ? 'grey-4' : 'primary'"
             :text-color="getUserMe(message.userID) ? 'black' : 'white'"
+            text-sanitize
           )
         q-card-section(v-else) No messages have been send in the time that you've opened the chat. Be the first to send a message!
     q-separator
@@ -34,7 +35,10 @@ import _ from 'lodash'
 export default {
   name: 'Messenger',
   props: {
-    room: String
+    room: String,
+    roomName: String,
+    flat: Boolean,
+    bordered: Boolean
   },
   data () {
     return {
@@ -112,7 +116,7 @@ export default {
       }
       this.messages.push(message)
       this.textField = ''
-      this.$refs.scrollArea.setScrollPercentage(2, 200)
+      this.$refs['scrollArea_' + this.room].setScrollPercentage(2, 200)
       socket.emit('room message', {
         room: this.room,
         content: message
@@ -129,7 +133,7 @@ export default {
     });
     socket.on(`room message/${this.room}`, ({ content }) => {
       this.messages.push(content)
-      this.$refs.scrollArea.setScrollPercentage(2, 200)
+      this.$refs['scrollArea_' + this.room].setScrollPercentage(2, 200)
     })
   },
   destroyed () {
