@@ -2,9 +2,13 @@
   q-card(:flat="flat" :bordered="bordered")
     q-item
       q-item-section
-        q-item-label
-          span.text Room:
-          span.text-weight-bold.q-pl-xs {{roomName || room}}
+        q-item-label.row
+          .col
+            span.text Room:
+            span.text-weight-bold.q-pl-xs {{roomName || room}}
+          .col-auto
+            span Users:
+            span.text-weight-bold.q-pl-xs {{userCount}}
     q-separator
     q-responsive(:ratio="4/3" style="max-height: 300px")
       q-scroll-area(:ref="'scrollArea_'+room" v-show="messages.length>0")
@@ -46,7 +50,8 @@ export default {
   data () {
     return {
       messages: [],
-      textField: ''
+      textField: '',
+      userCount: 0
     }
   },
   computed: {
@@ -138,9 +143,16 @@ export default {
       this.messages.push(content)
       this.$refs['scrollArea_' + this.room].setScrollPercentage(2, 200)
     })
+    socket.on(`room userCount/${this.room}`, (res) => {
+      this.userCount = res
+    })
+    socket.emit('room enter', this.room)
   },
   destroyed () {
     socket.off("connect_error");
+    socket.off(`room userCount/${this.room}`);
+    socket.off(`room message/${this.room}`);
+    socket.emit('room leave', this.room)
   },
   mounted () {
     if (this.isLoggedIn) this.socketConnect()

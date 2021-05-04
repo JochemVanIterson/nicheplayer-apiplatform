@@ -1,6 +1,7 @@
 const ORIGIN = process.env.ORIGIN ? process.env.ORIGIN.split(', ') : ['http://mbp.audioware.nl'];
 const PORT = 3000
 
+const _ = require('lodash');
 const httpServer = require("http").createServer();
 const { Server } = require("socket.io");
 const io = new Server(httpServer, {
@@ -17,6 +18,7 @@ io.use((socket, next) => {
     socket.username = username;
     next();
 });
+const rooms = [];
 
 io.on("connection", (socket) => {
     console.log('a user connected');
@@ -36,6 +38,17 @@ io.on("connection", (socket) => {
         username: socket.username,
     });
 
+    socket.on("logout", () => {
+        console.log('rooms', rooms)
+        for (const id in rooms) {
+            console.log('room', id)
+            _.remove(rooms[id], (n) => n === socket.username)
+            io.emit("room userCount/" + id, rooms[id].length)
+
+        }
+        console.log("a user logged out")
+    })
+
     // forward the private message to the right recipient
     socket.on("private message", ({ content, to }) => {
         socket.to(to).emit("private message", {
@@ -43,7 +56,18 @@ io.on("connection", (socket) => {
             from: socket.id,
         });
     });
-
+    socket.on("room enter", (id) => {
+        if (!rooms[id]) rooms[id] = [socket.username]
+        else if (!rooms[id].includes(socket.username)) rooms[id].push(socket.username)
+        console.log('userCount enter', id, rooms[id].length, rooms[id])
+        io.emit("room userCount/" + id, rooms[id].length)
+    })
+    socket.on("room leave", (id) => {
+        if (!rooms[id]) rooms[id] = []
+        _.remove(rooms[id], (n) => n === socket.username)
+        console.log('userCount leave', id, rooms[id].length, rooms[id])
+        io.emit("room userCount/" + id, rooms[id].length)
+    })
     socket.on("room message", ({ content, room }) => {
         socket.broadcast.emit("room message/" + room, {
             content,
@@ -60,3 +84,5 @@ io.on("connection", (socket) => {
 httpServer.listen(PORT, () => {
     console.log('listening on *:' + PORT);
 });
+
+// setInterval(()=>{console.log()}, 2000)
