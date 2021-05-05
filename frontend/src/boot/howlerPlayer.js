@@ -136,12 +136,14 @@ export default async ({ app, router, Vue, store }) => {
      */
       pause: function () {
         var self = this
-
+        
+        if (self.playlist.length == 0) return
+        
         // Get the Howl we want to manipulate.
         var sound = self.playlist[self.index].howl
 
         // Puase the sound.
-        sound.pause()
+        if (sound) sound.pause()
       },
 
       /**
