@@ -72,7 +72,7 @@ class MediaObject
      * @ORM\Column(type="integer")
      * @Groups({"media_object_read"})
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="json", nullable=true)

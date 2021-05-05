@@ -32,22 +32,26 @@
           .col-auto.q-ma-md(:class="landscape?['flex','items-center']:[]")
             q-card(:style="controlsCardStyle")
               .q-px-md
-                q-slider(v-model="progress" :min="0" :max="1" :step="0" :dark="backgroundDark" :style="sliderStyle")
+                q-slider(v-model="progress" :min="0" :max="1" :step="0" :dark="backgroundDark" :style="sliderStyle" :disabled="!isLoaded" :readonly="!isLoaded")
               .q-px-md.row.justify-between
                 .text-weight-light {{prettyDate(progress * duration)}}
                 .text-weight-light {{prettyDate(duration)}}
-              .q-px-md.q-pb-sm.row
+              .q-px-md.q-pb-sm.row.items-center
                 .col
                   .text-h6.text-weight-bold
                     span.q-pr-xs(v-if="hasTrackNumber") {{trackNumber}}.
                     span {{title}}
                   .text-weight-light {{artist}} - {{album}}
+                q-btn.col-auto(v-if="enableWebAudio" round flat :icon="effectState ? 'blur_on' : 'blur_off'" @click.stop="toggleAudioEffect()")
+                  q-tooltip(:content-style="tooltipStyle" :delay="1000") {{effectState ? 'Disable' : 'Enable'}} audio effects
                 q-btn.col-auto(round flat icon="volume_up" @click.stop="")
+                  q-tooltip(:content-style="tooltipStyle" :delay="1000") Volume
                   q-popup-edit(v-model="playerVolume" auto-save @before-show="volume = $howlerPlayer.getVolume()" anchor="top middle" self="top middle"
                   )
                     q-slider.q-my-md( v-model="playerVolume" :min="0" :max="1" :step="0"
                       reverse autofocus vertical dense :style="volumeSliderStyle")
                 q-btn.col-auto(flat round icon="launch" @click="$router.push(currentPlayingPage)")
+                  q-tooltip(:content-style="tooltipStyle" :delay="1000") Go to page
               q-separator(:dark="backgroundDark")
               q-card-section.row.justify-center
                 .q-gutter-x-sm.q-gutter-sm-x-lg
@@ -77,6 +81,7 @@ export default {
   },
   computed: {
     isPlaying () { return this.$store.getters['audioplayer/getIsPlaying'] },
+    isLoaded () { return this.$store.getters['audioplayer/getIsLoaded'] },
     playlist () { return this.$store.getters['audioplayer/getPlaylist'] },
     playlistData () { return this.$store.getters['audioplayer/getPlaylistData'] },
     currentSongData () { return this.$store.getters['audioplayer/getCurrentSong'] },
@@ -88,6 +93,8 @@ export default {
     title () { return this.$store.getters['audioplayer/getMetaTitle'] },
     trackNumber () { return this.$store.getters['audioplayer/getMetaTrackNumber'] },
     duration () { return this.$store.getters['audioplayer/getMetaDuration'] },
+    effectState () { return this.$howlerPlayer.effectState },
+    enableWebAudio () { return this.$store.state.system.enableWebAudio },
     playerVolume: {
       get () { return this.volume },
       set (val) {
@@ -145,6 +152,12 @@ export default {
       return {
         color: this.backgroundColor
       }
+    },
+    tooltipStyle () {
+      return {
+        color: this.onTopColor,
+        'background-color': this.backgroundDark ? 'white' : colors.lighten(this.backgroundColor, -30),
+      }
     }
   },
   watch: {
@@ -183,6 +196,9 @@ export default {
         .catch(e => {
           console.log(e)
         })
+    },
+    toggleAudioEffect () {
+      this.$howlerPlayer.setAudioEffect(!this.effectState)
     }
   },
   mounted () {

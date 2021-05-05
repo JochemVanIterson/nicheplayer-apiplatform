@@ -70,6 +70,7 @@ export function appendPlaylist ({ state, commit, dispatch, rootGetters }, { song
   dispatch('cache/songs/getFromAPI', { id: songID }, { root: true }).then((data) => {
     const howlerObject = {
       id: songID,
+      loaded: false,
       file: rootGetters['system/getApiURL'](`/play/${songID}${explore ? '?explore' : ''}`),
       duration: rootGetters['cache/songs/getObject'](songID).duration
     }

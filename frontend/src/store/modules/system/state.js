@@ -3,6 +3,11 @@ export default function () {
     isLoggingIn: false,
     jwtToken: '',
     refreshToken: '',
-    userData: {}
+    userData: {},
+
+    /**
+     * State if webAudio and it's features should be enabled
+     */
+    enableWebAudio: true
   }
 }

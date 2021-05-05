@@ -2,9 +2,8 @@
 q-page(padding)
   q-card(flat bordered)
     q-card-section.column.items-center
-      q-avatar(size="400px" color="grey-6")
-        img.profilePic(v-if="data.profilepic" :src="data.profilepic.contentUrl")
-        q-icon(name="person" color="white")
+      div(style="width:100%; max-width:300px")
+        q-img.profilePic.bg-grey-6(:ratio="1" :src="profilepic")
       .text-h3.q-pt-md {{data.firstname}} {{data.lastname}}
     q-card-section
       q-markup-table(flat bordered)
@@ -34,7 +33,10 @@ export default {
   },
   computed: {
     id () { return this.$route.params.id },
-    data () { return this.$store.getters['cache/users/getObjectJoined'](this.id) }
+    data () { return this.$store.getters['cache/users/getObjectJoined'](this.id) },
+    profilepic () {
+      return this.data.profilepic ? this.data.profilepic.contentUrl : '/profilepic_white.svg'
+    }
   },
   mounted () {
     this.$store.dispatch('cache/users/getAllFromAPI')
@@ -45,5 +47,6 @@ export default {
 <style lang='scss' scoped>
   .profilePic {
     object-fit: cover;
+    border-radius: 100%;
   }
 </style>

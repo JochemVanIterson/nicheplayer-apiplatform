@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export function getPlaylist (state) {
   return state.playlist
 }
@@ -7,6 +9,10 @@ export function getPlaylistData (state, getters, rootState, rootGetters) {
 
 export function getIsPlaying (state) {
   return state.isPlaying
+}
+
+export function getIsLoaded (state) {
+  return Vue.prototype.$howlerPlayer.loaded
 }
 
 export function getPlayingIndex (state) {

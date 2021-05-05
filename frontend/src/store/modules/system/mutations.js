@@ -15,3 +15,7 @@ export function setRefreshToken (state, value) {
 export function setUserData (state, value) {
   Vue.set(state, 'userData', value)
 }
+
+export function setWebAudio(state, value) {
+  Vue.set(state, 'enableWebAudio', value)
+}

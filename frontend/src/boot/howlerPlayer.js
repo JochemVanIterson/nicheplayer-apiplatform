@@ -4,21 +4,58 @@ import { Howl, Howler } from 'howler'
 // 'async' is optional
 // more info on params: https://quasar.dev/quasar-cli/boot-files
 export default async ({ app, router, Vue, store }) => {
+  const emptyAudio = new Audio('init_audio.mp3')
+  emptyAudio.loop = true
+
   const PlayerVue = new Vue({
     data: {
       playlist: [],
       index: 0,
       duration: 0,
       progress: 0,
-      loading: ''
+      reverbNode: null,
+      effectState: false
+    },
+    computed: {
+      loaded() { return this.playlist[this.index] ? this.playlist[this.index].loaded : true }
     },
     methods: {
       clearPlaylist () {
         if (this.playlist.length > 0 && this.playlist[this.index]) this.pause()
         this.$set(this, 'playlist', [])
       },
+      setAudioEffect (state) {
+        const enableWebAudio = store.getters['system/enableWebAudio']
+        if (!enableWebAudio || this.effectState === state) return
+        this.effectState = state
+        Howler.masterGain.disconnect();
+        if (state) {
+          Howler.masterGain.connect(this.reverbNode);
+        } else {
+          Howler.masterGain.connect(Howler.ctx.destination);
+        }
+      },
       appendPlaylist (item) {
         this.playlist.push(item)
+      },
+
+      initAudioEffect: async function (howl) {
+        console.log(Howler, howl)
+        const enableWebAudio = store.getters['system/enableWebAudio']
+
+        let audioCtx = Howler.ctx;
+        if (!enableWebAudio || !audioCtx || this.reverbNode) return
+
+        this.reverbNode = audioCtx.createConvolver();
+
+        // load impulse response from file
+        // let response = await fetch("https://www.audioware.nl/webtest/cors/vinyl/rushoutroir.wav");
+        let response = await fetch("https://www.audioware.nl/webtest/cors/ir.wav");
+        let arraybuffer = await response.arrayBuffer();
+        this.reverbNode.buffer = await audioCtx.decodeAudioData(arraybuffer);
+        this.reverbNode.connect(Howler.ctx.destination);
+
+        console.log("Howler.masterGain", Howler.masterGain)
       },
 
       /**
@@ -34,14 +71,17 @@ export default async ({ app, router, Vue, store }) => {
         index = typeof index === 'number' ? index : self.index
         var data = self.playlist[index]
 
+        const enableWebAudio = store.getters['system/enableWebAudio']
         // If we already loaded this track, use the current one.
         // Otherwise, setup and load a new Howl.
         if (data.howl) {
           sound = data.howl
         } else {
+          console.log(data.file)
           sound = data.howl = new Howl({
             src: [data.file],
-            html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
+            format: 'mp3',
+            html5: !enableWebAudio, // Force to HTML5 so that the audio can stream in (best for large files).
             xhr: {
               method: 'GET',
               headers: {
@@ -63,6 +103,8 @@ export default async ({ app, router, Vue, store }) => {
               let duration = sound.duration()
               if (!isFinite(duration)) duration = data.duration
               self.$set(self, 'duration', duration)
+              self.$set(data, 'loaded', true)
+              console.log(data)
             },
             onend: function () {
               // Stop the wave animation.
@@ -79,19 +121,15 @@ export default async ({ app, router, Vue, store }) => {
               requestAnimationFrame(self.step.bind(self))
             }
           })
+          this.initAudioEffect(sound)
         }
 
         // Begin playing the sound.
         sound.play()
+        if (enableWebAudio) emptyAudio.play()
+        navigator.mediaSession.playbackState = 'playing'
 
         if (sound.seek() === 0) store.dispatch('audioplayer/sendPlayHistory', data.id)
-
-        // Show the pause button.
-        if (sound.state() === 'loaded') {
-
-        } else {
-          self.$set(self, 'loading', 'block')
-        }
 
         // Keep track of the index we are currently playing.
         self.$set(self, 'index', index)
@@ -104,11 +142,17 @@ export default async ({ app, router, Vue, store }) => {
       pause: function () {
         var self = this
 
+        const enableWebAudio = store.getters['system/enableWebAudio']
+
+        if (self.playlist.length == 0) return
+        
         // Get the Howl we want to manipulate.
         var sound = self.playlist[self.index].howl
 
         // Puase the sound.
-        sound.pause()
+        if (sound) sound.pause()
+        if (enableWebAudio) emptyAudio.pause()
+        navigator.mediaSession.playbackState = 'paused'
       },
 
       /**
@@ -249,7 +293,8 @@ export default async ({ app, router, Vue, store }) => {
     },
     created () {
       var self = this
-      console.log('created', Howler.usingWebAudio)
+      console.log('Howler created', Howler.usingWebAudio ? 'webaudio' : 'html')
+      this.initAudioEffect()
       setInterval(() => {
         requestAnimationFrame(self.step.bind(self))
       }, 1000)

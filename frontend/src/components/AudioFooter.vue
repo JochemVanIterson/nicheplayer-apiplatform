@@ -1,6 +1,6 @@
 <template lang="pug">
   .flex(v-if="playlist.length > 0")
-    q-linear-progress( :value="progress" :style="progressStyle" size="6px")
+    q-linear-progress( :value="progress" :style="progressStyle" size="6px" :indeterminate="!isLoaded")
     q-toolbar(@click="$router.push('/player')" :style="footerStyle" v-touch-swipe.mouse.left.right="handleSwipe")
       .col-auto.row
         q-avatar(color="grey" rounded :icon="hasAlbumArt?undefined:'music_note'")
@@ -13,7 +13,9 @@
       .col
       .col-auto.q-gutter-x-sm
         q-btn(round flat dense icon="open_in_full" @click.stop="$router.push('/player')")
+          q-tooltip(:delay="1000") Fullscreen
         q-btn(round flat dense icon="volume_up" @click.stop="")
+          q-tooltip(:delay="1000") Volume
           q-popup-edit(v-model="playerVolume" auto-save @before-show="volume = $howlerPlayer.getVolume()" anchor="top middle" self="top middle")
             q-slider.q-my-md( v-model="playerVolume" :min="0" :max="1" :step="0"
               reverse autofocus vertical dense :style="volumeSliderStyle")
@@ -41,6 +43,7 @@ export default {
   },
   computed: {
     isPlaying () { return this.$store.getters['audioplayer/getIsPlaying'] },
+    isLoaded () { return this.$store.getters['audioplayer/getIsLoaded'] },
     playlist () { return this.$store.getters['audioplayer/getPlaylist'] },
     playlistData () { return this.$store.getters['audioplayer/getPlaylistData'] },
     currentSongData () { return this.$store.getters['audioplayer/getCurrentSong'] },
@@ -89,6 +92,9 @@ export default {
     }
   },
   watch: {
+    isLoaded () {
+      console.log('isLoaded', this.isLoaded)
+    },
     albumArt (val) {
       this.calculateBackgroundColor()
     }

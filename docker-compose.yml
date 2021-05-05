@@ -27,6 +27,17 @@ services:
     build:
       context: ./frontend
       target: api_platform_frontend_prod
+  
+  message_relay:
+    build:
+      context: ./message_relay
+      target: api_platform_message_relay_prod
+    environment:
+      ORIGIN: ${SERVER_NAME:-:3000, caddy:3000, mbp.audioware.nl:3000, localhost:3000, http://caddy, http://mbp.audioware.nl, http://localhost}
+    ports:
+      - target: 3000
+        published: 3000
+        protocol: tcp
 
   caddy:
     build:
@@ -38,6 +49,7 @@ services:
       - frontend
     environment:
       # ADMIN_UPSTREAM: admin:3000
+      MESSAGE_RELAY_UPSTREAM: message_relay:3000
       PHPMYADMIN_UPSTREAM: phpmyadmin:80
       FRONTEND_UPSTREAM: frontend:80
       SERVER_NAME: ${SERVER_NAME:-:80, caddy:80, nicheplayer-dev.audioware.nl:80, localhost:80, -:443, caddy:443, nicheplayer-dev.audioware.nl:443, localhost:443, caddy, nicheplayer-dev.audioware.nl, localhost}
@@ -84,6 +96,7 @@ services:
     environment:
       PMA_HOST: database
       MYSQL_ROOT_PASSWORD: ***REMOVED***
+      PMA_ABSOLUTE_URI: https://mbp.audioware.nl/phpmyadmin/
 volumes:
   php_socket:
   db_data:

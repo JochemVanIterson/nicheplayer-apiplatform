@@ -18,6 +18,17 @@ const routes = [
     ]
   },
   {
+    path: '/settings',
+    component: () => import('layouts/UserSettingsLayout.vue'),
+    meta: { requiresLogin: true },
+    redirect: '/settings/user',
+    children: [
+      { path: 'user', component: () => import('pages/userSettings/User.vue'), meta: { title: 'User settings' } },
+
+      { path: 'audioplayer', component: () => import('pages/userSettings/AudioPlayer.vue'), meta: { title: 'Audio player' } },
+    ]
+  },
+  {
     path: '/admin',
     component: () => import('layouts/AdminLayout.vue'),
     meta: { requiresAdmin: true },
