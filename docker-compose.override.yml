@@ -27,6 +27,13 @@ services:
     ports:
       - '8080:8080'
 
+  message_relay:
+    build:
+      context: ./message_relay
+      target: api_platform_message_relay_dev
+    volumes:
+      - ./message_relay:/usr/src/message_relay:rw,cached
+
   caddy:
     volumes:
       - ./api/docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro

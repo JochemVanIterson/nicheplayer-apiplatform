@@ -27,7 +27,9 @@
                       | The author has declined your request, either because it took too long or because something went wrong during transaction.
                       | Please contact the author for further instructions
                   div(v-else-if="paymentStatus=='success'")
-                    .text You have purchased this album. Please go to the dedicated album page for more features.
+                    span.text You have purchased this album. Please go to the
+                    router-link.q-px-xs(:to="'/my/album/'+albumID") dedicated album page
+                    span.text for more features.
 
       q-card#albumTracks
         .row.justify-between.q-px-md.q-pt-md
