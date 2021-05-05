@@ -82,6 +82,7 @@ module.exports = function (/* ctx */) {
     devServer: {
       https: false,
       port: 80,
+      public: 'https://nicheplayer-dev.audioware.nl',
       open: true // opens browser window automatically
     },
 

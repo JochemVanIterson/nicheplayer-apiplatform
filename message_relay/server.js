@@ -1,14 +1,18 @@
 const ORIGIN = process.env.ORIGIN ? process.env.ORIGIN.split(', ') : ['http://nicheplayer-dev.audioware.nl'];
-const PORT = 3000
+const httpPort = 3000;
 
 const _ = require('lodash');
-const httpServer = require("http").createServer();
+const http = require("http")
+const httpServer = http.createServer();
 const { Server } = require("socket.io");
-const io = new Server(httpServer, {
+const io = new Server({
     cors: {
         origin: ORIGIN,
-    }
+    },
+    secure: true,
+    rejectUnauthorized: false
 });
+io.attach(httpServer);
 
 io.use((socket, next) => {
     const username = socket.handshake.auth.username;
@@ -81,8 +85,8 @@ io.on("connection", (socket) => {
     });
 });
 
-httpServer.listen(PORT, () => {
-    console.log('listening on *:' + PORT);
+httpServer.listen(httpPort, function () {
+    console.log(`Listening HTTP on ${httpPort}`);
 });
 
 // setInterval(()=>{console.log()}, 2000)

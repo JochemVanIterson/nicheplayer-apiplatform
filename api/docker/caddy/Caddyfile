@@ -74,9 +74,16 @@ route {
     handle_path /phpmyadmin* {
 		reverse_proxy http://{$PHPMYADMIN_UPSTREAM}
 	}
-    handle_path /message_relay* {
-		reverse_proxy http://{$MESSAGE_RELAY_UPSTREAM}
-	}
+
+    rewrite /message_relay /message_relay/
+    handle /message_relay/* {
+        uri strip_prefix /message_relay
+        rewrite * /socket.io{path}
+        reverse_proxy http://{$MESSAGE_RELAY_UPSTREAM} {
+            header_up Host {host}
+            header_up X-Real-IP {remote}
+        }
+    }
 
     # Enable system frontend
     reverse_proxy @frontend http://{$FRONTEND_UPSTREAM}
