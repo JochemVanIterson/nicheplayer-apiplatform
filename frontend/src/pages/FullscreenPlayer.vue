@@ -94,7 +94,7 @@ export default {
     trackNumber () { return this.$store.getters['audioplayer/getMetaTrackNumber'] },
     duration () { return this.$store.getters['audioplayer/getMetaDuration'] },
     effectState () { return this.$howlerPlayer.effectState },
-    enableWebAudio () { return this.$store.state.audioplayer.enableWebAudio },
+    enableWebAudio () { return this.$store.state.system.enableWebAudio },
     playerVolume: {
       get () { return this.volume },
       set (val) {

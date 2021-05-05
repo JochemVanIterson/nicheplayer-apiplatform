@@ -22,7 +22,7 @@ export default async ({ app, router, Vue, store }) => {
         this.$set(this, 'playlist', [])
       },
       setAudioEffect (state) {
-        const enableWebAudio = store.getters['audioplayer/enableWebAudio']
+        const enableWebAudio = store.getters['system/enableWebAudio']
         if (!enableWebAudio || this.effectState === state) return
         this.effectState = state
         Howler.masterGain.disconnect();
@@ -38,7 +38,7 @@ export default async ({ app, router, Vue, store }) => {
 
       initAudioEffect: async function (howl) {
         console.log(Howler, howl)
-        const enableWebAudio = store.getters['audioplayer/enableWebAudio']
+        const enableWebAudio = store.getters['system/enableWebAudio']
 
         let audioCtx = Howler.ctx;
         if (!enableWebAudio || !audioCtx || this.reverbNode) return
@@ -68,7 +68,7 @@ export default async ({ app, router, Vue, store }) => {
         index = typeof index === 'number' ? index : self.index
         var data = self.playlist[index]
 
-        const enableWebAudio = store.getters['audioplayer/enableWebAudio']
+        const enableWebAudio = store.getters['system/enableWebAudio']
         // If we already loaded this track, use the current one.
         // Otherwise, setup and load a new Howl.
         if (data.howl) {

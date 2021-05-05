@@ -22,6 +22,9 @@
                 q-item-section
                   q-item-label Admin panel
               q-separator(spaced)
+            q-item(clickable v-close-popup tabindex="0" @click="goToUserSettings" )
+              q-item-section
+                q-item-label Settings
             q-item(clickable v-close-popup tabindex="0" @click="logoutButton")
               q-item-section
                 q-item-label Logout
@@ -103,6 +106,9 @@ export default {
       this.$store.dispatch('system/logoutAction').then(() => {
         this.$router.replace('/')
       })
+    },
+    goToUserSettings() {
+      this.$router.push('/settings')
     },
     goToAdminPanel () {
       this.$router.push('/admin')

@@ -1,6 +1,6 @@
 // u\Users
 
-export function getFromAPI ({ state, commit, rootState, dispatch }, { id, follow = true, force }) {
+export function getFromAPI({ state, commit, rootState, dispatch }, { id, joinFields = ['profilepic'], force }) {
   if (!id) return
   if (typeof id === 'string') id = id.replace('/api/users/', '')
   if (!force && (typeof state.data[id] !== 'undefined')) return
@@ -10,7 +10,7 @@ export function getFromAPI ({ state, commit, rootState, dispatch }, { id, follow
 
   return dispatch('system/apiRequest', { path: `users/${id}` }, { root: true })
     .then((data) => {
-      if (follow) {
+      if (joinFields.includes('profilepic')) {
         dispatch('cache/mediaObjects/getFromAPI', { id: data.profilepic, follow: true }, { root: true })
       }
       commit('updateValue', { id: id, value: data })

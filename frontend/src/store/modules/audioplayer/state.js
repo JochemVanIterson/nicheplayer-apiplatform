@@ -26,11 +26,6 @@ export default function () {
     isShuffle: false,
 
     /**
-     * State if webAudio and it's features should be enabled
-     */
-    enableWebAudio: true,
-
-    /**
      * Repeat playback state. 0 for off, 1 for repeat all, 2 for single
      */
     isRepeat: 0

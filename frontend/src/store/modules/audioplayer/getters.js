@@ -1,4 +1,3 @@
-import { Howler } from 'howler'
 import Vue from 'vue'
 
 export function getPlaylist (state) {
@@ -14,10 +13,6 @@ export function getIsPlaying (state) {
 
 export function getIsLoaded (state) {
   return Vue.prototype.$howlerPlayer.loaded
-}
-
-export function enableWebAudio (state) {
-  return Howler.usingWebAudio && state.enableWebAudio
 }
 
 export function getPlayingIndex (state) {

@@ -1,4 +1,5 @@
 import { MEDIAPOINT, ENTRYPOINT } from '../../../config/1314272676_entrypoint'
+import { Howler } from 'howler'
 
 export function getMediaURL (state) {
   return (url) => `${MEDIAPOINT}${url}`
@@ -44,4 +45,8 @@ export function userInitials (state) {
 
 export function userData (state) {
   return state.userData
+}
+
+export function enableWebAudio(state) {
+  return Howler.usingWebAudio && state.enableWebAudio
 }
