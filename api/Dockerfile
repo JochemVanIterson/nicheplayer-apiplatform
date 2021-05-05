@@ -117,7 +117,7 @@ RUN set -eux; \
 	chmod +x bin/console; sync
 VOLUME /srv/api/var
 
-RUN php bin/console lexik:jwt:generate-keypair --overwrite
+RUN php bin/console lexik:jwt:generate-keypair
 
 COPY docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 RUN chmod +x /usr/local/bin/docker-healthcheck

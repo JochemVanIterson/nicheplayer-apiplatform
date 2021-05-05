@@ -33,7 +33,7 @@ services:
       context: ./message_relay
       target: api_platform_message_relay_prod
     environment:
-      ORIGIN: ${SERVER_NAME:-:3000, caddy:3000, mbp.audioware.nl:3000, localhost:3000, http://caddy, http://mbp.audioware.nl, http://localhost}
+      ORIGIN: ${SERVER_NAME:-:3000, caddy:3000, nicheplayer-dev.audioware.nl:3000, localhost:3000, http://caddy, http://nicheplayer-dev.audioware.nl, http://localhost}
     ports:
       - target: 3000
         published: 3000
@@ -96,7 +96,7 @@ services:
     environment:
       PMA_HOST: database
       MYSQL_ROOT_PASSWORD: ***REMOVED***
-      PMA_ABSOLUTE_URI: https://mbp.audioware.nl/phpmyadmin/
+      PMA_ABSOLUTE_URI: https://nicheplayer-dev.audioware.nl/phpmyadmin/
 volumes:
   php_socket:
   db_data:

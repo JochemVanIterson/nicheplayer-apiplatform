@@ -1,4 +1,4 @@
-const ORIGIN = process.env.ORIGIN ? process.env.ORIGIN.split(', ') : ['http://mbp.audioware.nl'];
+const ORIGIN = process.env.ORIGIN ? process.env.ORIGIN.split(', ') : ['http://nicheplayer-dev.audioware.nl'];
 const PORT = 3000
 
 const _ = require('lodash');
