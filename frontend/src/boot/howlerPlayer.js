@@ -4,6 +4,9 @@ import { Howl, Howler } from 'howler'
 // 'async' is optional
 // more info on params: https://quasar.dev/quasar-cli/boot-files
 export default async ({ app, router, Vue, store }) => {
+  const emptyAudio = new Audio('init_audio.mp3')
+  emptyAudio.loop = true
+
   const PlayerVue = new Vue({
     data: {
       playlist: [],
@@ -123,6 +126,8 @@ export default async ({ app, router, Vue, store }) => {
 
         // Begin playing the sound.
         sound.play()
+        if (enableWebAudio) emptyAudio.play()
+        navigator.mediaSession.playbackState = 'playing'
 
         if (sound.seek() === 0) store.dispatch('audioplayer/sendPlayHistory', data.id)
 
@@ -136,7 +141,9 @@ export default async ({ app, router, Vue, store }) => {
      */
       pause: function () {
         var self = this
-        
+
+        const enableWebAudio = store.getters['system/enableWebAudio']
+
         if (self.playlist.length == 0) return
         
         // Get the Howl we want to manipulate.
@@ -144,6 +151,8 @@ export default async ({ app, router, Vue, store }) => {
 
         // Puase the sound.
         if (sound) sound.pause()
+        if (enableWebAudio) emptyAudio.pause()
+        navigator.mediaSession.playbackState = 'paused'
       },
 
       /**
