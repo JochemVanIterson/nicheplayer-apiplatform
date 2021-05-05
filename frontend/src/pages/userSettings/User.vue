@@ -3,10 +3,7 @@ q-page(padding)
   q-card(flat bordered)
     q-card-section.column.items-center
       div(style="width:100%; max-width:300px")
-        q-responsive(:ratio="1")
-          q-avatar(color="grey-6" )
-            img.profilePic(v-if="profilepicURL" :src="profilepicURL")
-            q-icon(v-else name="person" color="white")
+        q-img.profilePic.bg-grey-6(:ratio="1" :src="profilepicURL")
       .text-h3.q-pt-md {{firstname}} {{lastname}}
     q-card-section
       q-markup-table(flat bordered)
@@ -90,7 +87,7 @@ export default {
     },
     profilepicURL () {
       const image = this.$store.getters['cache/mediaObjects/getObject'](this.profilepic ? this.profilepic.replace('/api/media_objects/', '') : -1)
-      return this.profilepic ? image.contentUrl : undefined
+      return this.profilepic ? image.contentUrl : '/profilepic_white.svg'
     },
 
     savable () { return Object.keys(this.changedStore).length > 0 }
@@ -119,5 +116,6 @@ export default {
 <style lang='scss' scoped>
   .profilePic {
     object-fit: cover;
+    border-radius: 100%;
   }
 </style>
