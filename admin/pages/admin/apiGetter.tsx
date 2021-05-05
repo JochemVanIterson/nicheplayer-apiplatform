@@ -10,7 +10,7 @@ import parseHydraDocumentation from "@api-platform/api-doc-parser/lib/hydra/pars
 
 import authProvider from "./authProvider";
 
-const API_ENTRYPOINT = process.env.REACT_APP_API_ENTRYPOINT || "http://mbp.audioware.nl/api";
+const API_ENTRYPOINT = process.env.REACT_APP_API_ENTRYPOINT || "http://nicheplayer-dev.audioware.nl/api";
 const getHeaders = () => localStorage.getItem("token") ? {
   Authorization: `Bearer ${localStorage.getItem("token")}`,
 } : {};

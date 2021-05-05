@@ -38,8 +38,9 @@ services:
       - frontend
     environment:
       # ADMIN_UPSTREAM: admin:3000
-      FRONTEND_UPSTREAM: frontend:8080
-      SERVER_NAME: ${SERVER_NAME:-:80, caddy:80, mbp.audioware.nl:80, localhost:80, -:443, caddy:443, mbp.audioware.nl:443, localhost:443, caddy, mbp.audioware.nl, localhost}
+      PHPMYADMIN_UPSTREAM: phpmyadmin:80
+      FRONTEND_UPSTREAM: frontend:80
+      SERVER_NAME: ${SERVER_NAME:-:80, caddy:80, nicheplayer-dev.audioware.nl:80, localhost:80, -:443, caddy:443, nicheplayer-dev.audioware.nl:443, localhost:443, caddy, nicheplayer-dev.audioware.nl, localhost}
       MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_PUBLISHER_JWT_KEY:-!ChangeMe!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_SUBSCRIBER_JWT_KEY:-!ChangeMe!}
     restart: unless-stopped
@@ -50,15 +51,15 @@ services:
     ports:
       # HTTP
       - target: 80
-        published: 80
+        published: 12080
         protocol: tcp
       # HTTPS
       - target: 443
-        published: 443
+        published: 12443
         protocol: tcp
       # HTTP/3
       - target: 443
-        published: 443
+        published: 12443
         protocol: udp
 
   database:
@@ -79,7 +80,7 @@ services:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - '8081:80'
+      - '12081:80'
     environment:
       PMA_HOST: database
       MYSQL_ROOT_PASSWORD: ***REMOVED***

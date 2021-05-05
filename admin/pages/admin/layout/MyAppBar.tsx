@@ -48,7 +48,7 @@ const MyAppBar = props => {
                 className={classes.title}
                 id="react-admin-title"
             />
-            <MenuItem component="a" href="http://mbp.audioware.nl">Go Back</MenuItem>
+            <MenuItem component="a" href="http://nicheplayer-dev.audioware.nl">Go Back</MenuItem>
         </AppBar>
     )
 }

@@ -8,7 +8,7 @@ ARG NODE_VERSION=14
 # "common" stage
 FROM node:${NODE_VERSION}-alpine AS api_platform_frontend_common
 
-EXPOSE 8080
+# EXPOSE 80
 
 WORKDIR /usr/src/frontend
 

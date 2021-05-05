@@ -5,7 +5,7 @@ const cookies = new Cookies();
 
 export default {
   login: ({ username, password }) => {
-    const url = `${process.env.REACT_APP_API_ENTRYPOINT || "http://mbp.audioware.nl/api" }/authentication_token`;
+    const url = `${process.env.REACT_APP_API_ENTRYPOINT || "http://nicheplayer-dev.audioware.nl/api" }/authentication_token`;
     console.log("url", url)
     const request = new Request( url,
       {
@@ -38,7 +38,7 @@ export default {
     localStorage.removeItem("token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("userdata");
-    window.location.href = 'http://mbp.audioware.nl';
+    window.location.href = 'http://nicheplayer-dev.audioware.nl';
     return Promise.resolve();
   },
   checkAuth: () => {
