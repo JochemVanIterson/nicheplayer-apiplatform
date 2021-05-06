@@ -42,6 +42,7 @@ export function getFromAPIByAlbum ({ state, commit, rootState, dispatch, rootGet
         dispatch('cache/users/getFromAPI', { id: data.user, joinFields: [] }, { root: true })
       }
       commit('updateValue', { id: data.id, value: data })
+      return data
     })
 }
 

@@ -1,6 +1,6 @@
 // MediaObjects
 
-export function getFromAPI ({ state, commit, rootState, dispatch }, { id, joinFields = ['source'], force }) {
+export function getFromAPI ({ state, commit, rootState, dispatch }, { id, joinFields = ['source'], force, nojwt = false }) {
   if (!id) return
   if (typeof id === 'string') id = id.replace('/api/media_objects/', '')
   if (!force && (typeof state.data[id] !== 'undefined')) return
@@ -8,10 +8,10 @@ export function getFromAPI ({ state, commit, rootState, dispatch }, { id, joinFi
   if (state.data[id] === 'collecting') return
   else commit('updateValue', { id: id, value: 'collecting' })
 
-  return dispatch('system/apiRequest', { path: `media_objects/${id}` }, { root: true })
+  return dispatch('system/apiRequest', { path: `media_objects/${id}`, nojwt }, { root: true })
     .then((data) => {
       if (joinFields.includes('source')) {
-        dispatch('cache/sources/getFromAPI', { id: data.source, follow: true }, { root: true })
+        dispatch('cache/sources/getFromAPI', { id: data.source, follow: true, nojwt }, { root: true })
       }
       commit('updateValue', { id: id, value: data })
     })

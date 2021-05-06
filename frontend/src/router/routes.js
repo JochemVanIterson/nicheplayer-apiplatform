@@ -11,9 +11,9 @@ const routes = [
       { path: 'explore/', component: () => import('pages/explore/Explore.vue') },
       { path: 'explore/album/:id', component: () => import('pages/explore/Album.vue') },
 
-      { path: 'my/album', component: () => import('pages/myMusic/Albums.vue') },
-      { path: 'my/album/:id', component: () => import('pages/myMusic/AlbumsItem.vue') },
-      { path: 'my/songs', component: () => import('pages/myMusic/Songs.vue') },
+      { path: 'my/album', name: 'MyAlbumList', component: () => import('pages/myMusic/Albums.vue') },
+      { path: 'my/album/:id', name: 'MyAlbumItem', component: () => import('pages/myMusic/AlbumsItem.vue') },
+      { path: 'my/songs', name: 'MySongs', component: () => import('pages/myMusic/Songs.vue') },
       { path: 'my/playlist/:id', component: () => import('pages/myMusic/Playlist.vue') }
     ]
   },
@@ -86,6 +86,11 @@ const routes = [
     name: 'Player',
     meta: { requiresLogin: true },
     component: () => import('pages/FullscreenPlayer.vue')
+  },
+  {
+    path: '/nfc/:album',
+    name: 'NfcEntry',
+    component: () => import('pages/NfcPage.vue')
   },
 
   {

@@ -4,7 +4,7 @@
       q-page
         q-img.bg-grey-4.window-height(src="background_image.jpg")
           div(class="absolute-full text-subtitle2 flex flex-center bg-transparent")
-            q-card#homeCard
+            q-card#homeCard(dark)
               img.q-my-md(alt="Quasar logo" src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" height="128px")
               q-card-section
                 | PLACEHOLDER
@@ -38,7 +38,7 @@ export default {
   #homeCard {
     width: 100%;
     max-width: 400px;
-    color: white;
     background-color: #222222A0;
+    backdrop-filter: blur(8px);
   }
 </style>

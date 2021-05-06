@@ -33,7 +33,7 @@
               span {{song.name}}
             td(class="text-left") {{song.songArtistt || albumData.artist}}
             td(class="text-left" v-if="$q.screen.gt.xs") {{`${prettyDate(song.duration)}`}}
-    Messenger.q-mt-md(:room="`album_${albumID}`" :roomName="albumData.artist + ' - ' + albumData.name")
+    //- Messenger.q-mt-md(:room="`album_${albumID}`" :roomName="albumData.artist + ' - ' + albumData.name")
 </template>
 
 <script>
@@ -67,13 +67,13 @@ export default {
     currentPlayingPage () { return this.$store.getters['audioplayer/getPlaylistPage'] },
     currentPlayingId () { return this.currentPlayingPage === this.$route.path && this.$store.getters['audioplayer/getSongID']() }
   },
-  watch: {
-    isLoggedIn (value) {
-      if (value !== '') {
-        this.$store.dispatch('cache/albums/getFromAPI', { id: this.albumID, joinFields: ['albumArt', 'songs'], force: true })
-      }
-    }
-  },
+  // watch: {
+  //   isLoggedIn (value) {
+  //     if (value !== '') {
+  //       this.$store.dispatch('cache/albums/getFromAPI', { id: this.albumID, joinFields: ['albumArt', 'songs'], force: true })
+  //     }
+  //   }
+  // },
   methods: {
     prettyDate (timestamp) {
       return date.formatDate(date.buildDate({ minutes: 0, seconds: timestamp }), 'mm:ss')
@@ -94,9 +94,9 @@ export default {
     }
   },
   mounted () {
-    if (this.isLoggedIn !== '') {
-      this.$store.dispatch('cache/albums/getFromAPI', { id: this.albumID, joinFields: ['albumArt', 'songs'], force: true })
-    }
+    let params = { id: parseInt(this.albumID), joinFields: ['albumArt', 'songs'], force: true }
+    console.log('params', params)
+    this.$store.dispatch('cache/albums/getFromAPI', params)
   }
 }
 </script>

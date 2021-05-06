@@ -31,16 +31,29 @@ export default function ({ store }) {
     const requiresLogin = to.matched.some(record => record.meta.requiresLogin)
     const hideForAuth = to.matched.some(record => record.meta.hideForAuth)
     const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin)
-    if (requiresLogin) {
-      const response = await store.dispatch('system/waitForLogin')
-      if (!response) next({ path: '/login', query: { to: to.fullPath } })
-      else next()
-    } else if (requiresAdmin) {
-      const response = await store.dispatch('system/waitForLogin')
-      if (!response) next({ path: '/login', query: { to: to.fullPath } })
-      else if (!response.roles.includes('ROLE_ADMIN')) next({ path: '/error401', query: { to: from.fullPath } })
-      else next()
-    } else if (hideForAuth && (store.getters['system/isLoggedIn'])) next({ path: '/explore' })
+
+    let loginResponse
+    let nextRoute
+
+    if (requiresLogin || requiresAdmin) {
+      loginResponse = await store.dispatch('system/waitForLogin')
+    }
+
+    if (!nextRoute && requiresLogin) {
+      if (!loginResponse) nextRoute = { path: '/login', query: { to: to.fullPath } }
+    }
+    if (!nextRoute && requiresAdmin) {
+      if (!loginResponse) nextRoute = { path: '/login', query: { to: to.fullPath } }
+      else if (!loginResponse.roles.includes('ROLE_ADMIN')) nextRoute = { path: '/error401', query: { to: from.fullPath } }
+    }
+    if (!nextRoute && hideForAuth && (store.getters['system/isLoggedIn'])) nextRoute = { path: '/explore' }
+
+    if (!nextRoute && to.name === 'MyAlbumItem') {
+      const paymentResponse = await store.dispatch('cache/payments/getFromAPIByAlbum', { album: parseInt(to.params.id), joinFields: ['album'] })
+      if (!paymentResponse || paymentResponse.paymentStatus !== 'success') nextRoute = { path: '/error401', query: { to: from.fullPath } }
+    }
+
+    if (nextRoute) next(nextRoute)
     else next()
   })
 
