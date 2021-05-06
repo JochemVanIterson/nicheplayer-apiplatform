@@ -13,7 +13,8 @@
     q-responsive(:ratio="4/3" style="max-height: 300px")
       q-scroll-area(:ref="'scrollArea_'+room" v-show="messages.length>0")
         q-card-section
-          q-chat-message(v-for="message in messagesCollapsed"
+          q-chat-message(v-for="message, index in messagesCollapsed"
+            :key="`message_${room}_${index}`"
             :name="getUserMe(message.userID) ? 'me' : `${message.userdata.firstname} ${message.userdata.lastname}` "
             :sent="getUserMe(message.userID)"
             :text="message.text"
@@ -31,11 +32,10 @@
       q-input.col(filled v-model="textField" @keydown.enter.prevent="sendMessage" placeholder="Send a message!")
         template(v-slot:after)
           q-btn(rounded flat icon="send" label="Send" no-caps @click="sendMessage")
-        
 </template>
 
 <script>
-import socket from "../utils/socket";
+import socket from '../utils/socket'
 import { date } from 'quasar'
 import _ from 'lodash'
 
@@ -88,11 +88,13 @@ export default {
     getUserMe (id) { return id === this.userId },
     getUserdata (id) {
       if (this.getUserMe(id)) return this.$store.getters['system/userData']
-      else return {
-        username: 'unknown',
-        firstname: 'unknown',
-        lastname: 'unknown',
-        profilepic: 'https://cdn.quasar.dev/img/boy-avatar.png'
+      else {
+        return {
+          username: 'unknown',
+          firstname: 'unknown',
+          lastname: 'unknown',
+          profilepic: 'https://cdn.quasar.dev/img/boy-avatar.png'
+        }
       }
     },
     formatTimestamp (timestamp) {
@@ -131,14 +133,14 @@ export default {
       })
     },
     socketConnect () {
-      socket.auth = { username: this.username };
-      socket.connect();
+      socket.auth = { username: this.username }
+      socket.connect()
     }
   },
   created () {
-    socket.on("connect_error", (err) => {
-      console.log("socket error", err)
-    });
+    socket.on('connect_error', (err) => {
+      console.log('socket error', err)
+    })
     socket.on(`room message/${this.room}`, ({ content }) => {
       this.messages.push(content)
       this.$refs['scrollArea_' + this.room].setScrollPercentage(2, 200)
@@ -149,9 +151,9 @@ export default {
     socket.emit('room enter', this.room)
   },
   destroyed () {
-    socket.off("connect_error");
-    socket.off(`room userCount/${this.room}`);
-    socket.off(`room message/${this.room}`);
+    socket.off('connect_error')
+    socket.off(`room userCount/${this.room}`)
+    socket.off(`room message/${this.room}`)
     socket.emit('room leave', this.room)
   },
   mounted () {

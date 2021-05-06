@@ -1,6 +1,6 @@
 // u\Users
 
-export function getFromAPI({ state, commit, rootState, dispatch }, { id, joinFields = ['profilepic'], force }) {
+export function getFromAPI ({ state, commit, rootState, dispatch }, { id, joinFields = ['profilepic'], force }) {
   if (!id) return
   if (typeof id === 'string') id = id.replace('/api/users/', '')
   if (!force && (typeof state.data[id] !== 'undefined')) return

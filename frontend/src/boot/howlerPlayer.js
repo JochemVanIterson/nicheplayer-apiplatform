@@ -17,7 +17,7 @@ export default async ({ app, router, Vue, store }) => {
       effectState: false
     },
     computed: {
-      loaded() { return this.playlist[this.index] ? this.playlist[this.index].loaded : true }
+      loaded () { return this.playlist[this.index] ? this.playlist[this.index].loaded : true }
     },
     methods: {
       clearPlaylist () {
@@ -28,11 +28,11 @@ export default async ({ app, router, Vue, store }) => {
         const enableWebAudio = store.getters['system/enableWebAudio']
         if (!enableWebAudio || this.effectState === state) return
         this.effectState = state
-        Howler.masterGain.disconnect();
+        Howler.masterGain.disconnect()
         if (state) {
-          Howler.masterGain.connect(this.reverbNode);
+          Howler.masterGain.connect(this.reverbNode)
         } else {
-          Howler.masterGain.connect(Howler.ctx.destination);
+          Howler.masterGain.connect(Howler.ctx.destination)
         }
       },
       appendPlaylist (item) {
@@ -43,19 +43,19 @@ export default async ({ app, router, Vue, store }) => {
         console.log(Howler, howl)
         const enableWebAudio = store.getters['system/enableWebAudio']
 
-        let audioCtx = Howler.ctx;
+        const audioCtx = Howler.ctx
         if (!enableWebAudio || !audioCtx || this.reverbNode) return
 
-        this.reverbNode = audioCtx.createConvolver();
+        this.reverbNode = audioCtx.createConvolver()
 
         // load impulse response from file
-        // let response = await fetch("https://www.audioware.nl/webtest/cors/vinyl/rushoutroir.wav");
-        let response = await fetch("https://www.audioware.nl/webtest/cors/ir.wav");
-        let arraybuffer = await response.arrayBuffer();
-        this.reverbNode.buffer = await audioCtx.decodeAudioData(arraybuffer);
-        this.reverbNode.connect(Howler.ctx.destination);
+        // let response = await fetch("https://www.audioware.nl/webtest/cors/vinyl/rushoutroir.wav")
+        const response = await fetch('https://www.audioware.nl/webtest/cors/ir.wav')
+        const arraybuffer = await response.arrayBuffer()
+        this.reverbNode.buffer = await audioCtx.decodeAudioData(arraybuffer)
+        this.reverbNode.connect(Howler.ctx.destination)
 
-        console.log("Howler.masterGain", Howler.masterGain)
+        console.log('Howler.masterGain', Howler.masterGain)
       },
 
       /**
@@ -144,8 +144,8 @@ export default async ({ app, router, Vue, store }) => {
 
         const enableWebAudio = store.getters['system/enableWebAudio']
 
-        if (self.playlist.length == 0) return
-        
+        if (self.playlist.length === 0) return
+
         // Get the Howl we want to manipulate.
         var sound = self.playlist[self.index].howl
 

@@ -165,7 +165,7 @@ export default {
       else return 'https://cdn.quasar.dev/img/parallax2.jpg'
     },
     openPreview (evt, row) {
-      if (this.selected[0] == row) this.selected = []
+      if (this.selected[0] === row) this.selected = []
       else this.selected = [row]
     }
   },

@@ -30,7 +30,7 @@ export default {
       return this.payments.filter((e) => {
         return e.album !== 'collecting'
       }).map((e) => {
-        let album = _.clone(e.album)
+        const album = _.clone(e.album)
         if (album && album !== 'collecting') album.payment = e
         return album
       }).sort((a, b) => {

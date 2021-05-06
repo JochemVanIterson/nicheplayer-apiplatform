@@ -28,15 +28,15 @@ export default function ({ store }) {
   })
 
   Router.beforeEach(async (to, from, next) => {
-    let requiresLogin = to.matched.some(record => record.meta.requiresLogin);
-    let hideForAuth = to.matched.some(record => record.meta.hideForAuth);
-    let requiresAdmin = to.matched.some(record => record.meta.requiresAdmin);
+    const requiresLogin = to.matched.some(record => record.meta.requiresLogin)
+    const hideForAuth = to.matched.some(record => record.meta.hideForAuth)
+    const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin)
     if (requiresLogin) {
-      let response = await store.dispatch('system/waitForLogin')
+      const response = await store.dispatch('system/waitForLogin')
       if (!response) next({ path: '/login', query: { to: to.fullPath } })
       else next()
     } else if (requiresAdmin) {
-      let response = await store.dispatch('system/waitForLogin')
+      const response = await store.dispatch('system/waitForLogin')
       if (!response) next({ path: '/login', query: { to: to.fullPath } })
       else if (!response.roles.includes('ROLE_ADMIN')) next({ path: '/error401', query: { to: from.fullPath } })
       else next()

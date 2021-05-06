@@ -83,7 +83,7 @@ export default {
         this.$router.replace('/')
       })
     },
-    goToUserSettings() {
+    goToUserSettings () {
       this.$router.push('/settings')
     },
     pathMatch (id) {

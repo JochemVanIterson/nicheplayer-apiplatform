@@ -70,7 +70,7 @@ export function getAllFromAPI ({ state, commit, rootState, dispatch, rootGetters
     })
 }
 
-export function insertAPI({ state, commit, rootState, dispatch }, payload) {
+export function insertAPI ({ state, commit, rootState, dispatch }, payload) {
   console.log(payload)
   if (payload.album && typeof payload.album !== 'string') payload.album = payload.album['@id']
   if (payload.song && typeof payload.song !== 'string') payload.song = payload.song['@id']
@@ -82,7 +82,7 @@ export function insertAPI({ state, commit, rootState, dispatch }, payload) {
     })
 }
 
-export function updateAPI({ state, commit, rootState, dispatch }, { id, payload }) {
+export function updateAPI ({ state, commit, rootState, dispatch }, { id, payload }) {
   if (!id) return
   if (typeof id === 'string') id = id.replace('/api/payments/', '')
 
@@ -96,7 +96,7 @@ export function updateAPI({ state, commit, rootState, dispatch }, { id, payload 
     })
 }
 
-export function deleteAPI({ state, commit, rootState, dispatch }, id) {
+export function deleteAPI ({ state, commit, rootState, dispatch }, id) {
   if (!id) return
   if (typeof id === 'string') id = id.replace('/api/payments/', '')
 

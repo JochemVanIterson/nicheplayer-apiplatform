@@ -24,8 +24,7 @@ const routes = [
     redirect: '/settings/user',
     children: [
       { path: 'user', component: () => import('pages/userSettings/User.vue'), meta: { title: 'User settings' } },
-
-      { path: 'audioplayer', component: () => import('pages/userSettings/AudioPlayer.vue'), meta: { title: 'Audio player' } },
+      { path: 'audioplayer', component: () => import('pages/userSettings/AudioPlayer.vue'), meta: { title: 'Audio player' } }
     ]
   },
   {

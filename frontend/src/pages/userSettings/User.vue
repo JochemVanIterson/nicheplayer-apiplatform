@@ -60,7 +60,7 @@ export default {
       })
     },
 
-    username() { return this.oldStore.username },
+    username () { return this.oldStore.username },
     email: {
       get () { return this.changedStore.email === undefined ? this.oldStore.email : this.changedStore.email },
       set (val) { this.$set(this.changedStore, 'email', val) }
@@ -105,9 +105,9 @@ export default {
         console.log(res)
         this.$router.go(-1)
       })
-    },
+    }
   },
-  mounted() {
+  mounted () {
     this.$store.dispatch('cache/users/getFromAPI', { id: this.id })
   }
 }
