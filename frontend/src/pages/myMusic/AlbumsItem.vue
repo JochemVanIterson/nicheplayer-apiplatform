@@ -33,7 +33,7 @@
               span {{song.name}}
             td(class="text-left") {{song.songArtistt || albumData.artist}}
             td(class="text-left" v-if="$q.screen.gt.xs") {{`${prettyDate(song.duration)}`}}
-    //- Messenger.q-mt-md(:room="`album_${albumID}`" :roomName="albumData.artist + ' - ' + albumData.name")
+    Messenger.q-mt-md(:room="`album_${albumID}`" :roomName="albumData.artist + ' - ' + albumData.name")
 </template>
 
 <script>

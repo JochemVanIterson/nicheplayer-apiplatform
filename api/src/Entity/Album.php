@@ -75,9 +75,15 @@ class Album
      */
     private $currency;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Nfc::class, mappedBy="album")
+     */
+    private $nfcs;
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
+        $this->nfcs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -183,6 +189,36 @@ class Album
     public function setCurrency(?string $currency): self
     {
         $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Nfc[]
+     */
+    public function getNfcs(): Collection
+    {
+        return $this->nfcs;
+    }
+
+    public function addNfc(Nfc $nfc): self
+    {
+        if (!$this->nfcs->contains($nfc)) {
+            $this->nfcs[] = $nfc;
+            $nfc->setAlbum($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNfc(Nfc $nfc): self
+    {
+        if ($this->nfcs->removeElement($nfc)) {
+            // set the owning side to null (unless already changed)
+            if ($nfc->getAlbum() === $this) {
+                $nfc->setAlbum(null);
+            }
+        }
 
         return $this;
     }

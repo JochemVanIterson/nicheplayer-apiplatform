@@ -17,10 +17,10 @@ q-layout(view="lHh Lpr lFf")
                 q-card-section
                   .text Card: {{cardUID}}
                 q-card-actions(vertical)
-                  q-btn(label="Connect" noCaps color="primary" :to="`/my/album/${this.albumID}`")
+                  q-btn(label="Connect" noCaps color="primary" @click="connectNFC")
               div(v-else-if="isLoggedIn && hasPurchased")
                 q-card-actions(vertical)
-                  q-btn(label="Open" noCaps color="primary" :to="`/my/album/${this.albumID}`")
+                  q-btn(label="Open" noCaps color="primary" @click="openNFC")
               div(v-else)
                 q-card-section
                   q-banner(dense inline-actions rounded class="bg-primary text-white") Log in to connect the card
@@ -34,20 +34,33 @@ q-layout(view="lHh Lpr lFf")
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   name: 'NfcPage',
   data () {
     return {
+      nfcPayload: {
+        album: -1,
+        uid: ''
+      }
     }
   },
   computed: {
     isLoggedIn () { return this.$store.getters['system/isLoggedIn'] },
-    albumID () { return this.$route.params.album },
-    cardUID () { return this.$route.query.uid },
+
+    key () { return this.$route.query.key },
+
+    albumID () { return this.nfcPayload.album },
+    cardUID () { return this.nfcPayload.uid },
 
     paymentObject () { return this.$store.getters['cache/payments/getObjectByAlbum'](this.albumID) },
     paymentStatus  () { return (this.paymentObject) ? this.paymentObject.paymentStatus : 'unknown' },
-    hasPurchased () { return this.paymentStatus === 'success' },
+
+    userData () { return this.isLoggedIn ? this.$store.getters['system/userData'] : { id: -1 } },
+
+    nfcData () { return this.$store.getters['cache/nfc/getObjectJoined']({ album: `/api/albums/${this.albumID}`, users: `/api/users/${this.userData.id}` }) },
+
+    hasPurchased () { return this.paymentStatus === 'success' || !_.isEmpty(this.nfcData) },
 
     albumData () { return this.$store.getters['cache/albums/getObjectJoined'](this.albumID, ['albumArt']) },
     albumArt () {
@@ -57,10 +70,40 @@ export default {
     albumArtist () { return this.albumData ? this.albumData.artist : '' },
     albumName () { return this.albumData ? this.albumData.name : '' }
   },
-  methods: {},
+  watch: {
+    paymentObject (val) { console.log('paymentObject', val) },
+    nfcData (val) { console.log('nfcData', val) }
+  },
+  methods: {
+    decryptPayload () {
+      this.$axios({
+        method: 'post',
+        url: 'https://np.audioware.nl/api.php?method=decrypt',
+        data: { key: this.key }
+      }).then(({ data }) => {
+        this.nfcPayload = data
+        this.$store.dispatch('cache/albums/getFromAPI', { id: data.album, joinFields: ['albumArt'], nojwt: true })
+        this.$store.dispatch('cache/payments/getFromAPIByAlbum', { album: data.album, joinFields: [], nojwt: true })
+        this.$store.dispatch('cache/nfc/getFromAPIByUID', { uid: data.uid, joinFields: ['album'], nojwt: true })
+        
+        console.log(data)
+      })
+    },
+    openNFC () {
+      this.$store.dispatch('system/apiRequest', { path: 'nfc_scan', payload: this.nfcPayload, method: 'POST' }).then((res) => {
+        this.$router.replace(`/my/album/${res.album.replace('/api/albums/', '')}`)
+      })
+    },
+    connectNFC () {
+      this.$store.dispatch('system/apiRequest', { path: 'nfc_scan', payload: this.nfcPayload, method: 'POST' }).then((res) => {
+        this.$router.replace(`/my/album/${res.album.replace('/api/albums/', '')}`)
+      })
+    }
+  },
   mounted () {
-    this.$store.dispatch('cache/albums/getFromAPI', { id: this.albumID, joinFields: ['albumArt'], nojwt: true })
-    this.$store.dispatch('cache/payments/getFromAPIByAlbum', { album: this.albumID, joinFields: [], nojwt: true })
+    this.decryptPayload()
+    console.log('paymentObject', this.paymentObject)
+    console.log('nfcData', this.nfcData)
   }
 }
 </script>

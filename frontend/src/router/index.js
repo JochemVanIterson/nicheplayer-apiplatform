@@ -50,7 +50,14 @@ export default function ({ store }) {
 
     if (!nextRoute && to.name === 'MyAlbumItem') {
       const paymentResponse = await store.dispatch('cache/payments/getFromAPIByAlbum', { album: parseInt(to.params.id), joinFields: ['album'] })
-      if (!paymentResponse || paymentResponse.paymentStatus !== 'success') nextRoute = { path: '/error401', query: { to: from.fullPath } }
+      const nfcCardResponse = await store.dispatch('cache/nfc/getFromAPIByAlbum', { album: parseInt(to.params.id), joinFields: ['album'] })
+      if (!nfcCardResponse && paymentResponse && paymentResponse.paymentStatus !== 'success') {
+        console.log('payment exists but is not success', paymentResponse)
+        nextRoute = { path: '/error401', query: { to: from.fullPath } }
+      } else if (!paymentResponse && !nfcCardResponse) {
+        console.log('payment and nfc card don\'t exist', paymentResponse, nfcCardResponse)
+        nextRoute = { path: '/error401', query: { to: from.fullPath } }
+      }
     }
 
     if (nextRoute) next(nextRoute)

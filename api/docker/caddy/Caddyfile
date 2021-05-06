@@ -38,7 +38,6 @@ log
     || {path} == "/robots.txt"
     || {path} == "/chunk-common.js"
     || {path}.matches("(?i)(^/\\b([0-9]|[1-9][0-9])\\b\\.js)")
-    || {path}.endsWith(".hot-update.js")
     || {path}.startsWith("/sockjs-node")
     || {path}.startsWith("/fonts")
     || {path}.startsWith("/img")

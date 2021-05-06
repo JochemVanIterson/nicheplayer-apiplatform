@@ -55,6 +55,10 @@
           q-item-section(avatar)
             q-icon(name="credit_card")
           q-item-section Payments
+        q-item(clickable v-ripple to="/admin/nfc" exact :active="pathMatch('play_history')")
+          q-item-section(avatar)
+            q-icon(name="nfc")
+          q-item-section NFC Tags
         q-item(clickable v-ripple to="/admin/play_history" exact :active="pathMatch('play_history')")
           q-item-section(avatar)
             q-icon(name="assessment")

@@ -65,6 +65,11 @@ const routes = [
       { path: 'payments/:id/show', component: () => import('pages/admin/Payments/Show.vue'), meta: { title: 'Payments' } },
       { path: 'payments/:id/edit', component: () => import('pages/admin/Payments/Edit.vue'), meta: { title: 'Payments' } },
 
+      { path: 'nfc', component: () => import('pages/admin/Nfc/List.vue'), meta: { title: 'Nfc' } },
+      { path: 'nfc/create', component: () => import('pages/admin/Nfc/Create.vue'), meta: { title: 'Nfc' } },
+      { path: 'nfc/:id/show', component: () => import('pages/admin/Nfc/Show.vue'), meta: { title: 'Nfc' } },
+      { path: 'nfc/:id/edit', component: () => import('pages/admin/Nfc/Edit.vue'), meta: { title: 'Nfc' } },
+
       { path: 'play_history', component: () => import('pages/admin/PlayHistory/List.vue'), meta: { title: 'Play History' } },
       { path: 'play_history/:id/show', component: () => import('pages/admin/PlayHistory/Show.vue'), meta: { title: 'Play History' } }
     ]
@@ -88,7 +93,7 @@ const routes = [
     component: () => import('pages/FullscreenPlayer.vue')
   },
   {
-    path: '/nfc/:album',
+    path: '/nfc',
     name: 'NfcEntry',
     component: () => import('pages/NfcPage.vue')
   },

@@ -10,10 +10,11 @@ export function getObject (state) {
   }
 }
 
-export function getObjectByAlbum (state) {
+export function getObjectByAlbum (state, getters, rootState, rootGetters) {
   return (album) => {
     const filtered = state.data.filter((e) => {
-      return e.album === '/api/albums/' + album
+      console.log(e)
+      return (e.album === '/api/albums/' + album) && e.user === '/api/users/' + rootGetters['system/userData'].id
     })
 
     if (filtered.length === 0) return undefined
