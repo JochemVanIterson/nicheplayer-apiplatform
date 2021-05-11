@@ -8,7 +8,7 @@ ARG NODE_VERSION=14
 # "common" stage
 FROM node:${NODE_VERSION}-alpine AS api_platform_message_relay_common
 
-EXPOSE 8080
+# EXPOSE 8080
 
 WORKDIR /usr/src/message_relay
 

@@ -34,10 +34,10 @@ services:
       target: api_platform_message_relay_prod
     environment:
       ORIGIN: ${SERVER_NAME:-:3000, mbp.audioware.nl:3000, localhost:3000, http://mbp.audioware.nl, http://localhost, https://mbp.audioware.nl, https://localhost}
-    ports:
-      - target: 3000
-        published: 3000
-        protocol: tcp
+    # ports:
+    #   - target: 3000
+    #     published: 3000
+    #     protocol: tcp
 
   caddy:
     build:
