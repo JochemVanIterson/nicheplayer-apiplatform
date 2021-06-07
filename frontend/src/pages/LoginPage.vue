@@ -4,7 +4,7 @@
       q-page.flex.flex-center.column.bg-grey-4()
         q-img.bg-grey-4.window-height(src="background_image.jpg")
           div(class="absolute-full text-subtitle2 flex flex-center bg-transparent")
-            q-card.q-mt-lg#loginCard
+            q-card.q-mt-lg#loginCard(dark)
               q-card-section
                 .text-h4 Login
               q-card-section.q-gutter-y-md
@@ -57,7 +57,7 @@ export default {
   #loginCard {
     width: 100%;
     max-width: 400px;
-    color: white;
     background-color: #222222A0;
+    backdrop-filter: blur(8px);
   }
 </style>

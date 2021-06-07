@@ -1,5 +1,5 @@
 import fetch from '../../../utils/fetch'
-import socket from "../../../utils/socket";
+import socket from '../../../utils/socket'
 
 import { ENTRYPOINT } from '../../../config/1314272676_entrypoint'
 import { Cookies, LocalStorage } from 'quasar'
@@ -83,7 +83,7 @@ export function logoutAction ({ commit, dispatch }) {
   LocalStorage.remove('refresh_token')
   LocalStorage.remove('userdata')
   dispatch('cache/clearCache', undefined, { root: true })
-  socket.emit("logout")
+  socket.emit('logout')
   socket.disconnect()
   return true
 }

@@ -156,7 +156,7 @@ export default {
     tooltipStyle () {
       return {
         color: this.onTopColor,
-        'background-color': this.backgroundDark ? 'white' : colors.lighten(this.backgroundColor, -30),
+        'background-color': this.backgroundDark ? 'white' : colors.lighten(this.backgroundColor, -30)
       }
     }
   },

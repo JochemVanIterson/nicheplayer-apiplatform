@@ -108,10 +108,16 @@ class User implements UserInterface
      */
     private $payments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Nfc::class, mappedBy="users")
+     */
+    private $nfcs;
+
     public function __construct()
     {
         $this->playHistory = new ArrayCollection();
         $this->payments = new ArrayCollection();
+        $this->nfcs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -298,6 +304,33 @@ class User implements UserInterface
             if ($payment->getUser() === $this) {
                 $payment->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Nfc[]
+     */
+    public function getNfcs(): Collection
+    {
+        return $this->nfcs;
+    }
+
+    public function addNfc(Nfc $nfc): self
+    {
+        if (!$this->nfcs->contains($nfc)) {
+            $this->nfcs[] = $nfc;
+            $nfc->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNfc(Nfc $nfc): self
+    {
+        if ($this->nfcs->removeElement($nfc)) {
+            $nfc->removeUser($this);
         }
 
         return $this;

@@ -157,7 +157,7 @@ export default {
     saveAction () {
       const newStore = {}
       _.merge(newStore, this.oldStore, this.changedStore)
-      Object.keys(newStore.meta).forEach(key => [undefined, null, ''].includes(newStore.meta[key]) ? delete newStore.meta[key] : {});
+      Object.keys(newStore.meta).forEach(key => [undefined, null, ''].includes(newStore.meta[key]) ? delete newStore.meta[key] : {})
       this.$store.dispatch('cache/mediaObjects/updateAPI', { id: this.id, payload: newStore }).then((res) => {
         console.log(res)
         this.$router.go(-1)

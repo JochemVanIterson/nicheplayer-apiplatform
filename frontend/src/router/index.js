@@ -28,19 +28,39 @@ export default function ({ store }) {
   })
 
   Router.beforeEach(async (to, from, next) => {
-    let requiresLogin = to.matched.some(record => record.meta.requiresLogin);
-    let hideForAuth = to.matched.some(record => record.meta.hideForAuth);
-    let requiresAdmin = to.matched.some(record => record.meta.requiresAdmin);
-    if (requiresLogin) {
-      let response = await store.dispatch('system/waitForLogin')
-      if (!response) next({ path: '/login', query: { to: to.fullPath } })
-      else next()
-    } else if (requiresAdmin) {
-      let response = await store.dispatch('system/waitForLogin')
-      if (!response) next({ path: '/login', query: { to: to.fullPath } })
-      else if (!response.roles.includes('ROLE_ADMIN')) next({ path: '/error401', query: { to: from.fullPath } })
-      else next()
-    } else if (hideForAuth && (store.getters['system/isLoggedIn'])) next({ path: '/explore' })
+    const requiresLogin = to.matched.some(record => record.meta.requiresLogin)
+    const hideForAuth = to.matched.some(record => record.meta.hideForAuth)
+    const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin)
+
+    let loginResponse
+    let nextRoute
+
+    if (requiresLogin || requiresAdmin) {
+      loginResponse = await store.dispatch('system/waitForLogin')
+    }
+
+    if (!nextRoute && requiresLogin) {
+      if (!loginResponse) nextRoute = { path: '/login', query: { to: to.fullPath } }
+    }
+    if (!nextRoute && requiresAdmin) {
+      if (!loginResponse) nextRoute = { path: '/login', query: { to: to.fullPath } }
+      else if (!loginResponse.roles.includes('ROLE_ADMIN')) nextRoute = { path: '/error401', query: { to: from.fullPath } }
+    }
+    if (!nextRoute && hideForAuth && (store.getters['system/isLoggedIn'])) nextRoute = { path: '/explore' }
+
+    if (!nextRoute && to.name === 'MyAlbumItem') {
+      const paymentResponse = await store.dispatch('cache/payments/getFromAPIByAlbum', { album: parseInt(to.params.id), joinFields: ['album'] })
+      const nfcCardResponse = await store.dispatch('cache/nfc/getFromAPIByAlbum', { album: parseInt(to.params.id), joinFields: ['album'] })
+      if (!nfcCardResponse && paymentResponse && paymentResponse.paymentStatus !== 'success') {
+        console.log('payment exists but is not success', paymentResponse)
+        nextRoute = { path: '/error401', query: { to: from.fullPath } }
+      } else if (!paymentResponse && !nfcCardResponse) {
+        console.log('payment and nfc card don\'t exist', paymentResponse, nfcCardResponse)
+        nextRoute = { path: '/error401', query: { to: from.fullPath } }
+      }
+    }
+
+    if (nextRoute) next(nextRoute)
     else next()
   })
 

@@ -23,12 +23,12 @@ export function userFullName (state) {
   return state.userData.fullname
 }
 
-export function userName(state) {
+export function userName (state) {
   if (!state.userData) return ''
   return state.userData.username
 }
 
-export function userId(state) {
+export function userId (state) {
   if (!state.userData) return ''
   return state.userData.id
 }
@@ -57,6 +57,6 @@ export function userData (state) {
   return state.userData
 }
 
-export function enableWebAudio(state) {
+export function enableWebAudio (state) {
   return Howler.usingWebAudio && state.enableWebAudio
 }

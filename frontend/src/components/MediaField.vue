@@ -23,7 +23,6 @@ export default {
   },
   data () {
     return {
-      
     }
   },
   computed: {
@@ -37,7 +36,7 @@ export default {
       if (!this.value) return 'None'
       if (!this.chosenFile) return 'None'
       return this.chosenFile.fileName
-    },
+    }
   },
   methods: {
     openMediaChooser () {
@@ -52,7 +51,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch("cache/mediaObjects/getFromAPI", this.chosenId)
+    this.$store.dispatch('cache/mediaObjects/getFromAPI', this.chosenId)
   }
 }
 </script>

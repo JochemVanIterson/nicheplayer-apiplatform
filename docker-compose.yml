@@ -28,16 +28,16 @@ services:
       context: ./frontend
       target: api_platform_frontend_prod
   
-  message_relay:
-    build:
-      context: ./message_relay
-      target: api_platform_message_relay_prod
-    environment:
-      ORIGIN: ${SERVER_NAME:-:3000, nicheplayer-dev.audioware.nl:3000, localhost:3000, http://nicheplayer-dev.audioware.nl, http://localhost, https://nicheplayer-dev.audioware.nl, https://localhost}
-    ports:
-      - target: 3000
-        published: 3000
-        protocol: tcp
+#  message_relay:
+#    build:
+#      context: ./message_relay
+#      target: api_platform_message_relay_prod
+#    environment:
+#      ORIGIN: ${SERVER_NAME:-:3000, mbp.audioware.nl:3000, localhost:3000, http://mbp.audioware.nl, http://localhost, https://mbp.audioware.nl, https://localhost}
+    # ports:
+    #   - target: 3000
+    #     published: 3000
+    #     protocol: tcp
 
   caddy:
     build:
@@ -52,7 +52,7 @@ services:
       MESSAGE_RELAY_UPSTREAM: message_relay:3000
       PHPMYADMIN_UPSTREAM: phpmyadmin:80
       FRONTEND_UPSTREAM: frontend:80
-      SERVER_NAME: ${SERVER_NAME:-:80, caddy:80, nicheplayer-dev.audioware.nl:80, localhost:80, -:443, caddy:443, nicheplayer-dev.audioware.nl:443, localhost:443, caddy, nicheplayer-dev.audioware.nl, localhost}
+      SERVER_NAME: ${SERVER_NAME:-:80, caddy:80, mbp.audioware.nl:80, localhost:80, -:443, caddy:443, mbp.audioware.nl:443, localhost:443, caddy, mbp.audioware.nl, localhost}
       MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_PUBLISHER_JWT_KEY:-!ChangeMe!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_SUBSCRIBER_JWT_KEY:-!ChangeMe!}
     restart: unless-stopped
@@ -63,23 +63,23 @@ services:
     ports:
       # HTTP
       - target: 80
-        published: 12080
+        published: 80
         protocol: tcp
       # HTTPS
       - target: 443
-        published: 12443
+        published: 443
         protocol: tcp
       # HTTP/3
       - target: 443
-        published: 12443
+        published: 443
         protocol: udp
 
   database:
     image: mysql:8.0
     environment:
-      - MYSQL_ROOT_PASSWORD=***REMOVED***
+      - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=api
-      - MYSQL_PASSWORD=***REMOVED***
+      - MYSQL_PASSWORD=password
       - MYSQL_USER=api-platform
     volumes:
       - db_data:/var/lib/mysql:rw
@@ -92,11 +92,11 @@ services:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - '12081:80'
+      - '8081:80'
     environment:
       PMA_HOST: database
-      MYSQL_ROOT_PASSWORD: ***REMOVED***
-      PMA_ABSOLUTE_URI: https://nicheplayer-dev.audioware.nl/phpmyadmin/
+      MYSQL_ROOT_PASSWORD: password
+      PMA_ABSOLUTE_URI: https://mbp.audioware.nl/phpmyadmin/
 volumes:
   php_socket:
   db_data:

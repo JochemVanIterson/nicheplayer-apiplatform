@@ -21,23 +21,35 @@
 </template>
 
 <script>
-import _ from 'lodash'
+// import _ from 'lodash'
 export default {
   name: 'MyAlbums',
   computed: {
+    albums () { return this.$store.getters['cache/albums/getAllJoined'] },
+
     payments () { return this.$store.getters['cache/payments/getAllJoined'] },
+    paymentsAlbums () { return this.payments.filter((e) => !!e).map((e) => { return e.album ? e.album['@id'] : undefined }) },
+
+    nfcCards () { return this.$store.getters['cache/nfc/getAllBy'] },
+    nfcAlbums () { return this.nfcCards.map((e) => { return e.album }) },
+
     filteredAlbums () {
-      return this.payments.filter((e) => {
-        return e.album !== 'collecting'
+      return this.albums.filter((e) => {
+        return this.nfcAlbums.includes(e['@id']) || this.paymentsAlbums.includes(e['@id'])
       }).map((e) => {
-        let album = _.clone(e.album)
-        if (album && album !== 'collecting') album.payment = e
-        return album
+        if (e && e !== 'collecting') {
+          e.payment = this.payments.filter((p) => p.album['@id'] === e['@id'])[0]
+          e.hasNfcCard = this.nfcAlbums.includes(e['@id'])
+        }
+        return e
       }).sort((a, b) => {
-        if (!a.payment || !b.payment) return 0
+        if (!a.payment || !b.payment || !a.hasNfcCard || !b.hasNfcCard) return 0
         // Sort success payments on top
         if (a.payment.paymentStatus !== 'success' && b.payment.paymentStatus === 'success') return 1
         if (a.payment.paymentStatus === 'success' && b.payment.paymentStatus !== 'success') return -1
+        // Sort NFC cards bellow payments
+        if (!a.hasNfcCard && b.hasNfcCard) return 1
+        if (a.hasNfcCard && !b.hasNfcCard) return -1
         // else sort by name
         if (a.name < b.name) return -1
         if (a.name > b.name) return 1
@@ -50,6 +62,7 @@ export default {
       return (value && value.contentUrl) ? this.$store.getters['system/getMediaURL'](value.contentUrl) : ''
     },
     readableStatus (album) {
+      if (album.hasNfcCard) return 'NFC Card'
       if (!album.payment) return ''
       const status = album.payment.paymentStatus
       switch (status) {
@@ -63,11 +76,15 @@ export default {
           return ''
       }
     },
-    albumAllowed (album) { return album.payment && album.payment.paymentStatus === 'success' },
+    albumAllowed (album) { return album.hasNfcCard || (album.payment && album.payment.paymentStatus === 'success') },
     albumClicked (album) { if (this.albumAllowed(album)) this.$router.push(`/my/album/${album.id}`) }
   },
   mounted () {
-    if (this.isLoggedIn !== '') this.$store.dispatch('cache/payments/getAllFromAPIByUser')
+    if (this.isLoggedIn !== '') {
+      this.$store.dispatch('cache/albums/getAllFromAPI')
+      this.$store.dispatch('cache/payments/getAllFromAPIByUser')
+      this.$store.dispatch('cache/nfc/getAllFromAPIByUser', { joinFields: [] })
+    }
   }
 }
 </script>

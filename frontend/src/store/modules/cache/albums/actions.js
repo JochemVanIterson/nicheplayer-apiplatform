@@ -1,21 +1,21 @@
 // Albums
 
-export function getFromAPI ({ state, commit, rootState, dispatch }, { id, joinFields = ['albumArt'], force }) {
+export function getFromAPI ({ state, commit, rootState, dispatch }, { id, joinFields = ['albumArt'], force = false, nojwt = false }) {
   if (!id) return
-  if (typeof id === 'string') id = id.replace('/api/albums/', '')
+  if (typeof id === 'string') id = parseInt(id.replace('/api/albums/', ''))
   if (!force && (typeof state.data[id] !== 'undefined')) return
 
-  if (state.data[id] === 'collecting') return
+  if (!force && state.data[id] === 'collecting') return
   else commit('updateValue', { id: id, value: 'collecting' })
 
-  return dispatch('system/apiRequest', { path: `albums/${id}` }, { root: true })
+  return dispatch('system/apiRequest', { path: `albums/${id}`, nojwt }, { root: true })
     .then((data) => {
       if (joinFields.includes('albumArt')) {
-        dispatch('cache/mediaObjects/getFromAPI', { id: data.albumArt, follow: true }, { root: true })
+        dispatch('cache/mediaObjects/getFromAPI', { id: data.albumArt, follow: true, nojwt, force }, { root: true })
       }
       if (joinFields.includes('songs')) {
         data.songs.forEach(song => {
-          dispatch('cache/songs/getFromAPI', { id: song }, { root: true })
+          dispatch('cache/songs/getFromAPI', { id: song, nojwt, force }, { root: true })
         })
       }
       commit('updateValue', { id: id, value: data })

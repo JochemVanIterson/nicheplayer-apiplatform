@@ -10,6 +10,6 @@ export function clearCache (state) {
   Vue.set(state, 'data', [])
 }
 
-export function deleteValue(state, id) {
+export function deleteValue (state, id) {
   Vue.delete(state.data, id)
 }

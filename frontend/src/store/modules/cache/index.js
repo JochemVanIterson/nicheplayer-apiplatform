@@ -12,6 +12,7 @@ import payments from './payments'
 import users from './users'
 import sources from './sources'
 import playHistory from './playHistory'
+import nfc from './nfc'
 
 export default {
   namespaced: true,
@@ -23,6 +24,7 @@ export default {
     payments,
     users,
     sources,
-    playHistory
+    playHistory,
+    nfc
   }
 }

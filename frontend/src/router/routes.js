@@ -11,9 +11,9 @@ const routes = [
       { path: 'explore/', component: () => import('pages/explore/Explore.vue') },
       { path: 'explore/album/:id', component: () => import('pages/explore/Album.vue') },
 
-      { path: 'my/album', component: () => import('pages/myMusic/Albums.vue') },
-      { path: 'my/album/:id', component: () => import('pages/myMusic/AlbumsItem.vue') },
-      { path: 'my/songs', component: () => import('pages/myMusic/Songs.vue') },
+      { path: 'my/album', name: 'MyAlbumList', component: () => import('pages/myMusic/Albums.vue') },
+      { path: 'my/album/:id', name: 'MyAlbumItem', component: () => import('pages/myMusic/AlbumsItem.vue') },
+      { path: 'my/songs', name: 'MySongs', component: () => import('pages/myMusic/Songs.vue') },
       { path: 'my/playlist/:id', component: () => import('pages/myMusic/Playlist.vue') }
     ]
   },
@@ -24,8 +24,7 @@ const routes = [
     redirect: '/settings/user',
     children: [
       { path: 'user', component: () => import('pages/userSettings/User.vue'), meta: { title: 'User settings' } },
-
-      { path: 'audioplayer', component: () => import('pages/userSettings/AudioPlayer.vue'), meta: { title: 'Audio player' } },
+      { path: 'audioplayer', component: () => import('pages/userSettings/AudioPlayer.vue'), meta: { title: 'Audio player' } }
     ]
   },
   {
@@ -66,6 +65,11 @@ const routes = [
       { path: 'payments/:id/show', component: () => import('pages/admin/Payments/Show.vue'), meta: { title: 'Payments' } },
       { path: 'payments/:id/edit', component: () => import('pages/admin/Payments/Edit.vue'), meta: { title: 'Payments' } },
 
+      { path: 'nfc', component: () => import('pages/admin/Nfc/List.vue'), meta: { title: 'Nfc' } },
+      { path: 'nfc/create', component: () => import('pages/admin/Nfc/Create.vue'), meta: { title: 'Nfc' } },
+      { path: 'nfc/:id/show', component: () => import('pages/admin/Nfc/Show.vue'), meta: { title: 'Nfc' } },
+      { path: 'nfc/:id/edit', component: () => import('pages/admin/Nfc/Edit.vue'), meta: { title: 'Nfc' } },
+
       { path: 'play_history', component: () => import('pages/admin/PlayHistory/List.vue'), meta: { title: 'Play History' } },
       { path: 'play_history/:id/show', component: () => import('pages/admin/PlayHistory/Show.vue'), meta: { title: 'Play History' } }
     ]
@@ -87,6 +91,11 @@ const routes = [
     name: 'Player',
     meta: { requiresLogin: true },
     component: () => import('pages/FullscreenPlayer.vue')
+  },
+  {
+    path: '/nfc',
+    name: 'NfcEntry',
+    component: () => import('pages/NfcPage.vue')
   },
 
   {
