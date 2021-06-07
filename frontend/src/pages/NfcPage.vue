@@ -14,8 +14,8 @@ q-layout(view="lHh Lpr lFf")
                 .text-h6 {{albumName}}
               q-separator(dark)
               div(v-if="isLoggedIn && !hasPurchased")
-                q-card-section
-                  .text Card: {{cardUID}}
+                //- q-card-section
+                //-   .text Card: {{cardUID}}
                 q-card-actions(vertical)
                   q-btn(label="Connect" noCaps color="primary" @click="connectNFC")
               div(v-else-if="isLoggedIn && hasPurchased")
@@ -29,7 +29,7 @@ q-layout(view="lHh Lpr lFf")
                       q-btn(dense flat label="Login" noCaps color="white" :to="{ path: '/login', query: { to: $route.fullPath } }")
 
         q-toolbar.text-white.fixed-top#toolbar
-          q-toolbar-title NichePlayer
+          q-toolbar-title.cursor-pointer(@click="$router.replace('/explore')") NichePlayer
 
 </template>
 
@@ -78,7 +78,7 @@ export default {
     decryptPayload () {
       this.$axios({
         method: 'post',
-        url: 'https://np.audioware.nl/api.php?method=decrypt',
+        url: 'https://np.audioware.nl/api/decrypt',
         data: { key: this.key }
       }).then(({ data }) => {
         this.nfcPayload = data

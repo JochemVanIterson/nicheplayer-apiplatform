@@ -1,20 +1,19 @@
 <template lang="pug">
   .flex(v-if="playlist.length > 0")
     q-linear-progress( :value="progress" :style="progressStyle" size="6px" :indeterminate="!isLoaded")
-    q-toolbar(@click="$router.push('/player')" :style="footerStyle" v-touch-swipe.mouse.left.right="handleSwipe")
-      .col-auto.row
+    q-toolbar.row.justify-between(@click="$router.push('/player')" :style="footerStyle" v-touch-swipe.mouse.left.right="handleSwipe")
+      .col.row
         q-avatar(color="grey" rounded :icon="hasAlbumArt?undefined:'music_note'")
           img(v-if="hasAlbumArt" :src="parsedAlbumArt")
         .col.q-px-sm
-          .text-weight-bold
+          .text-weight-bold.ellipsis
             span.q-pr-xs(v-if="hasTrackNumber") {{trackNumber}}.
             span {{title}}
-          .text-weight-light {{artist}}
-      .col
+          .text-weight-light.ellipsis {{artist}}
       .col-auto.q-gutter-x-sm
         q-btn(round flat dense icon="open_in_full" @click.stop="$router.push('/player')")
           q-tooltip(:delay="1000") Fullscreen
-        q-btn(round flat dense icon="volume_up" @click.stop="")
+        q-btn(round flat dense icon="volume_up" v-if="$q.screen.gt.xs"  @click.stop="")
           q-tooltip(:delay="1000") Volume
           q-popup-edit(v-model="playerVolume" auto-save @before-show="volume = $howlerPlayer.getVolume()" anchor="top middle" self="top middle")
             q-slider.q-my-md( v-model="playerVolume" :min="0" :max="1" :step="0"
